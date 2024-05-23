@@ -28,6 +28,9 @@ jobs:
       - attach_workspace:
           at: /workspace
       - run:
+          name: Ensure workspace directory exists
+          command: mkdir -p /workspace
+      - run:
           name: Copy build to current directory
           command: cp -r /workspace/public ./public
       - add_ssh_keys:
@@ -46,6 +49,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: /workspace
+      - run:
+          name: Ensure workspace directory exists
+          command: mkdir -p /workspace
       - run:
           name: Copy build to current directory
           command: cp -r /workspace/public ./public
