@@ -31,6 +31,9 @@ jobs:
           fingerprints:
             - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
       - run:
+          name: Add server to known hosts
+          command: ssh-keyscan -H 77.37.86.138 >> ~/.ssh/known_hosts
+      - run:
           name: Set execute permission on deploy.sh
           command: chmod +x ./deploy.sh
       - run:
@@ -46,6 +49,9 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
+      - run:
+          name: Add server to known hosts
+          command: ssh-keyscan -H 77.37.86.138 >> ~/.ssh/known_hosts
       - run:
           name: Set execute permission on deploy.sh
           command: chmod +x ./deploy.sh
