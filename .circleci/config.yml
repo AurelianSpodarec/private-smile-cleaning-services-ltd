@@ -1,0 +1,81 @@
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:18
+
+jobs:
+  build:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Build Gatsby Site
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - public
+
+  deploy-prod:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Build Gatsby Site for Production
+          command: npm run build
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
+      - run:
+          name: Deploy to Production
+          command: ./deploy.sh prod
+
+  deploy-staging:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Build Gatsby Site for Staging
+          command: npm run build
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
+      - run:
+          name: Deploy to Staging
+          command: ./deploy.sh staging
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - main
+                - develop
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
