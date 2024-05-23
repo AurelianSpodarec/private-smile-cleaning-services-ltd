@@ -27,9 +27,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
-      - run:
-          name: Copy build to current directory
-          command: cp -r ~/project/public ./public
       - add_ssh_keys:
           fingerprints:
             - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
@@ -46,9 +43,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
-      - run:
-          name: Copy build to current directory
-          command: cp -r ~/project/public ./public
       - add_ssh_keys:
           fingerprints:
             - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
