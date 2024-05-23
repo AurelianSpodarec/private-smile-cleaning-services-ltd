@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: cimg/node:18.16.1
+      - image: circleci/node:18.1
 
 jobs:
   build:
@@ -25,15 +25,17 @@ jobs:
     executor: node-executor
     steps:
       - checkout
+      - attach_workspace:
+          at: /workspace
       - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build Gatsby Site for Production
-          command: npm run build
+          name: Copy build to current directory
+          command: cp -r /workspace/public ./public
       - add_ssh_keys:
           fingerprints:
             - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
+      - run:
+          name: Set execute permission on deploy.sh
+          command: chmod +x ./deploy.sh
       - run:
           name: Deploy to Production
           command: ./deploy.sh prod
@@ -42,15 +44,17 @@ jobs:
     executor: node-executor
     steps:
       - checkout
+      - attach_workspace:
+          at: /workspace
       - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build Gatsby Site for Staging
-          command: npm run build
+          name: Copy build to current directory
+          command: cp -r /workspace/public ./public
       - add_ssh_keys:
           fingerprints:
             - "SHA256:ygjBK2SGEGy1mj+aTr++SddJ1eVxpejQZF15QAsClto"
+      - run:
+          name: Set execute permission on deploy.sh
+          command: chmod +x ./deploy.sh
       - run:
           name: Deploy to Staging
           command: ./deploy.sh staging
