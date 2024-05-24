@@ -7,7 +7,7 @@ import Features1 from '../components/Home1/Features1'
 import FeaturesContent from '../components/Home1/FeaturesContent'
 import Team1 from '../components/Home1/Team1'
 import Testimonial1 from '../components/Home1/Testimonial1'
-import Try1 from '../components/Home1/Try1'
+import ContactForm from '../components/Contact/ContactForm'
 import Layout1 from '../layouts/Layout1'
 
 const IndexPage = () => {
@@ -20,7 +20,7 @@ const IndexPage = () => {
                 <AppDetails1/>
                 <Download1/>
                 <Testimonial1/>
-                
+                <ContactForm/>
             </Layout1>
         </>
     )

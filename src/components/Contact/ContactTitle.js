@@ -12,11 +12,11 @@ export default function ContactTitle() {
                             <div className="container">
                                 <div className="row">
                                     <div className="col-xl-12">
-                                        <div className="page__title-content pt-235">
-                                            <h2 className="page_title" style={{color: "#eca869"}}>Our Contact. us</h2>
+                                        <div className="page__title-content pt-200">
+                                            <h2 className="page_title" style={{color: "#eca869"}}>Contact Us</h2>
                                             <nav aria-label="breadcrumb">
                                                 <ol className="breadcrumb">
-                                                    <li className="breadcrumb-item"><Link href="/"><a>Home - Contact us</a></Link></li>
+                                                    <li className="breadcrumb-item"><Link to="/">Home - Contact us</Link></li>
                                                 </ol>
                                             </nav>
                                         </div>
