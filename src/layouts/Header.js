@@ -30,23 +30,23 @@ export default function Header() {
         <>
             {/* Header Start */}
             <header>
-                <div id="header-sticky" className="header-area transparent-header pt-10 pb-10" style={{background: "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(176,139,187,0.7315301120448179) 100%)"}}>
+                <div id="header-sticky" className="header-area transparent-header pt-10 pb-10" style={{background: "#EDE5F0"}}>
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-xl-2 col-lg-2 col-md-7 col-10 d-flex align-items-center">
                                 <div className="logo">
-                                <Link to="/">
-                                    <Img
-                                        fixed={data.wpMediaItem.localFile.childImageSharp.fixed}
-                                        alt={data.wpMediaItem.altText}
-                                        className="img-fluid"
-                                    />
-                                </Link>
+                                    <Link to="/">
+                                        <Img
+                                            fixed={data.wpMediaItem.localFile.childImageSharp.fixed}
+                                            alt={data.wpMediaItem.altText}
+                                            className="img-fluid"
+                                        />
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-xl-10 col-lg-10 col-md-4 col-8 d-none d-md-block">
                                 <div className="header-btn f-right d-none d-md-block">
-                                    <Link href="/login"><a className="btn"><i className="fal fa-lock-alt"></i>Sign In</a></Link>
+                                    <Link to="/login" className="btn"><i className="fal fa-lock-alt"></i>Sign In</Link>
                                 </div>
                                 <div className="main-menu colormenu d-none d-lg-block">
                                     <NavBar />

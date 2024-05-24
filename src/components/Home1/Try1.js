@@ -22,7 +22,7 @@ export default function Try1() {
                                 <div className="col-xl-5 col-lg-5">
                                     <div className="try_btn_center">
                                         <div className="try_btn">
-                                            <Link href="contact"><a className="btn btnfree">Book Now</a></Link>
+                                            <Link to="contact" className="btn btnfree">Book Now</Link>
                                         </div>
                                     </div>
                                 </div>

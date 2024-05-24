@@ -15,7 +15,8 @@ export default function Testimonial1() {
             img: (
                 <StaticImage
                     src="/img/testimonial/test1.jpg"
-                    layout=""
+                    alt=""
+                    layout="fixed"
                     width={63}
                     height={61}
                 />
@@ -28,7 +29,8 @@ export default function Testimonial1() {
             img: (
                 <StaticImage
                     src="/img/testimonial/test2.jpg"
-                    layout=""
+                    layout="fixed"
+                    alt=""
                     width={63}
                     height={61}
                 />
@@ -41,7 +43,8 @@ export default function Testimonial1() {
             img: (
                 <StaticImage
                     src="/img/testimonial/test3.jpg"
-                    layout=""
+                    layout="fixed"
+                    alt=""
                     width={63}
                     height={61}
                 />
@@ -54,10 +57,6 @@ export default function Testimonial1() {
         <>
             {/* <!-- TESTIMONIAL START  --> */}
             <div className="testimonial-area  bg1 pt-110">
-                <div className="testimonial_shape">
-                    <img className="t-1" src="/img/shape/shape8.png" alt="shape" />
-                    <img className="t-2" src="/img/shape/shape2.png" alt="shape" />
-                </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-xl-12">

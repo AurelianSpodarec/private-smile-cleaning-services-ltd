@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import AppDetails1 from '../components/Home1/AppDetails1'
-import AppSlider1 from '../components/Home1/AppSlider1'
+import Slider3 from '../components/Home3/Slider3'
 import Download1 from '../components/Home1/Download1'
 import Features1 from '../components/Home1/Features1'
 import FeaturesContent from '../components/Home1/FeaturesContent'
@@ -14,10 +14,9 @@ const IndexPage = () => {
     return(
         <>
             <Layout1>
-                <AppSlider1/>
+                <Slider3/>
                 <Features1/>
                 <FeaturesContent/>
-                <Team1/>
                 <AppDetails1/>
                 <Download1/>
                 <Testimonial1/>

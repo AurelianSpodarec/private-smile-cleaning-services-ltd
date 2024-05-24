@@ -16,7 +16,7 @@ export default function AppDetails1() {
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                 <div className="feature3">
                                     <div className="feature3__image">
-                                        <i class="far fa-phone-laptop" style={{bottom:'10px', position: 'relative'}}></i>
+                                        <i className="far fa-phone-laptop" style={{bottom:'10px', position: 'relative'}}></i>
                                     </div>
                                     <div className="feature3__content">
                                         <h4 className="content_title">Mobile & Tablet friendly website</h4>
@@ -27,7 +27,7 @@ export default function AppDetails1() {
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                 <div className="feature3 pl-40">
                                     <div className="feature3__image febg1">
-                                    <i class="far fa-calendar-check" style={{bottom:'10px', position: 'relative'}}></i>
+                                    <i className="far fa-calendar-check" style={{bottom:'10px', position: 'relative'}}></i>
                                     </div>
                                     <div className="feature3__content">
                                         <h4 className="content_title">Manage bookings anywhere</h4>
@@ -38,7 +38,7 @@ export default function AppDetails1() {
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                 <div className="feature3">
                                     <div className="feature3__image febg2">
-                                        <i class="far fa-smile" style={{bottom:'10px', position: 'relative'}}></i>
+                                        <i className="far fa-smile" style={{bottom:'10px', position: 'relative'}}></i>
                                     </div>
                                     <div className="feature3__content">
                                         <h4 className="content_title">Smiles Guaranteed</h4>
@@ -49,7 +49,7 @@ export default function AppDetails1() {
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                 <div className="feature3 pl-40">
                                     <div className="feature3__image febg3">
-                                        <i class="far fa-sack-dollar" style={{bottom:'10px', position: 'relative'}}></i>
+                                        <i className="far fa-sack-dollar" style={{bottom:'10px', position: 'relative'}}></i>
                                     </div>
                                     <div className="feature3__content">
                                         <h4 className="content_title">Low Risk, High Satisfaction</h4>

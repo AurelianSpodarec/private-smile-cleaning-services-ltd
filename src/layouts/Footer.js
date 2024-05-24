@@ -43,10 +43,10 @@ export default function Footer({className}) {
                   </div>
                   <div className="links">
                     <ul>
-                      <li><Link href="/"><a>About Us </a></Link></li>
-                      <li><Link href="/about"><a>Carrers</a></Link></li>
-                      <li><Link href="/service"><a>Our Blog</a></Link></li>
-                      <li><Link href="/blog"><a>Contact Us</a></Link></li>
+                      <li><Link to="/"> About Us  </Link></li>
+                      <li><Link to="/about"> Carrers </Link></li>
+                      <li><Link to="/service"> Our Blog </Link></li>
+                      <li><Link to="/blog"> Contact Us </Link></li>
                     </ul>
                   </div>
                 </div>
@@ -58,10 +58,10 @@ export default function Footer({className}) {
                   </div>
                   <div className="links">
                     <ul>
-                      <li><Link href="/about"><a>Residential Cleaning</a></Link></li>
-                      <li><Link href="/about"><a>Commercial Cleaning</a></Link></li>
-                      <li><Link href="/contact"><a>End-of-Tenancy Cleaning</a></Link></li>
-                      <li><Link href="/about"><a>Ironing & Laundry</a></Link></li>
+                      <li><Link to="/about"> Residential Cleaning </Link></li>
+                      <li><Link to="/about"> Commercial Cleaning </Link></li>
+                      <li><Link to="/contact"> End-of-Tenancy Cleaning </Link></li>
+                      <li><Link to="/about"> Ironing & Laundry </Link></li>
                     </ul>
                   </div>
                 </div>
@@ -74,10 +74,10 @@ export default function Footer({className}) {
                   </div>
                   <div className="links">
                     <ul>
-                      <li><Link href="/page/terms-of-use"><a>Terms Of Use</a></Link></li>
-                      <li><Link href="/page/privacy-policy"><a className="itsupport">Privacy Policy </a></Link></li>
-                      <li><Link href="/page/cookies-policy"><a>Cookies Policy</a></Link></li>
-                      <li><Link href="/page/site-map"><a>Site Map </a></Link></li>
+                      <li><Link to="/page/terms-of-use"> Terms Of Use </Link></li>
+                      <li><Link to="/page/privacy-policy" className="itsupport">Privacy Policy  </Link></li>
+                      <li><Link to="/page/cookies-policy"> Cookies Policy </Link></li>
+                      <li><Link to="/page/site-map"> Site Map  </Link></li>
                     </ul>
                   </div>
                 </div>
@@ -89,8 +89,8 @@ export default function Footer({className}) {
                   </div>
                   <div className="links special_widget_tp">
                     <ul>
-                      <li><Link href="/contact"><a><i className="far fa-map-marker-alt"></i><span
-                        className="tp-spaceing">info@smile.cleaning</span></a></Link></li>
+                      <li><Link to="/contact"> <i className="far fa-email"></i><span
+                        className="tp-spaceing">info@smile.cleaning</span> </Link></li>
                       
                     </ul>
                   </div>
@@ -109,10 +109,10 @@ export default function Footer({className}) {
                 <div className="col-xl-6 col-lg-6 col-md-6">
                   <div className="footer_social f-right">
                     <span>Follow us</span>
-                    <Link href="#"><a><i className="fab fa-twitter"></i></a></Link>
-                    <Link href="#"><a><i className="fab fa-pinterest-p"></i></a></Link>
-                    <Link href="#"><a><i className="fab fa-vimeo-v"></i></a></Link>
-                    <Link href="#"><a><i className="fab fa-facebook-f"></i></a></Link>
+                    <Link to="#"> <i className="fab fa-twitter"></i> </Link>
+                    <Link to="#"> <i className="fab fa-pinterest-p"></i> </Link>
+                    <Link to="#"> <i className="fab fa-vimeo-v"></i> </Link>
+                    <Link to="#"> <i className="fab fa-facebook-f"></i> </Link>
                   </div>
                 </div>
               </div>

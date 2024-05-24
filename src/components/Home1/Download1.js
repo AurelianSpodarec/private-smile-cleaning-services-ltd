@@ -15,19 +15,19 @@ export default function Download1() {
                 </div>
                 <div className="row">
                     <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12 mb-5">
-                        <h2 className='text-center'><i class="far fa-clock"></i> In 1 Hour</h2>
+                        <h2 className='text-center'><i className="far fa-clock"></i> In 1 Hour</h2>
                         <p>
                             Mauris donec ociis magnis sapien ipsum sagittis sapien tempor and volute gravida aliquet quaerat vitae mauris donec ociis magnis sapien ipsum sagittis sapien tempor and
                         </p>
                     </div>
                     <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12 mb-5">
-                        <h2 className='text-center'><i class="far fa-clock"></i> In 2 Hours</h2>
+                        <h2 className='text-center'><i className="far fa-clock"></i> In 2 Hours</h2>
                         <p>
                             Mauris donec ociis magnis sapien ipsum sagittis sapien tempor and volute gravida aliquet quaerat vitae mauris donec ociis magnis sapien ipsum sagittis sapien tempor and
                         </p>
                     </div>
                     <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12 mb-5">
-                        <h2 className='text-center'><i class="far fa-clock"></i> In 3 Hours</h2>
+                        <h2 className='text-center'><i className="far fa-clock"></i> In 3 Hours</h2>
                         <p>
                             Mauris donec ociis magnis sapien ipsum sagittis sapien tempor and volute gravida aliquet quaerat vitae mauris donec ociis magnis sapien ipsum sagittis sapien tempor and
                         </p>
@@ -37,19 +37,19 @@ export default function Download1() {
 
                 <div className="row">
                     <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12">
-                        <h2 className='text-center'><i class="far fa-hand-sparkles"></i> For a Deep Clean</h2>
+                        <h2 className='text-center'><i className="far fa-hand-sparkles"></i> For a Deep Clean</h2>
                         <p>
                             Mauris donec ociis magnis sapien ipsum sagittis sapien tempor and volute gravida aliquet quaerat vitae mauris donec ociis magnis sapien ipsum sagittis sapien tempor and
                         </p>
                     </div>
                     <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12">
-                        <h2 className='text-center'><i class="far fa-house-leave"></i> For End-of-tenancy</h2>
+                        <h2 className='text-center'><i className="far fa-house-leave"></i> For End-of-tenancy</h2>
                         <p>
                             Mauris donec ociis magnis sapien ipsum sagittis sapien tempor and volute gravida aliquet quaerat vitae mauris donec ociis magnis sapien ipsum sagittis sapien tempor and
                         </p>
                     </div>
                     <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12">
-                        <h3 className='text-center'><i class="far fa-washer"></i> For Ironing & Laundary</h3>
+                        <h3 className='text-center'><i className="far fa-washer"></i> For Ironing & Laundary</h3>
                         <p>
                             Mauris donec ociis magnis sapien ipsum sagittis sapien tempor and volute gravida aliquet quaerat vitae mauris donec ociis magnis sapien ipsum sagittis sapien tempor and
                         </p>

@@ -12,11 +12,11 @@ export default function NavBarMobile({ metismenu }) {
         <>
             <nav className="mean-nav">
                 <ul className={"metismenu"} id={"metismenu"}>
-                <li><Link href="/"><a>Home</a></Link></li>
-                    <li><Link href="/services"><a>Services</a></Link></li>
-                    <li><Link href="/booking"><a>Booking</a></Link></li>
-                    <li><Link href="/contact"><a>Contact us</a></Link></li>
-                    <li><Link href="/blog"><a>Blog</a></Link></li>
+                <li><Link to="/">Home</Link></li>
+                    <li><Link to="/services">Services</Link></li>
+                    <li><Link to="/booking">Booking</Link></li>
+                    <li><Link to="/contact">Contact us</Link></li>
+                    <li><Link to="/blog">Blog</Link></li>
                 </ul>
             </nav>
 

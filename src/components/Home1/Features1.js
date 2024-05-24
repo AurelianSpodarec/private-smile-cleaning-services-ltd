@@ -6,11 +6,7 @@ export default function Features1() {
         {/* <!-- FETURES START --> */}
         <div className="homefeture_1 pt-115 pb-130">
             <div className="container">
-                <div className="app_left_shape">
-                    <img className="leftanimation d-none d-sm-block" src="/img/shape/left.png" alt="leftshape" />
-                    <img src="/img/shape/shape7.png" alt="leftshape" />
-                    <img className="downsahpe d-none d-sm-block" src="/img/shape/shape3.png" alt="leftshape" />
-                </div>
+                
                 <div className="section_title_wrapper text-center wow fadeInUp mb-70" data-wow-delay="0.3s"
                     style={{"visibility":"visible","animationDelay":"0.3s","animationName":"fadeInUp"}}>
                     <h2 className="section-title">Services provided with a Smile</h2>
