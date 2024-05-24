@@ -11,3 +11,5 @@ import './static/css/meanmenu.css';
 import './static/css/responsive.css';
 import './static/css/style.css';
 import './static/css/themify-icons.css';
+
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';

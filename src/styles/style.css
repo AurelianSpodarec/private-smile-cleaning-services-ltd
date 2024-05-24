@@ -15219,8 +15219,6 @@ HOME PAGE 2 FETURES DESIGN
     transition: .3s; }
   .featurebox2:hover a {
     color: #3694f5; }
-  .featurebox2:hover i {
-    color: #3694f5; }
   .featurebox2__content p {
     line-height: 26px;
     font-size: 14px;
@@ -15268,8 +15266,7 @@ HOME PAGE 3 FETURES DESIGN
   padding-left: 52px; }
   .featurebox3:hover a {
     color: #583bf7; }
-  .featurebox3:hover i {
-    color: #583bf7; }
+  
   .featurebox3 p {
     font-size: 16px;
     color: #6a727f; }

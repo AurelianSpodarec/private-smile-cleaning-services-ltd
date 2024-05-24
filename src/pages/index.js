@@ -20,7 +20,7 @@ const IndexPage = () => {
                 <AppDetails1/>
                 <Download1/>
                 <Testimonial1/>
-                <Try1/>
+                
             </Layout1>
         </>
     )

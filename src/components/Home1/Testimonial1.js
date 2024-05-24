@@ -1,119 +1,61 @@
 import React from 'react'
-import { StaticImage } from 'gatsby-plugin-image'
-import { Navigation, Pagination, Scrollbar, A11y, } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 export default function Testimonial1() {
-    const testimonial = [
-        {
-            message: "Matie boy it&#39;s your round amongst bodge vagabond absolutely bladdered crikey well off his nut have it, goal you mug loo don&#39;t super.",
-            img: (
-                <StaticImage
-                    src="/img/testimonial/test1.jpg"
-                    alt=""
-                    layout="fixed"
-                    width={63}
-                    height={61}
-                />
-            ),
-            name: "Hilary Ouse",
-            designation: "Ui/Ux Designer"
-        },
-        {
-            message: "Matie boy it&#39;s your round amongst bodge vagabond absolutely bladdered crikey well off his nut have it, goal you mug loo don&#39;t super.",
-            img: (
-                <StaticImage
-                    src="/img/testimonial/test2.jpg"
-                    layout="fixed"
-                    alt=""
-                    width={63}
-                    height={61}
-                />
-            ),
-            name: "Hilary Ouse",
-            designation: "Ui/Ux Designer"
-        },
-        {
-            message: "Matie boy it&#39;s your round amongst bodge vagabond absolutely bladdered crikey well off his nut have it, goal you mug loo don&#39;t super.",
-            img: (
-                <StaticImage
-                    src="/img/testimonial/test3.jpg"
-                    layout="fixed"
-                    alt=""
-                    width={63}
-                    height={61}
-                />
-            ),
-            name: "Hilary Ouse",
-            designation: "Ui/Ux Designer"
-        }
-    ]
     return (
         <>
             {/* <!-- TESTIMONIAL START  --> */}
-            <div className="testimonial-area  bg1 pt-110">
+            <div className="testimonial-area bg1 pt-110 pb-200">
                 <div className="container">
                     <div className="row">
-                        <div className="col-xl-12">
+                        <div className="col-xl-12 pb-50">
                             <div className="section-wrapper">
-                                <h2 className="section-title">What you can expect or professional Smile agents to acheive.</h2>
+                                <h2 className="section-title">Frequently Asked Questions</h2>
                             </div>
                         </div>
                     </div>
-                     <Swiper
-                            // install Swiper modules
-                            modules={[Navigation, Pagination, Scrollbar, A11y,]}
-                            spaceBetween={20}
-                            slidesPerView={1}
-                            autoplaydisableoninteraction={"false"}
-                            loop={true}
-                            className="tp-dot-style"
-                            pagination={{ clickable: true }}
-                            breakpoints={{
-
-                                // when window width is >= 768px
-                                768: {
-                                    slidesPerView: 2,
-                                },
-                                992: {
-                                    // when window width is >= 992px
-                                    slidesPerView: 3,
-                                }
-                            }}
-                        // navigation={{ clickable: true }}
-                        // scrollbar={{ draggable: true }}
-                        // onSwiper={(swiper) => console.log(swiper)}
-                        // onSlideChange={() => console.log('slide change')}
-                        >
-                            {testimonial.map((item, i) => (
-                                <SwiperSlide key={i}>
-                                        <div className="testimonial-item pt-55">
-                                            <div className="item">
-                                                <p>{item.message}</p>
-                                                <div className="clients_meta">
-                                                    <div className="clients_image">
-                                                        {item.img}
-                                                    </div>
-                                                    <div className="clients_info">
-                                                        <h4>{item.name}</h4>
-                                                        <span>{item.designation}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                </SwiperSlide>
-                            ))}
-
-                        </Swiper>                        
+                    <div className="row">
+                        <div className="accordion" id="accordionExample">
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="headingOne">
+                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Question #1
+                                </button>
+                                </h2>
+                                <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classNamees that we use to style each element. These classNamees control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                                </div>
+                            </div>
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="headingTwo">
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Question #2
+                                </button>
+                                </h2>
+                                <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classNamees that we use to style each element. These classNamees control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                                </div>
+                            </div>
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="headingThree">
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Question #3
+                                </button>
+                                </h2>
+                                <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classNamees that we use to style each element. These classNamees control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
                 </div>
             </div>
             {/* <!-- TESTIMONIAL END --> */}
-
         </>
     )
 }

@@ -14,46 +14,52 @@ export default function AppDetails1() {
                         </div>
                         <div className="row">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <div className="feature3">
-                                    <div className="feature3__image">
-                                        <i className="far fa-phone-laptop" style={{bottom:'10px', position: 'relative'}}></i>
+                                <div className="featurebox2 featurebox3 mb-30" style={{paddingLeft: "35px"}}>
+                                    <div className="featurebox__img">
+                                        <i className="far fa-phone-laptop"></i>
                                     </div>
-                                    <div className="feature3__content">
-                                        <h4 className="content_title">Mobile & Tablet friendly website</h4>
-                                        <p>The little rotter bevvy I gormless <br/> mush golly gosh cras.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <div className="feature3 pl-40">
-                                    <div className="feature3__image febg1">
-                                    <i className="far fa-calendar-check" style={{bottom:'10px', position: 'relative'}}></i>
-                                    </div>
-                                    <div className="feature3__content">
-                                        <h4 className="content_title">Manage bookings anywhere</h4>
-                                        <p>The little rotter bevvy I gormless <br/> mush golly gosh cras.</p>
+                                    <div className="featurebox2__content">
+                                        <h3 className="fea-title">Mobile & Tablet friendly website</h3>
+                                        <p className="text-start">The little rotter bevvy mush cras<br/> gormless I lost the plot
+                                            bender<br/> wind.</p>
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <div className="feature3">
-                                    <div className="feature3__image febg2">
-                                        <i className="far fa-smile" style={{bottom:'10px', position: 'relative'}}></i>
+                                <div className="featurebox2 featurebox3 mb-30" style={{paddingLeft: "35px"}}>
+                                    <div className="featurebox__img">
+                                        <i className="far fa-calendar-check"></i>
                                     </div>
-                                    <div className="feature3__content">
-                                        <h4 className="content_title">Smiles Guaranteed</h4>
-                                        <p>The little rotter bevvy I gormless mush golly gosh cras.</p>
+                                    <div className="featurebox2__content">
+                                        <h3 className="fea-title">Manage bookings anywhere</h3>
+                                        <p className="text-start">The little rotter bevvy mush cras<br/> gormless I lost the plot
+                                            bender<br/> wind.</p>
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <div className="feature3 pl-40">
-                                    <div className="feature3__image febg3">
-                                        <i className="far fa-sack-dollar" style={{bottom:'10px', position: 'relative'}}></i>
+                                <div className="featurebox2 featurebox3 mb-30" style={{paddingLeft: "35px"}}>
+                                    <div className="featurebox__img">
+                                        <i className="far fa-smile"></i>
                                     </div>
-                                    <div className="feature3__content">
-                                        <h4 className="content_title">Low Risk, High Satisfaction</h4>
-                                        <p>The little rotter bevvy I gormless mush golly gosh cras.</p>
+                                    <div className="featurebox2__content">
+                                        <h3 className="fea-title">Smiles Guaranteed</h3>
+                                        <p className="text-start">The little rotter bevvy mush cras<br/> gormless I lost the plot
+                                            bender<br/> wind.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <div className="featurebox2 featurebox3 mb-30" style={{paddingLeft: "35px"}}>
+                                    <div className="featurebox__img">
+                                        <i className="far fa-sack-dollar"></i>
+                                    </div>
+                                    <div className="featurebox2__content">
+                                        <h3 className="fea-title">Low Risk, High Satisfaction</h3>
+                                        <p className="text-start">The little rotter bevvy mush cras<br/> gormless I lost the plot
+                                            bender<br/> wind.</p>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +67,7 @@ export default function AppDetails1() {
                     </div>
                     <div
                         className="col-xl-5 col-lg-6 col-lg-6 col-md-12 d-md-none d-lg-block d-sm-none d-md-block d-none d-sm-block">
-                        <div className="details_image wow zoomIn" data-wow-delay=".3s"
+                        <div className="details_image wow zoomIn mt-50" data-wow-delay=".3s"
                             style={{"visibility":"visible","animationDelay":"0.2s","animationName":"zoomIn"}}>
                             <img src="/img/fetures/mockup.png" alt="blogshape" />
                         </div>
