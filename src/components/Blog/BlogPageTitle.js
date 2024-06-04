@@ -14,7 +14,7 @@ export default function BlogPageTitle() {
                                 <h2 className="page_title" style={{color: "#eca869"}}>Our Blog </h2>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb">
-                                        <li className="breadcrumb-item"><Link href="/"><a>Home - Grid</a></Link></li>
+                                        <li className="breadcrumb-item"><Link to="/">Posts</Link></li>
                                     </ol>
                                 </nav>
                             </div>
