@@ -44,7 +44,7 @@ const ContactForm = () => {
     };
   }, []);
 
-  return <div>Contact Form will be rendered here.</div>;
+  return <div></div>;
 };
 
 export default ContactForm;

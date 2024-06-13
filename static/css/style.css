@@ -30,6 +30,7 @@ Version: 1.0
 15. page
 16. pricing
 17. login
+18. Hero Section
 
 -----------------------------------------------------------------------------------*/
 /*!
@@ -37,10 +38,13 @@ Version: 1.0
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+ 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700|Rubik:400,500,700");
+*/
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300..700&display=swap');
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -115,15 +119,6 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
-hr {
-  margin: 1rem 0;
-  color: inherit;
-  background-color: currentColor;
-  border: 0;
-  opacity: 0.25; }
-
-hr:not([size]) {
-  height: 1px; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   margin-top: 0;
@@ -7853,8 +7848,8 @@ textarea.form-control-lg {
 ==========================================
 */
 body {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
+  font-family: 'Barlow';
+  font-weight: 500;
   font-style: normal;
   color: #565c64; }
 
@@ -7908,7 +7903,7 @@ button:focus, input:focus, input:focus, textarea, textarea:focus {
   text-transform: capitalize; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Teko", sans-serif;
   font-weight: normal;
   color: #eca869;
   margin-top: 0px;
@@ -7953,7 +7948,7 @@ ul {
   padding: 0px; }
 
 li {
-  list-style: none; }
+  list-style: disc; }
 
 p {
   font-size: 16px;
@@ -9642,7 +9637,7 @@ HOME PAGE 2 HEADER DESIGN
   font-size: 50px;
   font-weight: 700;
   color: #fff;
-  font-family: poppins;
+  font-family: Teko;
   line-height: 60px;
   padding-bottom: 10px; }
   @media (max-width: 767px) {
@@ -9738,7 +9733,7 @@ HOME PAGE 2 HEADER DESIGN
   top: 206px; }
 
 .download_content .section-title {
-  font-size: 36px; }
+  font-size: 2rem; }
 
 .h2_shape4 {
   position: absolute;
@@ -10480,7 +10475,11 @@ HOME PAGE 3 TESTIMONIAL DESIGN
       padding-left: 14px; } }
 
 .clients_image img {
-  max-width: inherit; }
+  width: 32px;
+  height: 32px;
+  border-radius: 50px;
+  margin-bottom: 10px;  
+}
 
 .testimonial-active .col-xl-4 {
   padding: 0 15px; }
@@ -10507,7 +10506,7 @@ HOME PAGE 1 CALL TO ACTION DESIGN
   .try_box h2, .try_box .h2 {
     font-size: 50px;
     font-weight: 700;
-    font-family: Nunito;
+    font-family: Teko;
     padding-bottom: 10px; }
     @media (max-width: 767px) {
       .try_box h2, .try_box .h2 {
@@ -15167,8 +15166,13 @@ HOME PAGE 2 FETURES DESIGN
   text-align: left; }
 
 .section-title {
-  font-size: 30px;
-  font-weight: 600;
+  font-weight: 500;
+  font-family: "Teko", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  color: #2A2B2E;
+  font-size: 50px;
+  text-align: center;
   padding-bottom: 3px;
   line-height: 1.2;
   -webkit-transition: all 0.3s linear 0s;
@@ -15228,18 +15232,27 @@ HOME PAGE 2 FETURES DESIGN
 .details_image.wow.zoomIn {
   text-align: center; }
 
+.featurebox2 h3 {
+  color: #2A2B2E;
+}
+
 .featurebox2 {
   box-shadow: 0px 3px 6px 0px rgba(21, 41, 62, 0.1);
   background: #fff;
   text-align: center;
-  padding: 45px 11px;
-  border-radius: 4px;
-  transition: .3s; }
+  padding: 20px 10px 10px 10px;
+  border-radius: 15px;
+  width: 408px;
+  height: 80px;
+  color: #2A2B2E;
+  transition: .3s;
+  cursor: pointer;
+ }
   .featurebox2:hover {
     box-shadow: 0px 20px 40px 0px rgba(21, 41, 62, 0.1);
     transition: .3s; }
   .featurebox2:hover a {
-    color: #3694f5; }
+    color: #2A2B2E; }
 
   .featurebox2__content p {
     line-height: 26px;
@@ -16703,13 +16716,13 @@ div.page__title-content h2, div.page__title-content .h2 {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid #19cb55;
+  border: 1px solid #B08BBB;
   opacity: 0;
   transition: 0.3s; }
 
 .swiper .swiper-pagination-bullet-active {
   position: relative;
-  background: #19cb55 !important; }
+  background: #B08BBB !important; }
 
 .swiper .swiper-pagination-bullet-active:focus {
   outline: none; }
@@ -16839,5 +16852,191 @@ div.page__title-content h2, div.page__title-content .h2 {
     -webkit-transform: scale(1, 1);
     opacity: 0; } }
  
+
+/*
+==========================================
+18. Hero Section
+==========================================
+*/
+.hero-section {
+  padding-top: 160px;
+
+}
+
+.hero-image img {
+  width: auto;
+  height: 600px;
+  border-radius: 10px;
+}
+
+.hero-content {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+.hero-content-conatiner {
+  margin-left: -152px;
+  margin-top: 90px;
+  width: 463px;
+  height: 389px;
+}
+
+.hero-content h2 {
+  color: #2A2B2E;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.hero-content .btn {
+  font-size: 1rem;
+  width: 100%;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.rating .stars {
+  margin-right: 10px;
+}
+
+/*
+==========================================
+18. Explore Services
+==========================================
+*/
+.service {
+  margin-bottom: 30px;
+}
+
+.service img {
+  border-radius: 10px;
+}
+
+.service video {
+  border-radius: 10px;
+}
+
+.service .descriptor {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.service .descriptor h3 {
+  color: #2A2B2E;
+}
+
+.service .descriptor p {
+  color: #2A2B2E;
+}
+
+.service .descriptor a {
+  color: #B08BBB;
+  text-decoration: none;
+}
+
+.swiper-pagination {
+  margin-top: 100px;
+}
+
+.center-image {
+  border-radius: 15px;
+  width: 1271px;
+  height: 416px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 30%;
+  background-image: url('/img/p1.png');
+}
+
+.center-image-2 {
+  border-radius: 15px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 30%;
+  background-image: url('/img/p2.png');
+  height: 100%;
+}
+
+.centered-text {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.feature-box-holder {
+  width: 100%;
+  height: 240px;
+  border-radius: 15px;
+  overflow: hidden; 
+  position: relative; 
+}
+
+.feature-box-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  height: auto; 
+  width: 100%;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.center-text h1 {
+  color: #2A2B2E;
+  text-align: center;
+}
+
+.center-text a {
+  text-align: center;
+  color: #B08BBB;
+}
+
+
+.mega-slider-item img {
+  border-radius: 15px;
+}
+
+.mega-slider-item h1 {
+  margin-top: -61px;
+  color: white;
+  margin-left: 13px;
+}
+
+.mega-slider-item ul {
+  margin-top: 40px;
+  margin-left: 33px;
+}
+
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #B08BBB;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.toggle-btn:hover {
+  text-decoration: none;
+}
 
 /*# sourceMappingURL=style.css.map */

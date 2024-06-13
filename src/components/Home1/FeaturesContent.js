@@ -1,7 +1,7 @@
 import React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import Video from './Video'
-import { Link } from 'gatsby'
+import { Link } from "gatsby";
 
 export default function FeaturesContent() {
     const placeholderVideo = useStaticQuery(graphql`
@@ -20,37 +20,32 @@ export default function FeaturesContent() {
         <div className="homefeture_2">
             <div className="container">
                 <div className="row">
-                    <div className="col-xl-6 col-lg-6 col-md-12">
-                        <div className="features pt-50 wow fadeInLeft" data-wow-delay=".3s"
+                    <div className="col-xl-12 col-lg-12 col-md-12">
+                        <div className="features wow fadeInLeft" data-wow-delay=".3s"
                             style={{"visibility":"visible","animationDelay":"0.2s","animationName":"fadeInLeft"}}>
-                            <div className="features__content mb-30">
-                                <h2 className="section-title">Revitalise Your Space, <br/> Premier Cleaning Services for Discerning Clients.
-                                </h2>
-                                <p>You mug dropped a clanger barmy David brown <br/>bread bleeding crikey say chimney pot
-                                    me old <br/>mucker bugger super.</p>
-                                    
-                            </div>
+                            <h2 className="section-title">Transform Your Home with Smile Cleaning</h2>
                         </div>
-                        <Link to="/login" className="btn btn-primary">Book Now</Link>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-12">
+                </div>
+                <div className="row">
+                    <div className="col-xl-12 col-lg-12 col-md-12 centered-text">
+                        <span>
+                        Smile Cleaning, your premier destination for expert cleaning solutions. Our meticulous team ensures every corner of your home shines with freshness and cleanliness. Say goodbye to stress and hello to serenity. Book your service today!
+                        </span>
+                    </div>
+                    <div className="col-xl-12 col-lg-12 col-md-12 service">
                         <Video
                             videoSrcURL={placeholderVideo.wpMediaItem.mediaItemUrl}
                             videoTitle={"Revitalise Your Space"}
-                            />
+                        />
+                    </div>
+                    <div className="col-xl-12 col-lg-12 col-md-12 text-center mb-50">
+                        <Link to="/sign-up" className="btn btn-primary" style={{width: "217px"}}>Book Now</Link>
                     </div>
                 </div>
             </div>
         </div>
         {/* <!-- FETURES CONTENT END --> */}
-        {/* <!-- FETURES CONTENT 2nd Part START --> */}
-        <div className="app_image pt-150">
-            <div className="container">
-                
-            </div>
-        </div>
-        {/* <!-- FETURES CONTENT START 2nd Part --> */}
-            
         </>
     )
 }

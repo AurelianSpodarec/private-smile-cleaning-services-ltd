@@ -30,7 +30,7 @@ export default function Header() {
         <>
             {/* Header Start */}
             <header>
-                <div id="header-sticky" className="header-area transparent-header pt-10 pb-10" style={{background: "#EDE5F0"}}>
+                <div id="header-sticky" className="header-area transparent-header pt-10 pb-10">
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-xl-2 col-lg-2 col-md-7 col-10 d-flex align-items-center">
