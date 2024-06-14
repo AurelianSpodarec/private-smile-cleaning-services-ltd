@@ -12,7 +12,7 @@ module.exports = {
     {
       resolve: `gatsby-source-wordpress`,
       options: {
-        url: `http://staging.smile.cleaning/wp/graphql`,
+        url: `https://staging.smile.cleaning/wp/graphql`,
       },
       schema: {
         timeout: 30000,
