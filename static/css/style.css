@@ -7948,7 +7948,7 @@ ul {
   padding: 0px; }
 
 li {
-  list-style: disc; }
+  list-style: none; }
 
 p {
   font-size: 16px;
@@ -17024,6 +17024,10 @@ div.page__title-content h2, div.page__title-content .h2 {
   margin-left: 33px;
 }
 
+.mega-slider-item li {
+  list-style: disc;
+  margin-left: 33px;
+}
 
 .toggle-btn {
   background: none;
