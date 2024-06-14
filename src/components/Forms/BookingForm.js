@@ -25,7 +25,7 @@ export default function BookingForm() {
                     <div className="row">
                         <div className="col-xl-12 col-lg-12 col-md-12">
                             <h1>This is the booking form</h1>
-                            {bookingForm.headings[0].label}
+                            
                         </div>
                     </div>
                 </div>
