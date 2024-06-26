@@ -1,6 +1,5 @@
 import React from "react"
 import { Link } from "gatsby"
-import {  getImage } from "gatsby-plugin-image"
 import Img from 'gatsby-image'
 
 export default function BlogEntry({ data }) {

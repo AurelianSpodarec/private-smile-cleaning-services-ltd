@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 export default function TestimonialTwo() {
-    const testimonial = [
+    /*const testimonial = [
         {
             img: (
                 <StaticImage
@@ -36,7 +36,8 @@ export default function TestimonialTwo() {
             name:"Nathaneal Down",
             designation:"UI/UX Designer"
         },
-    ];
+    ];*/    
+    const testimonial = [];
     return (
         <>
             {/* <!-- === HOME-2 TESTIMONIAL AREA START  === --> */}

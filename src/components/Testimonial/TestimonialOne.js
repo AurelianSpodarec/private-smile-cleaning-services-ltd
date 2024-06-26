@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 export default function TestimonialOne() {
-    const testimonial = [
+    /*const testimonial = [
         {
             message: "Matie boy it&#39;s your round amongst bodge vagabond absolutely bladdered crikey well off his nut have it, goal you mug loo don&#39;t super.",
             img: (
@@ -49,7 +49,8 @@ export default function TestimonialOne() {
             name: "Hilary Ouse",
             designation: "Ui/Ux Designer"
         }
-    ]
+    ]*/
+    const testimonial = [];
     return (
         <>
             {/* <!-- TESTIMONIAL START  --> */}

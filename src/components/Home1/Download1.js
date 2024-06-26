@@ -55,7 +55,7 @@ export default function Download1() {
         <>
         {/* <!-- DOWNLOAD START  --> */}
         <div className="download-area pb-40" style={{backgroundColor: "#FBD9BA"}}>
-            <div className="container">
+            <div className="container cont-area">
                 <div className="row mb-5">
                     <div className="col-xl-12 col-lg-12 col-md-10 col-sm-12">
                         <div className="download_content pl-105 pt-90 text-center">

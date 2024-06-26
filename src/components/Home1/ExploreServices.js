@@ -21,7 +21,7 @@ export default function ExploreServices() {
                 </div>
                 <div className="row">
                     <div className="col-xl-3 col-lg-3 col-md-6 service">
-                        <img src="/img/residential.png" />
+                        <img src="/img/residential.png" alt="Residential Cleaning" />
                         <div className="descriptor">
                             <h3>Residential Cleaning</h3>
                             <p>
@@ -31,7 +31,7 @@ export default function ExploreServices() {
                         </div>
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-6 service">
-                        <img src="/img/commercial.png" />
+                        <img src="/img/commercial.png" alt="Commercial Cleaning" />
                         <div className="descriptor">
                             <h3>Commercial Cleaning</h3>
                             <p>
@@ -41,7 +41,7 @@ export default function ExploreServices() {
                         </div>
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-6 service">
-                        <img src="/img/eot.png" />
+                        <img src="/img/eot.png" alt="End Of Tenancy Cleaning" />
                         <div className="descriptor">
                             <h3>End Of Tenancy Cleaning</h3>
                             <p>
@@ -51,7 +51,7 @@ export default function ExploreServices() {
                         </div>
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-6 service">
-                        <img src="/img/ironing-laundry.png" />
+                        <img src="/img/ironing-laundry.png" alt="Ironing and laundry cleaning" />
                         <div className="descriptor">
                             <h3>Ironging & Laundry</h3>
                             <p>

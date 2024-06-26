@@ -579,6 +579,7 @@ progress {
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-top: var(--bs-gutter-y); }
 
+
 .col {
   flex: 1 0 0%; }
 
@@ -657,6 +658,12 @@ progress {
 .col-11 {
   flex: 0 0 auto;
   width: 91.66667%; }
+
+.coll-11-ex{
+  flex: 0 0 auto;
+  width: 91.66667;
+  color: #ECA869;
+}
 
 .col-12 {
   flex: 0 0 auto;
@@ -1510,6 +1517,13 @@ progress {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch; }
 
+@media (min-width: 300px) and (max-width: 700px){
+  *{
+    margin: 0%;
+    padding: 0%;
+  }
+}
+
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     overflow-x: auto;
@@ -2181,27 +2195,78 @@ textarea.form-control-lg {
   border-color: #b08bbb; }
   .btn-primary:hover {
     color: #fff;
-    background-color: #0b5ed7;
-    border-color: #0a58ca; }
+    background-color: #b08bbb;
+    border-color: #b08bbb; }
   .btn-check:focus + .btn-primary, .btn-primary:focus {
     color: #fff;
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background-color: #b08bbb;
+    border-color: #b08bbb#b08bbb;
     box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5); }
   .btn-check:checked + .btn-primary,
   .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active,
   .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #0a58ca;
-    border-color: #0a53be; }
+    background-color: #b08bbb;
+    border-color: #b08bbb; }
     .btn-check:checked + .btn-primary:focus,
     .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus,
     .show > .btn-primary.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5); }
   .btn-primary:disabled, .btn-primary.disabled {
     color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd; }
+    background-color: #b08bbb;
+    border-color: #b08bbb; }
+
+
+
+  /* Media Queries */    /*AREGLAR ESTO DESAPARECE LA IMG*/
+  @media (max-width: 900px) {
+    .continer-conven .row.mb-50{
+      display: flex;
+      flex-direction: column;
+    }
+    .continer-conven .row.mb-50 .features-container,
+    .continer-conven .row.mb-50 .center-image-2{
+      width: 100%;
+    }
+    .center-image-2{
+      height: 300px;
+      margin-bottom: 20px;
+    }
+    .container-join .row.mb-50{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+@media (max-width: 767.98px) {
+  .homefeture_2 {
+    padding: 30px 15px;
+  }
+
+  .features .section-title {
+    font-size: 24px;
+  }
+
+  .centered-text {
+    font-size: 16px;
+  }
+
+  .responsive-button {
+    width: 300%;
+  }
+}
+
+
+@media (max-width: 767.98px){
+  .reponWhyChoose{
+    flex-direction: column;
+}
+
+.center-image-2 {
+  order: -1;
+}
+}
 
 .btn-secondary {
   color: #fff;
@@ -4256,12 +4321,40 @@ textarea.form-control-lg {
 
 .modal-title {
   margin-bottom: 0;
-  line-height: 1.5; }
+  line-height: 1.5; 
+  font-size: 2.3rem;
+  color: #000;
+}
 
 .modal-body {
   position: relative;
   flex: 1 1 auto;
   padding: 1rem; }
+
+.btn-modal{
+  display: block;
+  width: 100%;
+}
+
+.close {
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem -0.5rem auto;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #000;
+  text-shadow: none;
+  opacity: 0.5;
+  border: none;
+  background: transparent;
+}
+
+.close:hover {
+  color: #000;
+  text-decoration: none;
+  opacity: 0.75;
+}
+
+
 
 .modal-footer {
   display: flex;
@@ -9814,19 +9907,6 @@ HOME PAGE 3 HEADER DESIGN
 .footer_logo {
   position: relative; }
 
-.footer_logo:before {
-  position: absolute;
-  content: "";
-  background-image: url("../img/shape/dotshapes.png");
-  top: -41px;
-  left: 15px;
-  height: 50px;
-  width: 50px;
-  z-index: 2; }
-
-.footer_logo img {
-  position: relative;
-  z-index: 9; }
 
 .btn-outline3 {
   padding: 12px 48px;
@@ -10111,8 +10191,8 @@ HOME PAGE 1 TEAM DESIGN
 HOME PAGE 1 TESTIMONIAL DESIGN
 =============================
 */
-.testimonial-area.bg1 {
-  background: transparent; }
+/* .testimonial-area.bg1 {
+  background: transparent; } */
   @media (min-width: 768px) and (max-width: 991px) {
     .testimonial-area.bg1 {
       padding-top: 50px; } }
@@ -10138,6 +10218,11 @@ HOME PAGE 1 TESTIMONIAL DESIGN
     @media (min-width: 768px) and (max-width: 991px) {
       .testimonial-area p {
         font-size: 16px; } }
+    @media (min-width: 312px) and (max-width: 900px){
+      .testimonial-area .row{
+        flex-direction: column;
+      }
+    }
 
 .item {
   border-radius: 4px;
@@ -10241,12 +10326,12 @@ HOME PAGE 1 TESTIMONIAL DESIGN
 HOME PAGE 2 TESTIMONIAL DESIGN
 =============================
 */
-.testimonial-area {
-  background-image: linear-gradient(180deg, #00c2ee 1%, #3c8ff6 66%, #775bfd 100%); }
+/* .testimonial-area {
+  background-image: linear-gradient(180deg, #00c2ee 1%, #3c8ff6 66%, #775bfd 100%); }  */     /*This line change the color of the section Frecuently asked*/
   @media (max-width: 767px) {
     .testimonial-area {
       padding-top: 76px;
-      padding-bottom: 110px; } }
+     } }
   @media (min-width: 768px) and (max-width: 991px) {
     .testimonial-area {
       padding-top: 0;
@@ -10576,6 +10661,25 @@ HOME PAGE 1 APP DETAILS DESIGN
   padding-bottom: 5px;
   font-weight: 600;
   color: #132339; }
+
+  /* Media Queries */
+@media (max-width: 767.98px) {
+  .homefeture_2 {
+    padding: 30px 15px;
+  }
+
+  .features .section-title {
+    font-size: 24px;
+  }
+
+  .centered-text {
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
 
 @media (max-width: 767px) {
   .download-area.pt-50.mt-100 {
@@ -14819,9 +14923,7 @@ HOME PAGE 1 FOOTER DESIGN
 =============================
 */
 .footer-area {
-  background: #000;
-  padding-top: 210px;
-  margin-top: -130px; 
+  background: #2A2B2E;
   color: white}
   .footer-area li {
     margin-bottom: 10px; }
@@ -14833,7 +14935,7 @@ HOME PAGE 1 FOOTER DESIGN
         color: #19cb55; }
   .footer-area i {
     margin-right: 10px;
-    color: #19cb55; }
+    color: #ABABAB; }
   @media (min-width: 768px) and (max-width: 991px) {
     .footer-area {
       padding-top: 200px; } }
@@ -14872,9 +14974,6 @@ HOME PAGE 1 FOOTER DESIGN
     .link_heading.linkspecail {
       margin-left: 0; } }
 
-.footer_widget_design {
-  margin-bottom: 44px; }
-
 .link_heading {
   font-size: 18px;
   font-weight: 600;
@@ -14893,13 +14992,6 @@ HOME PAGE 1 FOOTER DESIGN
 .copyright_text p span {
   color: #19cb55; }
 
-.footer_social a {
-  padding-left: 22px; }
-  .footer_social a i {
-    color: #95a0ae; }
-  .footer_social a:hover {
-    color: #19cb55; }
-
 @media (min-width: 768px) and (max-width: 991px) {
   .copyright_text p {
     font-size: 14px; } }
@@ -14916,8 +15008,7 @@ HOME PAGE 1 FOOTER DESIGN
     -moz-transition: all 0.3s linear 0s;
     -ms-transition: all 0.3s linear 0s;
     -o-transition: all 0.3s linear 0s;
-    transition: all 0.3s linear 0s; }
-
+    transition: all 0.3s linear 0s; }    
 /*
 =============================
 HOME PAGE 2 FOOTER DESIGN
@@ -15296,6 +15387,14 @@ HOME PAGE 2 FETURES DESIGN
 HOME PAGE 3 FETURES DESIGN
 =============================
 */
+@media (min-width: 300px) and (max-width: 900px) {
+  .download-area .pl-105.pt-90{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  } }
+
 .featurebox3 {
   text-align: left;
   padding-left: 52px; }
@@ -15307,7 +15406,9 @@ HOME PAGE 3 FETURES DESIGN
     color: #6a727f; }
   @media (max-width: 767px) {
     .featurebox3 {
-      padding-left: 24px; } }
+      padding-left: 24px; padding: 5%; } }
+
+
 
 .fea_link3 {
   margin-top: 10px;
@@ -15431,7 +15532,7 @@ HOME PAGE 3 FETURES DESIGN
   -o-transition: all 0.3s linear 0s;
   transition: all 0.3s linear 0s; }
   .service__icon {
-    border-radius: 25px;
+    border-radius: 10px;
     background-color: white;
     box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.1);
     width: 70px;
@@ -15451,14 +15552,21 @@ HOME PAGE 3 FETURES DESIGN
   @media (max-width: 767px) {
     .service {
       margin-bottom: 50px;
-      padding: 0; } }
+      padding: 0; }
+    .responsive-button{
+      display: block;
+      width: 100%;
+    }
+    }
   @media only screen and (min-width: 576px) and (max-width: 767px) {
     .service {
       margin-bottom: 30px;
       border-radius: 6px;
       background-color: white;
       position: relative;
-      padding: 20px 60px; } }
+      padding: 20px 60px;
+    }
+  }
 
 .purches_heading {
   padding-bottom: 13px;
@@ -16865,8 +16973,14 @@ div.page__title-content h2, div.page__title-content .h2 {
 
 .hero-image img {
   width: auto;
-  height: 600px;
+  height: 100%;
   border-radius: 10px;
+}
+@media (max-width: 800px){
+  .hero-image{
+    width: 100vh;
+    height: 100vh;
+  }
 }
 
 .hero-content {
@@ -16954,8 +17068,8 @@ div.page__title-content h2, div.page__title-content .h2 {
 
 .center-image {
   border-radius: 15px;
-  width: 1271px;
-  height: 416px;
+  width: 100%;
+  padding-top: 32.75%;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 30%;
@@ -16969,10 +17083,38 @@ div.page__title-content h2, div.page__title-content .h2 {
   background-position: 50% 30%;
   background-image: url('/img/p2.png');
   height: 100%;
+  order: -1;
+}
+
+
+
+.center-image-3 {
+  border-radius: 15px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 30%;
+  background-image: url('/img/careers.png');
+  height: 100%;
+}
+
+.foto-modal {
+  width: 100%;
+  padding-top: 56.25%; /* Relación de aspecto 16:9 */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/img/popup.png');
+  border-radius: 15px;
+  margin-bottom: 1rem;
 }
 
 .centered-text {
   text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.joinWith {
   font-size: 1.2rem;
   margin-bottom: 40px;
 }
@@ -17041,6 +17183,39 @@ div.page__title-content h2, div.page__title-content .h2 {
 
 .toggle-btn:hover {
   text-decoration: none;
+}
+
+.footer_links {
+  display: inline-flex;
+}
+
+.footer_links li {
+  margin-right: 30px;
+}
+
+.social_links_footer {
+  display: inline;
+  margin-left: 30px;
+}
+
+.social_links_footer a {
+  text-decoration: none;
+}
+
+.greyCS {
+  color: #ABABAB;
+}
+
+.header-button {
+  width: 100px;
+  height: 40px;
+  font-size: 15px;
+}
+
+@media (max-width: 576px) {
+  .hide-on-mobile {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

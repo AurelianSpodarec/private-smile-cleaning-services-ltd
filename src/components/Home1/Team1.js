@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 export default function Team1() {
-    const team = [
+    /*const team = [
         {
             id: 1,
             img: (
@@ -47,7 +47,8 @@ export default function Team1() {
             name: "Rodney Artichoke",
             designation: "Software Developer"
         }
-    ];
+    ];*/
+    const team = [];
 
     return (
         <>

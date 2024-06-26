@@ -1,0 +1,39 @@
+.toggleSwitch {
+    display: flex;
+    align-items: center;
+    width: 60px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .toggleSwitchOn {
+    background-color: #b08bbb;
+  }
+  
+  .toggleThumb {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  
+  .toggleSwitchOn .toggleThumb {
+    transform: translateX(30px);
+  }
+  
+  .toggleLabel {
+    margin-left: 10px;
+    font-size: 1rem;
+    color: #fff;
+    user-select: none;
+  }
+  
+  .toggleSwitchOff .toggleLabel {
+    color: #000;
+  }
+  

@@ -1,36 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { getBookingForm } from '../../utils/launch27-client'
+import React, { useState } from 'react';
 
-export default function BookingForm() {
-   
-    const [bookingForm, setBookingForm] = useState([]);
+import Step1 from './Step1';
+import Step2 from './Step2';
+import Step3 from './Step3';
+import Step4 from './Step4';
+import Step5 from './Step5';
+import Step6 from './Step6';
 
-    const _getBookingForm = () => {
-        getBookingForm()
-            .then((res) => {
-                setBookingForm(res)
-            })
+import * as styles from './BookingForm.module.css'; 
+
+const steps = [Step1, Step2, Step3, Step4, Step5, Step6];
+
+export default function BookingForm({ onFinish }) {
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else if (onFinish) {
+      onFinish();
     }
+  };
 
-    useEffect(() => {
-        _getBookingForm();
-    }, []);
+  const StepComponent = steps[currentStep];
 
-
-    return (
-        <>
-            {/* <!-- BOOKING FORM  --> */}
-            <div className="app_slider app_slider_3 fix" style={{ "background": "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(237,229,240,1) 60%)"}}>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-xl-12 col-lg-12 col-md-12">
-                            <h1>This is the booking form</h1>
-                            
+  return (
+    <>
+        <div className='container pt-120 pb-120'>
+            <div className={styles.bookingForm}>
+                <StepComponent />
+                <div className="row">
+                    <div className="col">
+                        <div className="text-end mt-3">
+                            <button className="btn btn-primary" onClick={handleNextStep}>
+                                {currentStep < steps.length - 1 ? 'Continue' : 'Finish'}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* <!-- BOOKING FORM end  --> */}
-        </>
-    )
+        </div>
+    </>
+  );
 }

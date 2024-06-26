@@ -1,0 +1,143 @@
+h1, h2, h3 {
+    color: #2A2B2E;
+}
+
+.homeLayoutImg {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+}
+
+.spaceLeft {
+    margin-left: 10px;
+}
+
+.heroImage {
+    border-radius: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.checkboxContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+  
+.checkboxOption {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 48%;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+  
+.checkboxOption.selected {
+  border-color: #b08bbb;
+  background-color: #f9d98e;
+}
+  
+.checkboxInput {
+  margin-right: 10px;
+}
+  
+.checkboxLabel {
+  display: flex;
+  flex-direction: column;
+}
+  
+.checkboxLabelTitle {
+  font-weight: bold;
+  color: #2A2B2E;
+}
+  
+.checkboxLabelDescription {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.formContainer {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+}
+
+.inputLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.textInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 20px 0 10px;
+  color: #333;
+}
+
+.subTitle {
+  color: #b08bbb;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radioOption {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radioInput {
+  display: none;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.radioInput:checked + .radioLabel {
+  border-color: #b08bbb;
+  background-color: #f9d98e;
+}
+
+.radioLabelText {
+  margin-left: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.additionalDetail {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 10px;
+}

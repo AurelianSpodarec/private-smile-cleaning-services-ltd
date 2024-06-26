@@ -5,7 +5,7 @@ export default function Testimonial1() {
     return (
         <>
             {/* <!-- TESTIMONIAL START  --> */}
-            <div className="testimonial-area bg1 pt-110 pb-200">
+            <div className="testimonial-area bg1 pt-110 pb-40">
                 <div className="container">
                     <div className="row">
                         <div className="col-xl-12 pb-50">
@@ -36,10 +36,10 @@ export default function Testimonial1() {
                                     </h2>
                                     <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div className="accordion-body">
-                                    At Smile Cleaning, our cleaners are employed directly by us, not as independent contractors. We take pride in having our own team of fully trained and
-dedicated professionals. Our employees undergo thorough vetting processes and
-are covered by public liability insurance, ensuring both client and employee safety.
-We value our team members and invest in their development, offering competitive remuneration packages to reward their hard work. This approach fosters a motivated and loyal workforce dedicated to delivering unparalleled quality and reliability in our cleaning services. By employing our cleaners, we ensure superior service for our customers, setting us apart from the competition.
+                                        At Smile Cleaning, our cleaners are employed directly by us, not as independent contractors. We take pride in having our own team of fully trained and
+                                        dedicated professionals. Our employees undergo thorough vetting processes and
+                                        are covered by public liability insurance, ensuring both client and employee safety.
+                                        We value our team members and invest in their development, offering competitive remuneration packages to reward their hard work. This approach fosters a motivated and loyal workforce dedicated to delivering unparalleled quality and reliability in our cleaning services. By employing our cleaners, we ensure superior service for our customers, setting us apart from the competition.
                                     </div>
                                     </div>
                                 </div>

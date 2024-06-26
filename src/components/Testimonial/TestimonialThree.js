@@ -11,7 +11,7 @@ import 'swiper/css/scrollbar';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function TestimonialThree() {
-    const testimonial3 = [
+    /*const testimonial3 = [
         {
             img: (
                 <StaticImage
@@ -25,7 +25,8 @@ export default function TestimonialThree() {
             name: "Wisteria Ravenclaw",
             designation: "UI/UX Designer"
         }
-    ];
+    ];*/
+    const testimonial3 = [];
     return (
         <>
             {/* <!-- TESTIMONIAL AREA START --> */}

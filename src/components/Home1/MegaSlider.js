@@ -133,7 +133,7 @@ export default function MegaSlider() {
                             {slides.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div className='mega-slider-item'>
-                                        <img src={item.image} />
+                                        <img src={item.image} alt={item.title} />
                                         <h1>{item.title}</h1>
                                         <ul>
                                             {item.list.slice(0, showAll ? item.list.length : 5).map((listItem, i) => (

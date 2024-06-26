@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 export default function AppChoose2() {
-    const App = [
+    /*const App = [
         {
             img: (
                 <StaticImage
@@ -90,7 +90,9 @@ export default function AppChoose2() {
                 />
             ),
         }
-    ]
+    ]*/
+
+    const App = [];
     return (
         <>
             {/* <!-- === HOME-2 APP CHOOSE START === --> */}

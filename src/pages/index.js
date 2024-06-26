@@ -1,6 +1,5 @@
 import * as React from "react"
 
-import AppDetails1 from '../components/Home1/AppDetails1'
 import Download1 from '../components/Home1/Download1'
 import FeaturesContent from '../components/Home1/FeaturesContent'
 import Testimonial1 from '../components/Home1/Testimonial1'
@@ -11,6 +10,7 @@ import NewHeroSection from '../components/Home1/Hero'
 import ExploreServices from '../components/Home1/ExploreServices'
 import WhyChoose from "../components/Home1/WhyChoose"
 import MegaSlider from "../components/Home1/MegaSlider"
+import OurTeam from "../components/Team/OurTeam"
 
 const IndexPage = () => {
     return(
@@ -23,6 +23,7 @@ const IndexPage = () => {
                 <WhyChoose />
                 <Download1/>
                 <MegaSlider />
+                <OurTeam/>
                 <Testimonial1/>
                 <ContactForm/>
             </Layout1>

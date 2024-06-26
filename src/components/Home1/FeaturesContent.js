@@ -37,10 +37,11 @@ export default function FeaturesContent() {
                         <Video
                             videoSrcURL={placeholderVideo.wpMediaItem.mediaItemUrl}
                             videoTitle={"Revitalise Your Space"}
+                            className="video-2"
                         />
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 text-center mb-50">
-                        <Link to="/sign-up" className="btn btn-primary" style={{width: "217px"}}>Book Now</Link>
+                        <Link to="/sign-up" className="btn btn-primary responsive-button" >Book Now</Link>
                     </div>
                 </div>
             </div>

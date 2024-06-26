@@ -1,0 +1,38 @@
+.hoursSelectionContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .hourButton {
+    width: 50px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .hourButton.selected {
+    background-color: #b08bbb;
+    color: white;
+  }
+  
+  .hourButton.recommended {
+    background-color: #f9d98e;
+    color: black;
+  }
+  
+  .hoursContainer {
+    margin-bottom: 20px;
+  }
+  
+  .hoursTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
