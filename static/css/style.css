@@ -507,9 +507,15 @@ progress {
   .blockquote-footer::before {
     content: "\2014\00A0"; }
 
-.img-fluid {
+.img-fluid { 
   max-width: 100%;
   height: auto; }
+  @media (max-width: 767px){ /*Change the color of the logo*/
+    .img-color-fluid{
+      /* filter: invert(100%) brightness(200%); */
+      filter: invert(12%) sepia(69%) saturate(2584%) hue-rotate(199deg) brightness(101%) contrast(95%);
+    }
+  }
 
 .img-thumbnail {
   padding: 0.25rem;
@@ -9795,7 +9801,8 @@ HOME PAGE 2 HEADER DESIGN
       padding-top: 163px; } }
 
 .side-menu-icon i {
-  color: green; }
+  color: white;
+  margin-right: 15px; }
 
 .slider_2__content {
   padding-top: -40%;
@@ -9827,6 +9834,11 @@ HOME PAGE 2 HEADER DESIGN
 
 .download_content .section-title {
   font-size: 2rem; }
+  @media (max-width: 767px){
+    .download_content p{
+      color: #000;
+    }
+  }
 
 .h2_shape4 {
   position: absolute;
@@ -15333,7 +15345,7 @@ HOME PAGE 2 FETURES DESIGN
   text-align: center;
   padding: 20px 10px 10px 10px;
   border-radius: 15px;
-  width: 408px;
+  /* width: 408px; /*It gives conflict*/
   height: 80px;
   color: #2A2B2E;
   transition: .3s;
@@ -15349,7 +15361,7 @@ HOME PAGE 2 FETURES DESIGN
     line-height: 26px;
     font-size: 14px;
     color: #6a727f; }
-  @media only screen and (min-width: 576px) and (max-width: 767px) {
+  @media (max-width: 767px) {
     .featurebox2 {
       margin-bottom: 20px; } }
   @media (min-width: 768px) and (max-width: 991px) {
@@ -15562,10 +15574,11 @@ HOME PAGE 3 FETURES DESIGN
     .service {
       margin-bottom: 30px;
       border-radius: 6px;
-      background-color: white;
+      /* background-color: white; */
       position: relative;
       padding: 20px 60px;
     }
+
   }
 
 .purches_heading {
@@ -16961,6 +16974,11 @@ div.page__title-content h2, div.page__title-content .h2 {
     opacity: 0; } }
  
 
+      @media (min-width: 768px) and (max-width: 900px) {
+        .hero-section {
+          padding-top: 120px;
+        }}
+
 /*
 ==========================================
 18. Hero Section
@@ -16970,18 +16988,18 @@ div.page__title-content h2, div.page__title-content .h2 {
   padding-top: 160px;
 
 }
+/* @media (max-width: 767){
+  .hero-section{
+    
+  }
+} */
 
 .hero-image img {
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
   border-radius: 10px;
 }
-@media (max-width: 800px){
-  .hero-image{
-    width: 100vh;
-    height: 100vh;
-  }
-}
+
 
 .hero-content {
   background-color: #ffffff;
@@ -17023,8 +17041,63 @@ div.page__title-content h2, div.page__title-content .h2 {
   font-size: 1rem;
 }
 
+.label-code{
+  color: #2A2B2E;
+}
+
 .rating .stars {
   margin-right: 10px;
+}
+
+@media (max-width: 767px){
+  .hero-section{
+    padding-top: 0px; 
+  }
+  .hero-content-conatiner{
+    margin: 0;
+    width: 100%;
+    height: auto;
+    padding: 0 15px;
+  }
+  .hero-content{
+    padding: 30px;
+    background-color: #000;
+    margin-top: -40px;
+    border-radius: 0px;
+    box-shadow: none;
+  }
+  .hero-content h2, p, span{
+    color: white;
+  }
+  .label-code{
+    color: white;
+  }
+  .hero-image img{
+    order: -1;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 0px;
+    mask-image: linear-gradient(black 80%, transparent);
+  }
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+    border-radius: 10px;
+  }
+  /* .d-md-block {
+    display: block !important; } */
+}
+@media (max-width: 1459px){
+  .hero-content-conatiner{
+    margin: 0; 
+  }
 }
 
 /*

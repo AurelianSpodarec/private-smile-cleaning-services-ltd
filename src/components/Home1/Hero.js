@@ -44,7 +44,7 @@ export default function NewHeroSection() {
       <div className="hero-section">
         <div className="container">
           <div className="row">
-            <div className="col-xl-9 col-lg-9  col-md-9 ">
+            <div className="col-xl-9 col-lg-9 col-md-9 ">
               <div className="hero-image">
                 <img alt="Smile Cleaning" src="/img/home-hero.png" />
               </div>
@@ -54,28 +54,28 @@ export default function NewHeroSection() {
                 <h2>Professional Home Cleaning Services Near You</h2>
                 <p>Experience a sparkling clean home with our trusted, local cleaners who deliver exceptional results every time</p>
                 <form onSubmit={handleSubmit}>
-                    <div className="row">
-                        <div className="col">
-                          <label className='pb-2' htmlFor='zipcode' style={{color: "#2A2B2E"}}>Postcode</label>
-                          <input
-                              type="text"
-                              className="form-control form-control-lg"
-                              id="zipcode"
-                              placeholder="Enter your location or postcode"
-                              value={zipcode}
-                              onChange={handleZipcodeChange}
-                          />
-                        </div>
+                  <div className="row">
+                    <div className="col">
+                      <label className='pb-2 label-code' htmlFor='zipcode' >Postcode</label>
+                      <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      id="zipcode"
+                      placeholder="Enter your location or postcode"
+                      value={zipcode}
+                      onChange={handleZipcodeChange}
+                      />
                     </div>
-                    <div className="row pt-10">
-                        <div className="col">
-                          <button type="submit" className="btn btn-primary">Book Now</button>
-                        </div>
+                  </div>
+                  <div className="row pt-10">
+                    <div className="col">
+                      <button type="submit" className="btn btn-primary">Book Now</button>
                     </div>
+                  </div>
                 </form>
                 <div className="rating">
                   <span className="stars">⭐⭐⭐⭐⭐</span>
-                  <span className="customers">5,000+ Smiling Customers</span>
+                  <span className="customers span-star">5,000+ Smiling Customers</span>
                 </div>
               </div>
             </div>

@@ -39,7 +39,7 @@ export default function Header() {
                                         <Img
                                             fixed={data.wpMediaItem.localFile.childImageSharp.fixed}
                                             alt={data.wpMediaItem.altText}
-                                            className="img-fluid"
+                                            className="img-fluid img-color-fluid"
                                         />
                                     </Link>
                                 </div>
