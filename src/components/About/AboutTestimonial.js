@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigation, Pagination } from 'swiper';
+import { Navigation, Pagination, FreeMode } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
@@ -59,19 +59,22 @@ export default function AboutTestimonial() {
                         <p className='text-center'>Discover why our clients smile about our exceptional cleaning services</p>
                         <Swiper
                             // install Swiper modules
-                            modules={[Navigation, Pagination,]}
+                            modules={[Navigation, Pagination, FreeMode]}
                             spaceBetween={20}
                             slidesPerView={1}
                             autoplaydisableoninteraction={"false"}
                             loop={true}
+                            freeMode={true}
                             className="custom-nav"
                             pagination={{ clickable: true }}
                             breakpoints={{
                                 768: {
                                     slidesPerView: 2,
+                                    freeMode: false
                                 },
                                 992: {
                                     slidesPerView: 3,
+                                    freeMode: false
                                 }
                             }}
                         >

@@ -10674,6 +10674,10 @@ HOME PAGE 1 APP DETAILS DESIGN
   font-weight: 600;
   color: #132339; }
 
+.style-btn{
+  width: 217px;
+}
+
   /* Media Queries */
 @media (max-width: 767.98px) {
   .homefeture_2 {
@@ -10690,6 +10694,12 @@ HOME PAGE 1 APP DETAILS DESIGN
 
   .btn-primary {
     width: 100%;
+  }
+
+  .style-btn{
+    width: 516px;
+    position: absolute;
+    right: 10px;
   }
 }
 
@@ -10834,8 +10844,8 @@ HOME PAGE 1 DOWNLOAD AREA DESIGN
   @media (max-width: 767px) {
     .download_content {
       padding-left: 0;
-      padding-top: 5px;
-      padding-bottom: 30px; } }
+      padding-top: 45px;
+      padding-bottom: 5px; } }
   @media only screen and (min-width: 576px) and (max-width: 767px) {
     .download_content {
       padding-left: 0px; } }

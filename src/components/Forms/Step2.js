@@ -1,27 +1,45 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import ToggleSwitch from './ToggleSwitch';
+import * as styles from './BookingForm.module.css';
+import { serviceImageMap } from './serviceImageMap';
 
-import * as styles from './BookingForm.module.css'; 
+export default function Step2({ formData, onStepDataChange }) {
+    const initialState = formData?.step2 || {};
+    const [toggleStates, setToggleStates] = useState(initialState);
+    const [extras, setExtras] = useState([]);
 
-export default function Step2() {
+    useEffect(() => {
+        fetch('https://smile.launch27.com/latest/booking/services')
+            .then(response => response.json())
+            .then(data => {
+                const firstServiceWithExtras = data.find(service => service.extras.length > 0);
+                if (firstServiceWithExtras) {
+                    setExtras(firstServiceWithExtras.extras);
+                }
+            })
+            .catch(error => console.error('Error fetching extras:', error));
+    }, []);
 
-    const [toggleStates, setToggleStates] = useState({
-      deep_clean: false,
-      kitchen_area: false,
-      inside_fridge: false,
-      oven_cleaning: false,
-      inside_windows: false
-    });
-    
+    useEffect(() => {
+        // Sync component state with formData when the component mounts or formData changes
+        if (formData?.step2) {
+            setToggleStates(formData.step2);
+        }
+    }, [formData]);
+
+    useEffect(() => {
+        // Update the parent component with the current state of the toggles
+        onStepDataChange({ step2: toggleStates });
+    }, [toggleStates, onStepDataChange]);
+
     const handleToggle = (key, value) => {
-      setToggleStates((prevStates) => ({
-        ...prevStates,
-        [key]: value,
-      }));
+        setToggleStates((prevStates) => ({
+            ...prevStates,
+            [key]: value,
+        }));
     };
 
-    return(
+    return (
         <>
             <div className="row">
                 <div className="col">
@@ -31,71 +49,41 @@ export default function Step2() {
             </div>
             <div className="row">
                 <div className="col-9">
-                    <div className="row pb-15">
-                        <div className="col">
-                            <img className={styles.homeLayoutImg} src="/img/booking/bedroom.png" alt='do you need deep clean?' />
-                            <span className={styles.spaceLeft}><b>Deep Clean</b></span>
+                    {extras.map(extra => (
+                        <div key={extra.id} className="row pb-15">
+                            <div className="col">
+                                <img
+                                    className={styles.homeLayoutImg}
+                                    src={serviceImageMap[extra.name] || '/img/booking/default.png'}
+                                    alt={`do you need ${extra.name.toLowerCase()}?`}
+                                />
+                                <span className={styles.spaceLeft}><b>{extra.name}</b></span>
+                            </div>
+                            <div className="col">
+                                <ToggleSwitch
+                                    initialValue={toggleStates[extra.name] || false}
+                                    onToggle={(value) => handleToggle(extra.name, value)}
+                                />
+                            </div>
                         </div>
-                        <div className="col">
-                            <ToggleSwitch
-                                initialValue={toggleStates.deep_clean}
-                                onToggle={(value) => handleToggle('deep_clean', value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="row pb-15">
-                        <div className="col">
-                            <img className={styles.homeLayoutImg} src="/img/booking/bedroom.png" alt='do you need kitchen area?' />
-                            <span className={styles.spaceLeft}><b>Kitchen Area</b></span>
-                        </div>
-                        <div className="col">
-                            <ToggleSwitch
-                                initialValue={toggleStates.kitchen_area}
-                                onToggle={(value) => handleToggle('kitchen_area', value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="row pb-15">
-                        <div className="col">
-                            <img className={styles.homeLayoutImg} src="/img/booking/bedroom.png" alt='do you need inside of fridge cleaning?' />
-                            <span className={styles.spaceLeft}><b>Inside Of Fridge</b></span>
-                        </div>
-                        <div className="col">
-                            <ToggleSwitch
-                                initialValue={toggleStates.inside_fridge}
-                                onToggle={(value) => handleToggle('inside_fridge', value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="row pb-15">
-                        <div className="col">
-                            <img className={styles.homeLayoutImg} src="/img/booking/bedroom.png" alt='do you need oven cleaning?' />
-                            <span className={styles.spaceLeft}><b>Oven Cleaning</b></span>
-                        </div>
-                        <div className="col">
-                            <ToggleSwitch
-                                initialValue={toggleStates.oven_cleaning}
-                                onToggle={(value) => handleToggle('oven_cleaning', value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="row pb-15">
-                        <div className="col">
-                            <img className={styles.homeLayoutImg} src="/img/booking/bedroom.png" alt='do you need windows cleaning?' />
-                            <span className={styles.spaceLeft}><b>Inside of windows</b></span>
-                        </div>
-                        <div className="col">
-                            <ToggleSwitch
-                                initialValue={toggleStates.inside_windows}
-                                onToggle={(value) => handleToggle('inside_windows', value)}
-                            />
-                        </div>
-                    </div>
+                    ))}
                 </div>
                 <div className="col-3">
-                    summary
+                    <h3>Summary</h3>
+                    {/* Display summary from step 1 */}
+                    {formData?.bedrooms !== undefined && (
+                        <p>Bedrooms: {formData.bedrooms}</p>
+                    )}
+                    {formData?.pricingParameters && Object.keys(formData.pricingParameters).map(param => (
+                        <p key={param}>{param}: {formData.pricingParameters[param]}</p>
+                    ))}
+                    <h3>Extras</h3>
+                    {/* Display summary from step 2 */}
+                    {Object.entries(toggleStates).map(([key, value]) => (
+                        value ? <p key={key}>{key.replace('_', ' ')}</p> : null
+                    ))}
                 </div>
             </div>
         </>
-    )
+    );
 }

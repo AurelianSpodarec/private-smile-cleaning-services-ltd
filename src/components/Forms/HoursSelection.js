@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import * as styles from './HoursSelection.module.css';
 
 const hours = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
-const recommendedHour = 4; // Example recommended hour
 
-const HoursSelection = ({ onSelect }) => {
+const HoursSelection = ({ onSelect, disabledOptions = [], recommendedHour }) => {
   const [selectedHour, setSelectedHour] = useState(null);
 
   const handleHourClick = (hour) => {
-    setSelectedHour(hour);
-    if (onSelect) {
-      onSelect(hour);
+    if (!disabledOptions.includes(hour)) {
+      setSelectedHour(hour);
+      if (onSelect) {
+        onSelect(hour);
+      }
     }
   };
 
@@ -23,6 +24,7 @@ const HoursSelection = ({ onSelect }) => {
             key={hour}
             className={`${styles.hourButton} ${hour === selectedHour ? styles.selected : ''} ${hour === recommendedHour ? styles.recommended : ''}`}
             onClick={() => handleHourClick(hour)}
+            style={{ pointerEvents: disabledOptions.includes(hour) ? 'none' : 'auto', opacity: disabledOptions.includes(hour) ? 0.5 : 1 }}
           >
             {hour}
           </div>
