@@ -5,9 +5,11 @@ const ConfirmAndPay = () => {
     const [formData, setFormData] = useState(null);
 
     useEffect(() => {
-        const data = localStorage.getItem('bookingFormData');
-        if (data) {
-            setFormData(JSON.parse(data));
+        if (typeof window !== 'undefined') {
+            const data = localStorage.getItem('bookingFormData');
+            if (data) {
+              setFormData(JSON.parse(data));
+            }
         }
     }, []);
 

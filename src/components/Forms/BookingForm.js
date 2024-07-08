@@ -13,8 +13,11 @@ const steps = [Step1, Step2, Step3, Step4, Step5, Step6];
 export default function BookingForm({ onFinish }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(() => {
-    const savedData = localStorage.getItem('bookingFormData');
-    return savedData ? JSON.parse(savedData) : {};
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem('bookingFormData');
+      return savedData ? JSON.parse(savedData) : {};
+    }
+    return {};
   });
 
   const handleNextStep = () => {
