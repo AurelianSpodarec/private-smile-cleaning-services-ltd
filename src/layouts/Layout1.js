@@ -8,10 +8,8 @@ export default function Layout1({ children, className }) {
             <Header style1/>
             <main>
                 {children}
-                <Footer className={className} />
             </main>
-
-
+            <Footer className={className} />
         </>
     )
 }

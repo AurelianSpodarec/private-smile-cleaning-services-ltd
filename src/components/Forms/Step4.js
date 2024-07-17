@@ -57,7 +57,7 @@ export default function Step4({ formData, onStepDataChange }) {
                         </div>
                     </div>
                 </div>
-                <div className="col-3">
+                <div className={styles.billForm}>
                     <h3>Summary</h3>
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>

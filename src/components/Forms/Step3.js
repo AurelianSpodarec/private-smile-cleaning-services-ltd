@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HoursSelection from './HoursSelection';
+import * as styles from './HoursSelection.module.css'
 
 const hours = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
 
@@ -87,7 +88,7 @@ export default function Step3({ formData, onStepDataChange }) {
                     />
                     <p>Selected hour: {selectedHour}</p>
                 </div>
-                <div className="col-3">
+                <div className={styles.billFormStep3}>
                     <h3>Summary</h3>
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>

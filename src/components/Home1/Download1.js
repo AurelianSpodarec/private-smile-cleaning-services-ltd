@@ -67,21 +67,21 @@ export default function Download1() {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12">
+                    <div className="col-xl-4 col-lg-4  col-sm-12">
                         <div className="featurebox2 featurebox3 mb-30" onClick={() => handleBoxClick(0)}>
                             <div>
                                 <h3><i className="fal fa-watch"></i>  &nbsp;1 Hour Cleaning</h3>
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12" onClick={() => handleBoxClick(1)}>
+                    <div className="col-xl-4 col-lg-4  col-sm-12" onClick={() => handleBoxClick(1)}>
                         <div className="featurebox2 featurebox3 mb-30">
                             <div>
                                 <h3><i className="far fa-clock"></i>  &nbsp;2 Hours Cleaning</h3>
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12" onClick={() => handleBoxClick(2)}>
+                    <div className="col-xl-4 col-lg-4  col-sm-12" onClick={() => handleBoxClick(2)}>
                         <div className="featurebox2 featurebox3 mb-30">
                             <div>
                                 <h3><i className="far fa-clock"></i>  &nbsp;3 Hours Cleaning</h3>
@@ -92,21 +92,21 @@ export default function Download1() {
                 </div>
 
                 <div className="row">
-                    <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12" onClick={() => handleBoxClick(3)}>
+                    <div className="col-xl-4 col-lg-4  col-sm-12" onClick={() => handleBoxClick(3)}>
                         <div className="featurebox2 featurebox3">
                             <div>
                                 <h3><i className="far fa-hand-sparkles"></i> For a Deep Clean</h3>
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12" onClick={() => handleBoxClick(4)}>
+                    <div className="col-xl-4 col-lg-4  col-sm-12" onClick={() => handleBoxClick(4)}>
                         <div className="featurebox2 featurebox3">
                             <div>
                                 <h3><i className="far fa-house-leave"></i> For End-of-tenancy</h3>
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-8 col-sm-12" onClick={() => handleBoxClick(5)}>
+                    <div className="col-xl-4 col-lg-4  col-sm-12" onClick={() => handleBoxClick(5)}>
                         <div className="featurebox2 featurebox3">
                             <div>
                                 <h3><i className="far fa-washer"></i> For Ironing & Laundary</h3>
@@ -118,7 +118,7 @@ export default function Download1() {
 
                 <div className='row'>
                     <div className="col-xl-12 col-lg-12 col-md-12 mt-30 service">
-                        <Link to="/sign-up" className="btn btn-primary style-btn" >Book Now</Link>
+                        <Link to="/sign-up" className="btn btn-primary btn-explore">Book Now</Link>
                     </div>
                 </div>
             </div>

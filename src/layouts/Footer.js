@@ -36,7 +36,7 @@ export default function Footer() {
                   </Link>
                 </div>
               </div>
-              <div className="col-xl-2 col-lg-2 col-sm-6">
+              <div className="col-xl-2 col-lg-2 col-sm-6 foot-area-2">
                 <div className="link_heading">
                   <h3 className="link_heading">Company</h3>
                 </div>
@@ -49,7 +49,7 @@ export default function Footer() {
                   </ul>
                 </div>
               </div>
-              <div className="col-xl-2 col-lg-2 col-sm-6">
+              <div className="col-xl-2 col-lg-2 col-sm-6 foot-area-2">
                 <div className="link_heading">
                   <h3 className="link_heading">Services</h3>
                 </div>
@@ -67,7 +67,7 @@ export default function Footer() {
           <div className="footer_bottom pt-60 pb-15">
             <div className="container tp-border">
               <div className="row align-items-center">
-                <div className="col-xl-6 col-lg-6 col-md-6">
+                <div className="col-xl-6 col-lg-6"> {/*Here there was a col-md-6 / breakpoint 992 to 768*/}
                   <div className="copyright_text pt-20">
                     <span className="greyCS hide-on-mobile">@ 2024 All Copyright Reserved </span>
                     <span>  info@smile.cleaning</span>
@@ -78,14 +78,16 @@ export default function Footer() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-md-6">
+                <div className='tp-border-2'></div>
+                 <div className="col-xl-6 col-lg-6"> {/*Here there was a col-md-6  */}
                   <div className="f-right pt-20">
-                      <ul className="footer_links">
-                        <li><Link to="/page/terms-of-use"> Terms Of Use </Link></li>
-                        <li><Link to="/page/privacy-policy" className="itsupport">Privacy Policy</Link></li>
-                        <li><Link to="/page/cookies-policy"> Cookies Policy </Link></li>
-                        <li><Link to="/page/site-map"> Site Map</Link></li>
+                    <ul className="footer_links">
+                      <li><Link to="/page/terms-of-use"> Terms Of Use </Link></li>
+                      <li><Link to="/page/privacy-policy" className="itsupport">Privacy Policy</Link></li>
+                      <li><Link to="/page/cookies-policy"> Cookies Policy </Link></li>
+                      <li><Link to="/page/site-map"> Site Map</Link></li>
                     </ul>
+                    <span className='greyCS display-min'>@ 2024 All Copyright Reserved</span>
                   </div>
                 </div>
               </div>

@@ -15,14 +15,14 @@ export default function WhyChoose() {
                         <div className='center-image'></div>
                     </div>
                 </div>
-                <div className='row pb-20'>
-                    <div className='col pt-40'>
+                <div className='row pb-20 mar-exp'>
+                    <div className='col pt-50 left-expe'>
                         <div className='row'>
                             <div className='col'>
                                <i className="fal fa-star"></i>
                             </div>
                             <div className='col-11' style={{paddingLeft:"0px"}}>
-                                <b> Professional and Trusted Cleaners</b><br/>
+                                <b>Professional and Trusted Cleaners</b><br/>
                                 Our team consists of highly trained and vetted professionals.<br/><br/>
                             </div>
                         </div>
@@ -41,7 +41,7 @@ export default function WhyChoose() {
                             </div>
                             <div className='col-11' style={{paddingLeft:"0px"}}>
                                 <b>Customisable Cleaning Plans</b><br/>
-                                <b>Choose the services that best fit your needs and schedule.</b><br/><br/>
+                                Choose the services that best fit your needs and schedule.<br/><br/>
                             </div>
                         </div>
                         <div className='row'>
@@ -50,11 +50,11 @@ export default function WhyChoose() {
                             </div>
                             <div className='col-11' style={{paddingLeft:"0px"}}>
                                 <b>100% Satisfaction Guarantee</b><br/>
-                                If you're not completely satisfied, we'll make it right.<br/>
+                                If you're not completely satisfied, we'll make it right.<br/><br/>
                             </div>
                         </div>
                     </div>
-                    <div className='col pt-50'>
+                    <div className='col pt-50 left-expe'>
                         <div className='row'>
                             <div className='col'>
                                 <i className="far fa-clock"></i>
@@ -93,6 +93,7 @@ export default function WhyChoose() {
                         </div>
                     </div>
                 </div>
+
                 <div className='row'>
                     <div className='col'>
                         <hr style={{borderBottom: "1px solid #6c757d"}} />
@@ -105,40 +106,42 @@ export default function WhyChoose() {
                             <h1 style={{color: "#2A2B2E"}}>Convenience and Delight that Bring Smiles</h1>
                         </div>
                     </div>
-                    <div className='row mb-50'>
+                    <div className='row mb-50 grid-one'>
                         <div className='features-container col'>
-                            <div className='row pb-20'>
-                                <div className='col'>
-                                    <i className="far fa-tablet"></i>
+                            <div className='row-why'>
+                                <div className='row pb-20'>
+                                    <div className='col icon-why'>
+                                        <i className="far fa-tablet"></i>
+                                    </div>
+                                    <div className='col-11' style={{paddingLeft:"0px"}}>
+                                        <b>Optimized for All Devices</b><br/>
+                                        Our website is fully responsive, ensuring a seamless experience whether you're on a mobile, tablet, or desktop.
+                                    </div>
                                 </div>
-                                <div className='col-11' style={{paddingLeft:"0px"}}>
-                                    <b>Optimized for All Devices</b><br/>
-                                    Our website is fully responsive, ensuring a seamless experience whether you're on a mobile, tablet, or desktop.
+                                <div className='row pb-20'>
+                                    <div className='col icon-why'>
+                                        <i className="fal fa-calendar"></i>
+                                    </div>
+                                    <div className='col-11' style={{paddingLeft:"0px"}}>
+                                        <b>Manage Bookings Anytime, Anywhere</b><br/>
+                                        Conveniently book and manage your cleaning services from any device, no matter where you are.
+                                    </div>
+                                </div>
+                                <div className='row pb-20'>
+                                    <div className='col icon-why'>
+                                        <i className="fal fa-smile"></i>
+                                    </div>
+                                    <div className='col-11' style={{paddingLeft:"0px"}}>
+                                        <b>Smiles Guaranteed</b><br/>
+                                        We are committed to providing a service that leaves you smiling every time.
+                                    </div>
                                 </div>
                             </div>
-                            <div className='row pb-20'>
-                                <div className='col'>
-                                    <i className="fal fa-calendar"></i>
-                                </div>
-                                <div className='col-11' style={{paddingLeft:"0px"}}>
-                                    <b>Manage Bookings Anytime, Anywhere</b><br/>
-                                    Conveniently book and manage your cleaning services from any device, no matter where you are.
-                                </div>
-                            </div>
-                            <div className='row pb-20'>
-                                <div className='col'>
-                                    <i className="fal fa-smile"></i>
-                                </div>
-                                <div className='col-11' style={{paddingLeft:"0px"}}>
-                                    <b>Smiles Guaranteed</b><br/>
-                                    We are committed to providing a service that leaves you smiling every time.
-                                </div>
-                            </div>
-                            <div className="col-xl-12 col-lg-12 col-md-12 mb-50 mt-30">
-                                <Link to="/sign-up" className="btn btn-primary" style={{width: "217px"}}>Book Now</Link>
+                            <div className="col-xl-12 col-lg-12 col-md-12 mb-50 mt-30 text-center">
+                                <Link to="/sign-up" className="btn btn-primary btn-explore">Book Now</Link>
                             </div>
                         </div>
-                        <div className='col'>
+                        <div className='col div-why'>
                             <div className='center-image-2'></div>
                         </div>
                     </div>

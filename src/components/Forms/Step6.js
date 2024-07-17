@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './BookingForm.module.css';
 
+const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
+const URL = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=${API_KEY}&q=`;
+
 export default function Step6({ formData, onStepDataChange }) {
     const [postcode, setPostcode] = useState(formData?.step6?.postcode || '');
     const [cleanerAccess, setCleanerAccess] = useState(formData?.step6?.cleanerAccess || '');
     const [cleanerAccessDetails, setCleanerAccessDetails] = useState(formData?.step6?.cleanerAccessDetails || '');
     const [parkingSpot, setParkingSpot] = useState(formData?.step6?.parkingSpot || '');
+    const [results, setResults] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const updatedFormData = {
@@ -21,8 +26,33 @@ export default function Step6({ formData, onStepDataChange }) {
         onStepDataChange(updatedFormData);
     }, [postcode, cleanerAccess, cleanerAccessDetails, parkingSpot]);
 
-    const handlePostcodeChange = (e) => {
-        setPostcode(e.target.value);
+    const handlePostcodeChange = async (e) => {
+        const inputValue = e.target.value;
+        setPostcode(inputValue);
+
+        if (inputValue.length >= 1) {
+            try {
+                const response = await fetch(`${URL}${inputValue}`);
+                const data = await response.json();
+                if (data.result) {
+                    setResults(data.result.hits || []);
+                    setError(null);
+                } else {
+                    setResults([]);
+                    setError('');
+                }
+            } catch (err) {
+                setResults([]);
+                setError('Error al buscar el código postal');
+            }
+        } else {
+            setResults([]);
+        }
+    };
+
+    const handleSelectPostcode = (suggestion) => {
+        setPostcode(suggestion);
+        setResults([]);
     };
 
     const handleCleanerAccessChange = (value) => {
@@ -58,6 +88,16 @@ export default function Step6({ formData, onStepDataChange }) {
                                 value={postcode}
                                 onChange={handlePostcodeChange}
                             />
+                            {results.length > 0 && (
+                                <ul className={styles.postCode}>
+                                    {results.map((result, index) => (
+                                        <li key={index} onClick={() => handleSelectPostcode(result.suggestion)}>
+                                            {result.suggestion}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                            {error && <p className={styles.postcodeError}>{error}</p>}
                         </div>
 
                         <div className={styles.sectionTitle}>Cleaner access</div>
@@ -106,7 +146,7 @@ export default function Step6({ formData, onStepDataChange }) {
                         </div>
                     </div>
                 </div>
-                <div className="col-3">
+                <div className={styles.billForm}>
                     <h3>Summary</h3>
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>

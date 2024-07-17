@@ -35,4 +35,12 @@
     font-weight: bold;
     margin-bottom: 10px;
   }
+
+  .billFormStep3 {
+    flex: 0 0 auto;
+    width: 25%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
   

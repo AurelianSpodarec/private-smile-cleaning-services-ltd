@@ -86,7 +86,7 @@ export default function Step1({ formData, onStepDataChange }) {
             </div>
           ))}
         </div>
-        <div className="col-3">
+        <div className={styles.billForm}>
           <h3>Summary</h3>
           <p>Bedrooms: {bedroomCount}</p>
           {Object.keys(pricingParameters).map(param => (

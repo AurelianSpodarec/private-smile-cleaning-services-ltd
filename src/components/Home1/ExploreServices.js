@@ -12,7 +12,7 @@ export default function ExploreServices() {
                 </div>
                 <div className="row">
                     <div className="col centered-text">
-                        <span>
+                        <span className="color-tex">
                             Our dedicated team of professional cleaners ensures every corner of your home<br/>
                             or office is meticulously cleaned, providing you with a stress-free and hygienic<br/>
                             environment. Discover the range of services we offer:
@@ -20,7 +20,7 @@ export default function ExploreServices() {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-xl-3 col-lg-3 col-md-6 service">
+                    <div className="col-xl-3 col-lg-3 col-md-6 service explore-ser">
                         <img src="/img/residential.png" alt="Residential Cleaning" />
                         <div className="descriptor">
                             <h3>Residential Cleaning</h3>
@@ -30,7 +30,7 @@ export default function ExploreServices() {
                             <Link to="/residential-cleaning">Learn More</Link>
                         </div>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-6 service">
+                    <div className="col-xl-3 col-lg-3 col-md-6 service explore-ser">
                         <img src="/img/commercial.png" alt="Commercial Cleaning" />
                         <div className="descriptor">
                             <h3>Commercial Cleaning</h3>
@@ -40,7 +40,7 @@ export default function ExploreServices() {
                             <Link to="/commercial-cleaning">Learn More</Link>
                         </div>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-6 service">
+                    <div className="col-xl-3 col-lg-3 col-md-6 service explore-ser">
                         <img src="/img/eot.png" alt="End Of Tenancy Cleaning" />
                         <div className="descriptor">
                             <h3>End Of Tenancy Cleaning</h3>
@@ -50,7 +50,7 @@ export default function ExploreServices() {
                             <Link to="/eot-cleaning">Learn More</Link>
                         </div>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-6 service">
+                    <div className="col-xl-3 col-lg-3 col-md-6 service explore-ser">
                         <img src="/img/ironing-laundry.png" alt="Ironing and laundry cleaning" />
                         <div className="descriptor">
                             <h3>Ironging & Laundry</h3>
@@ -61,7 +61,7 @@ export default function ExploreServices() {
                         </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 text-center">
-                        <Link to="/sign-up" className="btn btn-primary" style={{width: "217px"}}>Book Now</Link>
+                        <Link to="/sign-up" className="btn btn-primary btn-explore" >Book Now</Link>
                     </div>
                 </div>
             </div>

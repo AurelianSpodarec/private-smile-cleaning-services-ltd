@@ -288,7 +288,7 @@ export default function Step5({ formData, onStepDataChange }) {
                     </div>
                     {/* SCHEDULER COMPONENT ENDS */}
                 </div>
-                <div className="col-3">
+                <div className={styles.billFormStep3}>
                     <h3>Summary</h3>
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>

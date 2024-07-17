@@ -68,7 +68,7 @@ export default function Step2({ formData, onStepDataChange }) {
                         </div>
                     ))}
                 </div>
-                <div className="col-3">
+                <div className={styles.billForm}>
                     <h3>Summary</h3>
                     {/* Display summary from step 1 */}
                     {formData?.bedrooms !== undefined && (

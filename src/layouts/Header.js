@@ -31,8 +31,8 @@ export default function Header() {
             {/* Header Start */}
             <header>
                 <div id="header-sticky" className="header-area transparent-header pt-10 pb-10">
-                    <div className="container">
-                        <div className="row align-items-center">
+                    <div className="container main-head">
+                        <div className="row align-items-center head-imp">
                             <div className="col-xl-2 col-lg-2 col-md-7 col-10 d-flex align-items-center">
                                 <div className="logo">
                                     <Link to="/">
@@ -44,15 +44,15 @@ export default function Header() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className="col-xl-10 col-lg-10 col-md-4 col-8 d-none d-md-block">
-                                <div className="header-btn f-right d-none d-md-block">
-                                    <Link to="/sign-up" className="btn btn-primary header-button">Sign In</Link>
+                            <div className="col-xl-10 col-lg-10 col-md-4 col-8 min-head">
+                                <div className="header-btn f-right d-md-block">
+                                    <Link to="/sign-in" className="btn btn-primary header-button">Sign In</Link>
                                 </div>
                                 <div className="main-menu colormenu d-none d-lg-block">
                                     <NavBar />
                                 </div>
                             </div>
-                            <div className="col-2 col-md-1">
+                            <div className="col-2 col-md-1 head-it">
                                 <div className="side-menu-icon d-lg-none text-end">
                                     <button onClick={toggleTrueFalse} className="side-toggle"><i className="far fa-bars"></i></button>
                                 </div>
