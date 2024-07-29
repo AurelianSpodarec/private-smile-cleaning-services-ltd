@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HoursSelection from './HoursSelection';
-import * as styles from './HoursSelection.module.css'
+import * as styles from './HoursSelection.module.css';
 
 const hours = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
 
@@ -26,26 +26,35 @@ export default function Step3({ formData, onStepDataChange }) {
             const { bedrooms, pricingParameters, step2 } = formData;
             let totalDuration = 0;
 
+            // Calculate duration for bedrooms
             if (bedrooms) {
-                const bedroomService = servicesData.find(service => service.name.includes('Bedroom Home'));
-                totalDuration += bedrooms * (bedroomService?.duration || 90); // Default 90 minutes if not found
+                const bedroomService = servicesData.find(service => service.pricing_parameters?.some(p => p.name === 'Bedrooms'));
+                const bedroomParam = bedroomService?.pricing_parameters?.find(p => p.name === 'Bedrooms');
+                totalDuration += bedrooms * (bedroomParam?.duration || 30); // Default 30 minutes per bedroom
             }
 
+            // Calculate duration for other pricing parameters
             if (pricingParameters) {
-                Object.keys(pricingParameters).forEach(param => {
-                    const count = pricingParameters[param];
-                    const paramService = servicesData.find(service => service.pricing_parameters.some(p => p.name === param));
-                    const duration = paramService?.pricing_parameters.find(p => p.name === param)?.duration || 0;
-                    totalDuration += count * duration;
+                Object.entries(pricingParameters).forEach(([paramName, count]) => {
+                    servicesData.forEach(service => {
+                        const param = service.pricing_parameters?.find(p => p.name === paramName);
+                        if (param) {
+                            totalDuration += count * (param.duration || 0);
+                        }
+                    });
                 });
             }
 
+            // Calculate duration for extras
             if (step2) {
-                Object.keys(step2).forEach(extra => {
-                    if (step2[extra]) {
-                        const extraService = servicesData.find(service => service.extras.some(e => e.name === extra));
-                        const duration = extraService?.extras.find(e => e.name === extra)?.duration || 0;
-                        totalDuration += duration;
+                Object.entries(step2).forEach(([extraName, value]) => {
+                    if (value) {
+                        servicesData.forEach(service => {
+                            const extra = service.extras?.find(e => e.name === extraName);
+                            if (extra) {
+                                totalDuration += extra.quantity_based ? value * (extra.duration || 0) : (extra.duration || 0);
+                            }
+                        });
                     }
                 });
             }
@@ -71,7 +80,7 @@ export default function Step3({ formData, onStepDataChange }) {
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
     };
 
-    return(
+    return (
         <>
             <div className="row">
                 <div className="col">
@@ -93,8 +102,17 @@ export default function Step3({ formData, onStepDataChange }) {
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>
                     )}
-                    {formData?.pricingParameters && Object.keys(formData.pricingParameters).map(param => (
-                        <p key={param}>{param}: {formData.pricingParameters[param]}</p>
+                    {formData?.pricingParameters && Object.entries(formData.pricingParameters).map(([param, value]) => (
+                        <div key={param}>
+                            <p><b>{param}</b>:</p>
+                            {typeof value === 'object' ? (
+                                Object.entries(value).map(([subParam, subValue]) => (
+                                    <p key={subParam}>{subParam}: {subValue}</p>
+                                ))
+                            ) : (
+                                <p>{param}: {value}</p>
+                            )}
+                        </div>
                     ))}
                     <h3>Extras</h3>
                     {formData?.step2 && Object.entries(formData.step2).map(([key, value]) => (

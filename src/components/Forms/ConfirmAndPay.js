@@ -8,7 +8,7 @@ const ConfirmAndPay = () => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('bookingFormData');
             if (data) {
-              setFormData(JSON.parse(data));
+                setFormData(JSON.parse(data));
             }
         }
     }, []);
@@ -28,24 +28,35 @@ const ConfirmAndPay = () => {
     } = formData;
 
     const calculateTotal = () => {
-        // Add logic to calculate total cost based on formData
         let total = 0;
-        // Example calculations based on assumed structure
+
         if (bedrooms) {
             total += bedrooms * 39; // Assume £39 per bedroom
         }
-        if (pricingParameters) {
+
+        if (pricingParameters && typeof pricingParameters === 'object') {
             Object.keys(pricingParameters).forEach(param => {
-                total += pricingParameters[param] * 13; // Assume £13 per unit
+                // Assuming £13 per unit for pricing parameters
+                total += pricingParameters[param] * 13;
             });
         }
-        if (step2) {
+
+        if (step2 && typeof step2 === 'object') {
             Object.keys(step2).forEach(extra => {
-                if (step2[extra]) total += 52; // Assume £52 per extra
+                if (typeof step2[extra] === 'number') {
+                    // If the extra is quantity-based, multiply by £25
+                    total += step2[extra] * 25;
+                } else if (step2[extra]) {
+                    // If the extra is not quantity-based, add £52
+                    total += 52;
+                }
             });
         }
-        if (step4 === 'yes') total += 6; // Cleaning supplies cost
-        // Add other costs as necessary
+
+        if (step4 === 'yes') {
+            total += 6; // Cleaning supplies cost
+        }
+
         return total;
     };
 
@@ -69,22 +80,7 @@ const ConfirmAndPay = () => {
                     {step5?.selectedDate && <p><strong>Date:</strong> {new Date(step5.selectedDate).toLocaleDateString()}</p>}
                     {step5?.selectedTime && <p><strong>Preferred Time:</strong> {step5.selectedTime}</p>}
                 </div>
-                <div className={styles.section}>
-                    <h3>Order details</h3>
-                    {bedrooms !== undefined && (
-                        <p>Bedrooms: {bedrooms} x £39.00 = £{bedrooms * 39}</p>
-                    )}
-                    {pricingParameters && Object.keys(pricingParameters).map(param => (
-                        <p key={param}>{param}: {pricingParameters[param]} x £13.00 = £{pricingParameters[param] * 13}</p>
-                    ))}
-                    {step2 && Object.entries(step2).map(([key, value]) => (
-                        value ? <p key={key}>{key.replace('_', ' ')}: £52.00</p> : null
-                    ))}
-                    {step4 === 'yes' && <p>Cleaning Supplies: £6.00</p>}
-                    <p><strong>Sub Total:</strong> £{total}</p>
-                    <p><strong>VAT (20%):</strong> £{(total * 0.2).toFixed(2)}</p>
-                    <p><strong>Total:</strong> £{(total * 1.2).toFixed(2)}</p>
-                </div>
+                
                 <div className={styles.section}>
                     <h3>Payment Method</h3>
                     <form>

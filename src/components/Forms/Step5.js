@@ -213,7 +213,7 @@ export default function Step5({ formData, onStepDataChange }) {
                             </>
                         )}
 
-                        {frequency && frequency !== 'Daily' && frequency !== 'Multiple per Week' && frequency !== 'Weekly' && (
+                        {frequency && frequency !== 'Daily' && frequency !== 'Multiple per Week' && frequency !== 'Weekly' && selectedDate && (
                             <>
                                 <div className={styles.sectionTitle}>Choose {frequency === 'Once' ? 'Date' : 'Day'}</div>
                                 <DatePicker
@@ -293,8 +293,17 @@ export default function Step5({ formData, onStepDataChange }) {
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>
                     )}
-                    {formData?.pricingParameters && Object.keys(formData.pricingParameters).map(param => (
-                        <p key={param}>{param}: {formData.pricingParameters[param]}</p>
+                    {formData?.pricingParameters && Object.entries(formData.pricingParameters).map(([param, value]) => (
+                        <div key={param}>
+                            <p><b>{param}</b>:</p>
+                            {typeof value === 'object' ? (
+                                Object.entries(value).map(([subParam, subValue]) => (
+                                    <p key={subParam}>{subParam}: {subValue}</p>
+                                ))
+                            ) : (
+                                <p>{param}: {value}</p>
+                            )}
+                        </div>
                     ))}
                     <h3>Extras</h3>
                     {formData?.step2 && Object.entries(formData.step2).map(([key, value]) => (

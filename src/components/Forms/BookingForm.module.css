@@ -172,3 +172,45 @@ h1, h2, h3 {
   border: 1px solid #ccc;
   border-radius: 8px;
 }
+
+.homeLayoutImg {
+  width: 50px;
+  height: 50px;
+}
+
+.spaceLeft {
+  margin-left: 10px;
+}
+
+.pricingParameters {
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.billForm {
+  margin-top: 20px;
+}
+
+.pb-15 {
+  padding-bottom: 15px;
+}
+
+.pl-3 {
+  padding-left: 20px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
+.serviceName {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
