@@ -7,7 +7,7 @@ import { serviceImageMap } from './serviceImageMap';
 export default function Step2({ formData, onStepDataChange }) {
     const initialState = formData?.step2 || {};
     const [toggleStates, setToggleStates] = useState(initialState);
-    const [counterStates, setCounterStates] = useState(formData?.counterStates || {});
+    const [counterStates, setCounterStates] = useState(formData?.counterStates || []);
     const [extrasByService, setExtrasByService] = useState([]);
 
     useEffect(() => {
@@ -49,18 +49,68 @@ export default function Step2({ formData, onStepDataChange }) {
         }));
     };
 
-    const handleCounterIncrement = (key) => {
-        setCounterStates((prevStates) => ({
-            ...prevStates,
-            [key]: (prevStates[key] || 0) + 1,
-        }));
+    const handleCounterIncrement = (serviceName, extra) => {
+        setCounterStates(prev => {
+            const serviceIndex = prev.findIndex(p => p.service === serviceName);
+            if (serviceIndex >= 0) {
+                const updatedService = {
+                    ...prev[serviceIndex],
+                    parameters: {
+                        ...prev[serviceIndex].parameters,
+                        [extra.name]: {
+                            quantity: (prev[serviceIndex].parameters[extra.name]?.quantity || 0) + 1,
+                            id: extra.id,
+                            price: extra.price,
+                            duration: extra.duration
+                        }
+                    }
+                };
+                return [
+                    ...prev.slice(0, serviceIndex),
+                    updatedService,
+                    ...prev.slice(serviceIndex + 1)
+                ];
+            } else {
+                const newService = {
+                    service: serviceName,
+                    parameters: {
+                        [extra.name]: {
+                            quantity: 1,
+                            id: extra.id,
+                            price: extra.price,
+                            duration: extra.duration
+                        }
+                    }
+                };
+                return [...prev, newService];
+            }
+        });
     };
 
-    const handleCounterDecrement = (key) => {
-        setCounterStates((prevStates) => ({
-            ...prevStates,
-            [key]: prevStates[key] > 0 ? prevStates[key] - 1 : 0,
-        }));
+    const handleCounterDecrement = (serviceName, extra) => {
+        setCounterStates(prev => {
+            const serviceIndex = prev.findIndex(p => p.service === serviceName);
+            if (serviceIndex >= 0) {
+                const updatedService = {
+                    ...prev[serviceIndex],
+                    parameters: {
+                        ...prev[serviceIndex].parameters,
+                        [extra.name]: {
+                            quantity: Math.max((prev[serviceIndex].parameters[extra.name]?.quantity || 0) - 1, 0),
+                            id: extra.id,
+                            price: extra.price,
+                            duration: extra.duration
+                        }
+                    }
+                };
+                return [
+                    ...prev.slice(0, serviceIndex),
+                    updatedService,
+                    ...prev.slice(serviceIndex + 1)
+                ];
+            }
+            return prev;
+        });
     };
 
     return (
@@ -90,9 +140,9 @@ export default function Step2({ formData, onStepDataChange }) {
                                     <div className="col">
                                         {extra.quantity_based ? (
                                             <CounterInput
-                                                count={counterStates[extra.name] || 0}
-                                                onIncrement={() => handleCounterIncrement(extra.name)}
-                                                onDecrement={() => handleCounterDecrement(extra.name)}
+                                                count={counterStates.find(p => p.service === serviceName)?.parameters[extra.name]?.quantity || 0}
+                                                onIncrement={() => handleCounterIncrement(serviceName, extra)}
+                                                onDecrement={() => handleCounterDecrement(serviceName, extra)}
                                             />
                                         ) : (
                                             <ToggleSwitch
@@ -113,27 +163,26 @@ export default function Step2({ formData, onStepDataChange }) {
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>
                     )}
-                    {formData?.pricingParameters && Object.keys(formData.pricingParameters).map(param => {
-                        const paramValue = formData.pricingParameters[param];
-                        if (typeof paramValue === 'object') {
-                            return (
-                                <div key={param}>
-                                    <p><b>{param}</b>:</p>
-                                    {Object.keys(paramValue).map(subParam => (
-                                        <p key={subParam}>{subParam}: {paramValue[subParam]}</p>
-                                    ))}
-                                </div>
-                            );
-                        }
-                        return <p key={param}>{param}: {paramValue}</p>;
-                    })}
+                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
+                        <div key={service.service}>
+                            <p><b>{service.service}</b>:</p>
+                            {Object.entries(service.parameters).map(([param, value]) => (
+                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                            ))}
+                        </div>
+                    ))}
                     <h3>Extras</h3>
                     {/* Display summary from step 2 */}
                     {Object.entries(toggleStates).map(([key, value]) => (
                         value ? <p key={key}>{key.replace('_', ' ')}</p> : null
                     ))}
-                    {Object.entries(counterStates).map(([key, value]) => (
-                        value > 0 ? <p key={key}>{key.replace('_', ' ')}: {value}</p> : null
+                    {Object.entries(counterStates).map(([service, data]) => (
+                        <div key={service}>
+                            <p><b>{service}</b>:</p>
+                            {Object.entries(data.parameters).map(([param, value]) => (
+                                value.quantity > 0 ? <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p> : null
+                            ))}
+                        </div>
                     ))}
                 </div>
             </div>

@@ -7,7 +7,7 @@ import { serviceImageMap } from './serviceImageMap';
 export default function Step1({ formData, onStepDataChange }) {
   const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState(formData?.services || {});
-  const [pricingParameters, setPricingParameters] = useState(formData?.pricingParameters || {});
+  const [pricingParameters, setPricingParameters] = useState(formData?.pricingParameters || []);
 
   useEffect(() => {
     fetch('https://smile.launch27.com/latest/booking/services')
@@ -26,31 +26,93 @@ export default function Step1({ formData, onStepDataChange }) {
     });
   }, [selectedServices, pricingParameters, onStepDataChange]);
 
-  const handleToggleService = (serviceName) => {
+  const handleToggleService = (serviceName, serviceId) => {
     setSelectedServices(prev => ({
       ...prev,
       [serviceName]: !prev[serviceName]
     }));
+
+    if (!selectedServices[serviceName]) {
+      // Add service to pricingParameters when toggled on
+      setPricingParameters(prev => [
+        ...prev,
+        { id: serviceId, service: serviceName, parameters: {} }
+      ]);
+    } else {
+      // Remove service from pricingParameters when toggled off
+      setPricingParameters(prev => prev.filter(p => p.service !== serviceName));
+    }
   };
 
   const handleIncrement = (serviceName, param) => {
-    setPricingParameters(prev => ({
-      ...prev,
-      [serviceName]: {
-        ...prev[serviceName],
-        [param.name]: (prev[serviceName]?.[param.name] || 0) + 1
+    setPricingParameters(prev => {
+      const serviceIndex = prev.findIndex(p => p.service === serviceName);
+      if (serviceIndex >= 0) {
+        const currentQuantity = prev[serviceIndex].parameters[param.name]?.quantity || 0;
+        if (currentQuantity < param.quantity_maximum) {
+          const updatedService = {
+            ...prev[serviceIndex],
+            parameters: {
+              ...prev[serviceIndex].parameters,
+              [param.name]: {
+                quantity: currentQuantity + 1,
+                id: param.id,
+                price: param.price,
+                duration: param.duration
+              }
+            }
+          };
+          return [
+            ...prev.slice(0, serviceIndex),
+            updatedService,
+            ...prev.slice(serviceIndex + 1)
+          ];
+        }
+      } else {
+        const newService = {
+          service: serviceName,
+          parameters: {
+            [param.name]: {
+              quantity: 1,
+              id: param.id,
+              price: param.price,
+              duration: param.duration
+            }
+          }
+        };
+        return [...prev, newService];
       }
-    }));
+      return prev;
+    });
   };
 
   const handleDecrement = (serviceName, param) => {
-    setPricingParameters(prev => ({
-      ...prev,
-      [serviceName]: {
-        ...prev[serviceName],
-        [param.name]: prev[serviceName]?.[param.name] > 0 ? prev[serviceName][param.name] - 1 : 0
+    setPricingParameters(prev => {
+      const serviceIndex = prev.findIndex(p => p.service === serviceName);
+      if (serviceIndex >= 0) {
+        const currentQuantity = prev[serviceIndex].parameters[param.name]?.quantity || 0;
+        if (currentQuantity > param.quantity_minimum) {
+          const updatedService = {
+            ...prev[serviceIndex],
+            parameters: {
+              ...prev[serviceIndex].parameters,
+              [param.name]: {
+                quantity: currentQuantity - 1,
+                id: param.id,
+                price: param.price,
+                duration: param.duration
+              }
+            }
+          };
+          return [
+            ...prev.slice(0, serviceIndex),
+            updatedService,
+            ...prev.slice(serviceIndex + 1)
+          ];
+        }
       }
-    }));
+      return prev;
+    });
   };
 
   return (
@@ -77,7 +139,7 @@ export default function Step1({ formData, onStepDataChange }) {
                 <div className="col">
                   <ToggleSwitch
                     initialValue={!!selectedServices[service.name]}
-                    onToggle={() => handleToggleService(service.name)}
+                    onToggle={() => handleToggleService(service.name, service.id)}
                   />
                 </div>
               </div>
@@ -95,17 +157,9 @@ export default function Step1({ formData, onStepDataChange }) {
                       </div>
                       <div className="col">
                         <CounterInput
-                          count={pricingParameters[service.name]?.[param.name] || 0}
-                          onIncrement={() => {
-                            if ((pricingParameters[service.name]?.[param.name] || 0) < param.quantity_maximum) {
-                              handleIncrement(service.name, param);
-                            }
-                          }}
-                          onDecrement={() => {
-                            if ((pricingParameters[service.name]?.[param.name] || 0) > param.quantity_minimum) {
-                              handleDecrement(service.name, param);
-                            }
-                          }}
+                          count={pricingParameters.find(p => p.service === service.name)?.parameters[param.name]?.quantity || 0}
+                          onIncrement={() => handleIncrement(service.name, param)}
+                          onDecrement={() => handleDecrement(service.name, param)}
                         />
                       </div>
                     </div>
@@ -117,16 +171,14 @@ export default function Step1({ formData, onStepDataChange }) {
         </div>
         <div className={styles.billForm}>
           <h3>Summary</h3>
-          {Object.keys(selectedServices).map(service => (
-            selectedServices[service] && (
-              <div key={service}>
-                <p>{service}</p>
-                {pricingParameters[service] && Object.keys(pricingParameters[service]).map(param => (
-                  <p key={param}>{param}: {pricingParameters[service][param]}</p>
-                ))}
-                <div className={styles.divider}></div>
-              </div>
-            )
+          {pricingParameters.map(service => (
+            <div key={service.service}>
+              <p>{service.service}</p>
+              {Object.entries(service.parameters).map(([param, value]) => (
+                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+              ))}
+              <div className={styles.divider}></div>
+            </div>
           ))}
         </div>
       </div>

@@ -62,16 +62,12 @@ export default function Step4({ formData, onStepDataChange }) {
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>
                     )}
-                    {formData?.pricingParameters && Object.entries(formData.pricingParameters).map(([param, value]) => (
-                        <div key={param}>
-                            <p><b>{param}</b>:</p>
-                            {typeof value === 'object' ? (
-                                Object.entries(value).map(([subParam, subValue]) => (
-                                    <p key={subParam}>{subParam}: {subValue}</p>
-                                ))
-                            ) : (
-                                <p>{param}: {value}</p>
-                            )}
+                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
+                        <div key={service.service}>
+                            <p><b>{service.service}</b>:</p>
+                            {Object.entries(service.parameters).map(([param, value]) => (
+                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                            ))}
                         </div>
                     ))}
                     <h3>Extras</h3>

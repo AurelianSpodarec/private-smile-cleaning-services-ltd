@@ -3,68 +3,76 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as styles from './Scheduler.module.css';
 
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const FREQUENCY_URL = 'https://smile.launch27.com/latest/booking/frequencies';
+const SPOTS_URL = 'https://smile.launch27.com/latest/booking/spots';
 
 export default function Step5({ formData, onStepDataChange }) {
     const parseDate = (date) => (date ? new Date(date) : new Date());
-    
+
+    const [frequencies, setFrequencies] = useState([]);
     const [frequency, setFrequency] = useState(formData?.step5?.frequency || '');
     const [selectedDate, setSelectedDate] = useState(parseDate(formData?.step5?.selectedDate));
     const [selectedTime, setSelectedTime] = useState(formData?.step5?.selectedTime || '');
-    const [selectedDays, setSelectedDays] = useState(formData?.step5?.selectedDays || []);
-    const [startDate, setStartDate] = useState(parseDate(formData?.step5?.startDate));
-    const [endDate, setEndDate] = useState(parseDate(formData?.step5?.endDate));
-    const [beginTime, setBeginTime] = useState(formData?.step5?.beginTime || '');
+    const [spots, setSpots] = useState([]);
+    const [frequencyId, setFrequencyId] = useState(formData?.step5?.frequencyId || null);
 
     useEffect(() => {
         const updatedFormData = {
             ...formData,
             step5: {
                 frequency,
+                frequencyId,
                 selectedDate,
-                selectedTime,
-                selectedDays,
-                startDate,
-                endDate,
-                beginTime,
+                selectedTime
             }
         };
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
         onStepDataChange(updatedFormData);
-    }, [frequency, selectedDate, selectedTime, selectedDays, startDate, endDate, beginTime]);
+    }, [frequency, frequencyId, selectedDate, selectedTime]);
 
-    const handleFrequencyChange = (value) => {
-        setFrequency(value);
-        setSelectedDays([]);
-        setStartDate(new Date());
-        setEndDate(new Date());
+    useEffect(() => {
+        fetch(FREQUENCY_URL)
+            .then(response => response.json())
+            .then(data => {
+                setFrequencies(data);
+            })
+            .catch(error => console.error('Error fetching frequencies:', error));
+    }, []);
+
+    useEffect(() => {
+        if (selectedDate) {
+            fetchAvailableSpots(selectedDate, 1); // Fetching spots for 1 day
+        }
+    }, [selectedDate]);
+
+    const fetchAvailableSpots = (date, days) => {
+        const formattedDate = date.toISOString().split('T')[0]; // Format date to YYYY-MM-DD
+        fetch(SPOTS_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ date: formattedDate, days, mode: 'new' })
+        })
+            .then(response => response.json())
+            .then(data => {
+                setSpots(data);
+            })
+            .catch(error => console.error('Error fetching spots:', error));
     };
 
-    const handleDayToggle = (day) => {
-        setSelectedDays((prevDays) =>
-            prevDays.includes(day)
-                ? prevDays.filter((d) => d !== day)
-                : [...prevDays, day]
-        );
+    const handleFrequencyChange = (freq) => {
+        setFrequency(freq.name);
+        setFrequencyId(freq.id);
+        setSelectedDate(null);
+        setSelectedTime('');
     };
 
     const handleTimeChange = (value) => {
         setSelectedTime(value);
     };
 
-    const handleWeeklyStartChange = (date) => {
-        const day = date.getDay();
-        const sunday = new Date(date);
-        sunday.setDate(date.getDate() - day);
-        const saturday = new Date(sunday);
-        saturday.setDate(saturday.getDate() + 6);
-        setStartDate(sunday);
-        setEndDate(saturday);
-    };
-
-    const handleBeginTimeChange = (value) => {
-        setBeginTime(value);
-    };
+    const availableTimes = spots.length > 0 ? spots[0].spots.filter(spot => spot.free) : [];
 
     return (
         <>
@@ -76,233 +84,66 @@ export default function Step5({ formData, onStepDataChange }) {
             </div>
             <div className="row">
                 <div className="col-9">
-                    {/* SCHEDULER COMPONENT BEGINS */}
                     <div className={styles.formContainer}>
                         <div className={styles.sectionTitle}>When do you want your rooms to be cleaned?</div>
                         <div className={styles.frequencyButtons}>
-                            {['Once', 'Daily', 'Multiple per Week', 'Weekly', 'Fortnightly', '4-Weekly'].map((freq) => (
+                            {frequencies.map((freq) => (
                                 <div
-                                    key={freq}
-                                    className={`${styles.frequencyButton} ${frequency === freq ? styles.selected : ''}`}
+                                    key={freq.id}
+                                    className={`${styles.frequencyButton} ${frequency === freq.name ? styles.selected : ''}`}
                                     onClick={() => handleFrequencyChange(freq)}
                                 >
-                                    {freq}
+                                    {freq.name}
                                 </div>
                             ))}
                         </div>
 
-                        {frequency === 'Daily' && (
-                            <>
-                                <div className={styles.sectionTitle}>Select Date Range</div>
-                                <div className={styles.dateRangeContainer}>
-                                    <DatePicker
-                                        selected={startDate}
-                                        onChange={(date) => setStartDate(date)}
-                                        selectsStart
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        className={`${styles.datePickerInput} ${styles.dateRangeInput}`}
-                                        placeholderText="Start Date"
-                                    />
-                                    <DatePicker
-                                        selected={endDate}
-                                        onChange={(date) => setEndDate(date)}
-                                        selectsEnd
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        minDate={startDate}
-                                        className={`${styles.datePickerInput} ${styles.dateRangeInput}`}
-                                        placeholderText="End Date"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {frequency === 'Multiple per Week' && (
-                            <>
-                                <div className={styles.sectionTitle}>Select Days of the Week</div>
-                                <div className={styles.daySelection}>
-                                    {daysOfWeek.map((day) => (
-                                        <div
-                                            key={day}
-                                            className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''}`}
-                                            onClick={() => handleDayToggle(day)}
-                                        >
-                                            {day}
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className={styles.sectionTitle}>Select Date Range</div>
-                                <div className={styles.dateRangeContainer}>
-                                    <DatePicker
-                                        selected={startDate}
-                                        onChange={(date) => setStartDate(date)}
-                                        selectsStart
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        className={`${styles.datePickerInput} ${styles.dateRangeInput}`}
-                                        placeholderText="Start Date"
-                                    />
-                                    <DatePicker
-                                        selected={endDate}
-                                        onChange={(date) => setEndDate(date)}
-                                        selectsEnd
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        minDate={startDate}
-                                        className={`${styles.datePickerInput} ${styles.dateRangeInput}`}
-                                        placeholderText="End Date"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {frequency === 'Weekly' && (
-                            <>
-                                <div className={styles.sectionTitle}>Select Date Range (Full Weeks)</div>
-                                <div className={styles.dateRangeContainer}>
-                                    <DatePicker
-                                        selected={startDate}
-                                        onChange={handleWeeklyStartChange}
-                                        selectsStart
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        className={`${styles.datePickerInput} ${styles.dateRangeInput}`}
-                                        placeholderText="Start Date"
-                                    />
-                                    <DatePicker
-                                        selected={endDate}
-                                        onChange={(date) => setEndDate(date)}
-                                        selectsEnd
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        minDate={startDate}
-                                        className={`${styles.datePickerInput} ${styles.dateRangeInput}`}
-                                        placeholderText="End Date"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {frequency === 'Fortnightly' && (
-                            <>
-                                <div className={styles.sectionTitle}>Select Start Date</div>
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    selectsStart
-                                    startDate={startDate}
-                                    className={styles.datePickerInput}
-                                    placeholderText="Start Date"
-                                />
-                            </>
-                        )}
-
-                        {frequency === '4-Weekly' && (
-                            <>
-                                <div className={styles.sectionTitle}>Select Start Date</div>
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    selectsStart
-                                    startDate={startDate}
-                                    className={styles.datePickerInput}
-                                    placeholderText="Start Date"
-                                />
-                            </>
-                        )}
-
-                        {frequency && frequency !== 'Daily' && frequency !== 'Multiple per Week' && frequency !== 'Weekly' && selectedDate && (
-                            <>
-                                <div className={styles.sectionTitle}>Choose {frequency === 'Once' ? 'Date' : 'Day'}</div>
-                                <DatePicker
-                                    selected={selectedDate}
-                                    onChange={(date) => setSelectedDate(date)}
-                                    dateFormat={frequency === 'Once' ? 'MMMM d, yyyy' : 'cccc'}
-                                    className={styles.datePickerInput}
-                                />
-                            </>
-                        )}
+                        <div className={styles.sectionTitle}>Select Date</div>
+                        <DatePicker
+                            selected={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            className={styles.datePickerInput}
+                            placeholderText="Select Date"
+                        />
 
                         <div className={styles.sectionTitle}>Preferred Starting Time</div>
                         <div className={styles.radioGroup}>
-                            {['Anytime (08:00 - 18:00)', 'Morning (08:00 - 12:00)', 'Afternoon (12:00 - 18:00)'].map((time) => (
-                                <label key={time} className={styles.radioOption}>
-                                    <input
-                                        type="radio"
-                                        name="startingTime"
-                                        value={time}
-                                        checked={selectedTime === time}
-                                        onChange={(e) => handleTimeChange(e.target.value)}
-                                        className={styles.radioInput}
-                                    />
-                                    <span className={styles.radioLabel}>
-                                        <span className={styles.radioLabelText}>{time}</span>
-                                    </span>
-                                </label>
-                            ))}
+                            {availableTimes.length > 0 ? (
+                                availableTimes.map((timeSlot, index) => {
+                                    const time = `${String(timeSlot.hours).padStart(2, '0')}:${String(timeSlot.minutes).padStart(2, '0')}`;
+                                    return (
+                                        <label key={index} className={styles.radioOption}>
+                                            <input
+                                                type="radio"
+                                                name="startingTime"
+                                                value={time}
+                                                checked={selectedTime === time}
+                                                onChange={(e) => handleTimeChange(e.target.value)}
+                                                className={styles.radioInput}
+                                            />
+                                            <span className={styles.radioLabel}>
+                                                <span className={styles.radioLabelText}>{time}</span>
+                                            </span>
+                                        </label>
+                                    );
+                                })
+                            ) : (
+                                <p>No available times for the selected date.</p>
+                            )}
                         </div>
-
-                        <div className={styles.premiumSchedulingHeader}>Premium Scheduling (+£6.00)</div>
-                        <div className={styles.radioGroup}>
-                            {['Morning (08:00 - 10:00)', 'Morning (10:00 - 12:00)', 'Afternoon (12:00 - 14:00)', 'Afternoon (14:00 - 16:00)', 'Afternoon (16:00 - 18:00)'].map((time) => (
-                                <label key={time} className={styles.radioOption}>
-                                    <input
-                                        type="radio"
-                                        name="startingTime"
-                                        value={time}
-                                        checked={selectedTime === time}
-                                        onChange={(e) => handleTimeChange(e.target.value)}
-                                        className={styles.radioInput}
-                                    />
-                                    <span className={styles.radioLabel}>
-                                        <span className={styles.radioLabelText}>{time}</span>
-                                    </span>
-                                </label>
-                            ))}
-                        </div>
-
-                        {frequency && (frequency === 'Fortnightly' || frequency === '4-Weekly') && (
-                            <div className={styles.sectionTitle}>Preferred Beginning Time</div>
-                        )}
-                        {frequency && (frequency === 'Fortnightly' || frequency === '4-Weekly') && (
-                            <div className={styles.radioGroup}>
-                                {['Morning (08:00 - 10:00)', 'Morning (10:00 - 12:00)', 'Afternoon (12:00 - 14:00)', 'Afternoon (14:00 - 16:00)', 'Afternoon (16:00 - 18:00)'].map((time) => (
-                                    <label key={time} className={styles.radioOption}>
-                                        <input
-                                            type="radio"
-                                            name="beginTime"
-                                            value={time}
-                                            checked={beginTime === time}
-                                            onChange={(e) => handleBeginTimeChange(e.target.value)}
-                                            className={styles.radioInput}
-                                        />
-                                        <span className={styles.radioLabel}>
-                                            <span className={styles.radioLabelText}>{time}</span>
-                                        </span>
-                                    </label>
-                                ))}
-                            </div>
-                        )}
                     </div>
-                    {/* SCHEDULER COMPONENT ENDS */}
                 </div>
                 <div className={styles.billFormStep3}>
                     <h3>Summary</h3>
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>
                     )}
-                    {formData?.pricingParameters && Object.entries(formData.pricingParameters).map(([param, value]) => (
-                        <div key={param}>
-                            <p><b>{param}</b>:</p>
-                            {typeof value === 'object' ? (
-                                Object.entries(value).map(([subParam, subValue]) => (
-                                    <p key={subParam}>{subParam}: {subValue}</p>
-                                ))
-                            ) : (
-                                <p>{param}: {value}</p>
-                            )}
+                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
+                        <div key={service.service}>
+                            <p><b>{service.service}</b>:</p>
+                            {Object.entries(service.parameters).map(([param, value]) => (
+                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                            ))}
                         </div>
                     ))}
                     <h3>Extras</h3>
@@ -313,23 +154,8 @@ export default function Step5({ formData, onStepDataChange }) {
                     {formData?.step3 && <p>Selected Hours: {formData.step3}</p>}
                     {formData?.step4 && <p>Cleaning Supplies: {formData.step4 === 'yes' ? 'Yes, Please' : 'No, Thanks'}</p>}
                     {frequency && <p>Frequency: {frequency}</p>}
-                    {frequency === 'Daily' && startDate && endDate && (
-                        <p>Date Range: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</p>
-                    )}
-                    {frequency === 'Multiple per Week' && selectedDays.length > 0 && startDate && endDate && (
-                        <>
-                            <p>Days: {selectedDays.join(', ')}</p>
-                            <p>Date Range: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</p>
-                        </>
-                    )}
-                    {frequency === 'Weekly' && startDate && endDate && (
-                        <p>Date Range: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</p>
-                    )}
-                    {frequency && frequency !== 'Daily' && frequency !== 'Multiple per Week' && frequency !== 'Weekly' && selectedDate && (
-                        <p>{frequency === 'Once' ? 'Date' : 'Day'}: {selectedDate instanceof Date ? selectedDate.toLocaleDateString() : selectedDate}</p>
-                    )}
+                    {selectedDate && <p>Date: {selectedDate.toLocaleDateString()}</p>}
                     {selectedTime && <p>Starting Time: {selectedTime}</p>}
-                    {beginTime && <p>Beginning Time: {beginTime}</p>}
                 </div>
             </div>
         </>

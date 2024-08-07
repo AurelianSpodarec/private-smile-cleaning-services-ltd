@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './BookingForm.module.css';
+import { getCountyCode } from './countyCodes';
 
 const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
-const URL = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=${API_KEY}&q=`;
+const URL = `https://api.ideal-postcodes.co.uk/v1/postcodes/`;
 
 export default function Step6({ formData, onStepDataChange }) {
     const [postcode, setPostcode] = useState(formData?.step6?.postcode || '');
@@ -20,6 +21,12 @@ export default function Step6({ formData, onStepDataChange }) {
                 cleanerAccess,
                 cleanerAccessDetails,
                 parkingSpot,
+            },
+            customFields: {
+                propertyAccessFieldId: 255, // Ensure these IDs are correct
+                propertyAccessValue: cleanerAccess.split(':')[1] ? parseInt(cleanerAccess.split(':')[1]) : null,
+                accessNotesFieldId: 256,
+                accessNotesValue: cleanerAccessDetails
             }
         };
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
@@ -30,28 +37,38 @@ export default function Step6({ formData, onStepDataChange }) {
         const inputValue = e.target.value;
         setPostcode(inputValue);
 
-        if (inputValue.length >= 1) {
+        if (inputValue.length >= 6) {
             try {
-                const response = await fetch(`${URL}${inputValue}`);
+                const response = await fetch(`${URL}${inputValue}?api_key=${API_KEY}`);
                 const data = await response.json();
                 if (data.result) {
-                    setResults(data.result.hits || []);
+                    setResults(data.result);
                     setError(null);
                 } else {
                     setResults([]);
-                    setError('');
+                    setError('No results found');
                 }
             } catch (err) {
                 setResults([]);
-                setError('Error al buscar el código postal');
+                setError('Error fetching postcode');
             }
         } else {
             setResults([]);
         }
     };
 
-    const handleSelectPostcode = (suggestion) => {
-        setPostcode(suggestion);
+    const handleSelectPostcode = (result) => {
+        const address = `${result.line_1}, ${result.line_2}, ${result.line_3}, ${result.post_town}, ${result.postcode}`;
+        const selectedAddress = {
+            line1: result.line_1,
+            line2: result.line_2,
+            line3: result.line_3,
+            city: result.post_town,
+            postcode: result.postcode,
+            county: getCountyCode(result.traditional_county)
+        };
+        localStorage.setItem("selectedAddress", JSON.stringify(selectedAddress));
+        setPostcode(address);
         setResults([]);
     };
 
@@ -91,8 +108,8 @@ export default function Step6({ formData, onStepDataChange }) {
                             {results.length > 0 && (
                                 <ul className={styles.postCode}>
                                     {results.map((result, index) => (
-                                        <li key={index} onClick={() => handleSelectPostcode(result.suggestion)}>
-                                            {result.suggestion}
+                                        <li key={index} onClick={() => handleSelectPostcode(result)}>
+                                            {result.line_1}, {result.line_2}, {result.line_3}, {result.post_town}, {result.postcode}
                                         </li>
                                     ))}
                                 </ul>
@@ -103,7 +120,7 @@ export default function Step6({ formData, onStepDataChange }) {
                         <div className={styles.sectionTitle}>Cleaner access</div>
                         <div className={styles.subTitle}>Recommended for first clean</div>
                         <div className={styles.radioGroup}>
-                            {['Someone at home', 'Spare Keys', 'Concierge', 'Key Safe', 'Hidden Key'].map(option => (
+                            {['Someone at home:2fd0417d-ee55-435c-832d-d1df63418ed2', 'Spare Keys:a4c3b014-a132-493d-9fb9-f37b4eecc771', 'Concierge:bd8b417b-6d7a-4c7f-9a94-fdb621d1cd5f', 'Key Safe:c05b72f2-ffd9-43d9-bf41-ad5a550f58fb', 'Hidden Key:a4c3b014-a132-493d-9fb9-f37b4eecc771'].map(option => (
                                 <label key={option} className={styles.radioOption}>
                                     <input
                                         type="radio"
@@ -114,7 +131,7 @@ export default function Step6({ formData, onStepDataChange }) {
                                         className={styles.radioInput}
                                     />
                                     <span className={styles.radioLabel}>
-                                        <span className={styles.radioLabelText}>{option}</span>
+                                        <span className={styles.radioLabelText}>{option.split(':')[0]}</span>
                                     </span>
                                 </label>
                             ))}
@@ -151,16 +168,12 @@ export default function Step6({ formData, onStepDataChange }) {
                     {formData?.bedrooms !== undefined && (
                         <p>Bedrooms: {formData.bedrooms}</p>
                     )}
-                    {formData?.pricingParameters && Object.keys(formData.pricingParameters).map(param => (
-                        <div key={param}>
-                            <p><b>{param}</b>:</p>
-                            {typeof formData.pricingParameters[param] === 'object' ? (
-                                Object.entries(formData.pricingParameters[param]).map(([subParam, subValue]) => (
-                                    <p key={subParam}>{subParam}: {subValue}</p>
-                                ))
-                            ) : (
-                                <p>{param}: {formData.pricingParameters[param]}</p>
-                            )}
+                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
+                        <div key={service.service}>
+                            <p><b>{service.service}</b>:</p>
+                            {Object.entries(service.parameters).map(([param, value]) => (
+                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                            ))}
                         </div>
                     ))}
                     <h3>Extras</h3>
@@ -190,7 +203,7 @@ export default function Step6({ formData, onStepDataChange }) {
                     {formData?.step5?.beginTime && <p>Beginning Time: {formData.step5.beginTime}</p>}
                     <h3>Address:</h3>
                     {postcode && <p>Postcode: {postcode}</p>}
-                    {cleanerAccess && <p>Cleaner Access: {cleanerAccess}</p>}
+                    {cleanerAccess && <p>Cleaner Access: {cleanerAccess.split(':')[0]}</p>}
                     {cleanerAccessDetails && <p>Cleaner Access Details: {cleanerAccessDetails}</p>}
                     {parkingSpot && <p>Parking Spot: {parkingSpot}</p>}
                 </div>
