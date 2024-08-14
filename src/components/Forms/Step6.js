@@ -4,6 +4,7 @@ import { getCountyCode } from './countyCodes';
 
 const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
 const URL = `https://api.ideal-postcodes.co.uk/v1/postcodes/`;
+const CUSTOM_FIELDS_URL = 'https://smile.launch27.com/latest/booking/custom_fields';
 
 export default function Step6({ formData, onStepDataChange }) {
     const [postcode, setPostcode] = useState(formData?.step6?.postcode || '');
@@ -12,6 +13,24 @@ export default function Step6({ formData, onStepDataChange }) {
     const [parkingSpot, setParkingSpot] = useState(formData?.step6?.parkingSpot || '');
     const [results, setResults] = useState([]);
     const [error, setError] = useState(null);
+    const [customFields, setCustomFields] = useState(null);
+    const [propertyAccessOptions, setPropertyAccessOptions] = useState(null);
+
+    useEffect(() => {
+        fetch(CUSTOM_FIELDS_URL)
+            .then((response) => response.json())
+            .then((data) => {
+                setCustomFields(data);
+            })
+            .catch((error) => console.error('Error fetching custom_fields:', error));
+    }, []);
+
+    useEffect(() => {
+        if (customFields) {
+            const cleanerAccessOptions = customFields.filter((cf) => cf.label.trim() === "Property Access" && cf.control_type === "radio_buttons");
+            setPropertyAccessOptions(cleanerAccessOptions[0].options);
+        }
+    }, [customFields]);
 
     useEffect(() => {
         const updatedFormData = {
@@ -21,12 +40,6 @@ export default function Step6({ formData, onStepDataChange }) {
                 cleanerAccess,
                 cleanerAccessDetails,
                 parkingSpot,
-            },
-            customFields: {
-                propertyAccessFieldId: 255, // Ensure these IDs are correct
-                propertyAccessValue: cleanerAccess.split(':')[1] ? parseInt(cleanerAccess.split(':')[1]) : null,
-                accessNotesFieldId: 256,
-                accessNotesValue: cleanerAccessDetails
             }
         };
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
@@ -73,11 +86,40 @@ export default function Step6({ formData, onStepDataChange }) {
     };
 
     const handleCleanerAccessChange = (value) => {
-        setCleanerAccess(value);
+        if (cleanerAccessDetails) {
+            setCleanerAccessDetails(''); // Clear the notes if a radio button is selected
+        }
+        const customFieldID = customFields.filter((cf) => cf.label.trim() === "Property Access").pop().id;
+        const customFieldStructure = {
+            id: customFieldID,
+            values: [
+                {
+                    id: parseInt(value),
+                    other: null
+                }
+            ]
+        }
+        console.log(customFieldStructure)
+
+        setCleanerAccess(customFieldStructure);
     };
 
     const handleCleanerAccessDetailsChange = (e) => {
-        setCleanerAccessDetails(e.target.value);
+        if (cleanerAccess) {
+            setCleanerAccess(''); // Clear the radio button selection if a note is entered
+        }
+        const customFieldID = customFields.filter((cf) => cf.label.trim() === "Access Notes").pop().id;
+        const customFieldStructure = {
+            id: customFieldID,
+            values: [
+                {
+                    value: e.target.value,
+                    other: null
+                }
+            ]
+        }
+
+        setCleanerAccessDetails(customFieldStructure);
     };
 
     const handleParkingSpotChange = (value) => {
@@ -120,28 +162,33 @@ export default function Step6({ formData, onStepDataChange }) {
                         <div className={styles.sectionTitle}>Cleaner access</div>
                         <div className={styles.subTitle}>Recommended for first clean</div>
                         <div className={styles.radioGroup}>
-                            {['Someone at home:2fd0417d-ee55-435c-832d-d1df63418ed2', 'Spare Keys:a4c3b014-a132-493d-9fb9-f37b4eecc771', 'Concierge:bd8b417b-6d7a-4c7f-9a94-fdb621d1cd5f', 'Key Safe:c05b72f2-ffd9-43d9-bf41-ad5a550f58fb', 'Hidden Key:a4c3b014-a132-493d-9fb9-f37b4eecc771'].map(option => (
-                                <label key={option} className={styles.radioOption}>
-                                    <input
-                                        type="radio"
-                                        name="cleanerAccess"
-                                        value={option}
-                                        checked={cleanerAccess === option}
-                                        onChange={(e) => handleCleanerAccessChange(e.target.value)}
-                                        className={styles.radioInput}
-                                    />
-                                    <span className={styles.radioLabel}>
-                                        <span className={styles.radioLabelText}>{option.split(':')[0]}</span>
-                                    </span>
-                                </label>
-                            ))}
-                            <textarea
-                                placeholder="Please provide key location, or person we should look for when asking for access"
-                                className={styles.additionalDetail}
-                                value={cleanerAccessDetails}
-                                onChange={handleCleanerAccessDetailsChange}
-                            ></textarea>
+                            {propertyAccessOptions && propertyAccessOptions.length > 0 ? (
+                                propertyAccessOptions.map(option => (
+                                    <label key={option.id} className={styles.radioOption}>
+                                        <input
+                                            type="radio"
+                                            name="cleanerAccess"
+                                            value={option.id}
+                                            checked={cleanerAccess?.values?.[0]?.id == option.id}
+                                            onChange={(e) => handleCleanerAccessChange(e.target.value)}
+                                            className={styles.radioInput}
+                                        />
+                                        <span className={styles.radioLabel}>
+                                            <span className={styles.radioLabelText}>{option.label}</span>
+                                        </span>
+                                    </label>
+                                ))
+                            ) : (
+                                <p>Loading options...</p>
+                            )}
                         </div>
+
+                        <textarea
+                            placeholder="Please provide key location, or person we should look for when asking for access"
+                            className={styles.additionalDetail}
+                            value={cleanerAccessDetails?.values?.[0]?.value || ''}
+                            onChange={handleCleanerAccessDetailsChange}
+                        ></textarea>
 
                         <div className={styles.sectionTitle}>Cleaner parking spot</div>
                         <div className={styles.radioGroup}>
@@ -201,11 +248,6 @@ export default function Step6({ formData, onStepDataChange }) {
                     )}
                     {formData?.step5?.selectedTime && <p>Starting Time: {formData.step5.selectedTime}</p>}
                     {formData?.step5?.beginTime && <p>Beginning Time: {formData.step5.beginTime}</p>}
-                    <h3>Address:</h3>
-                    {postcode && <p>Postcode: {postcode}</p>}
-                    {cleanerAccess && <p>Cleaner Access: {cleanerAccess.split(':')[0]}</p>}
-                    {cleanerAccessDetails && <p>Cleaner Access Details: {cleanerAccessDetails}</p>}
-                    {parkingSpot && <p>Parking Spot: {parkingSpot}</p>}
                 </div>
             </div>
         </>

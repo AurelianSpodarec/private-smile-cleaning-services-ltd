@@ -16,6 +16,12 @@ export default function Step5({ formData, onStepDataChange }) {
     const [spots, setSpots] = useState([]);
     const [frequencyId, setFrequencyId] = useState(formData?.step5?.frequencyId || null);
 
+    const [selectedSlot, setSelectedSlot] = useState({
+        hours: formData?.step5?.selectedSlot?.hours || '',
+        arrivalWindow: formData?.step5?.selectedSlot?.arrivalWindow || '',
+        isPremium: formData?.step5?.selectedSlot?.isPremium || false,
+    });
+
     useEffect(() => {
         const updatedFormData = {
             ...formData,
@@ -23,20 +29,21 @@ export default function Step5({ formData, onStepDataChange }) {
                 frequency,
                 frequencyId,
                 selectedDate,
-                selectedTime
-            }
+                selectedTime,
+                selectedSlot,
+            },
         };
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
         onStepDataChange(updatedFormData);
-    }, [frequency, frequencyId, selectedDate, selectedTime]);
+    }, [frequency, frequencyId, selectedDate, selectedTime, selectedSlot]);
 
     useEffect(() => {
         fetch(FREQUENCY_URL)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 setFrequencies(data);
             })
-            .catch(error => console.error('Error fetching frequencies:', error));
+            .catch((error) => console.error('Error fetching frequencies:', error));
     }, []);
 
     useEffect(() => {
@@ -50,15 +57,15 @@ export default function Step5({ formData, onStepDataChange }) {
         fetch(SPOTS_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ date: formattedDate, days, mode: 'new' })
+            body: JSON.stringify({ date: formattedDate, days, mode: 'new' }),
         })
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 setSpots(data);
             })
-            .catch(error => console.error('Error fetching spots:', error));
+            .catch((error) => console.error('Error fetching spots:', error));
     };
 
     const handleFrequencyChange = (freq) => {
@@ -66,13 +73,28 @@ export default function Step5({ formData, onStepDataChange }) {
         setFrequencyId(freq.id);
         setSelectedDate(null);
         setSelectedTime('');
+        setSelectedSlot({ hours: '', arrivalWindow: '', isPremium: false });
     };
 
-    const handleTimeChange = (value) => {
-        setSelectedTime(value);
+    const handleTimeChange = (timeSlot, startTime, endTime, isPremium) => {
+        setSelectedTime(`${startTime} - ${endTime}`);
+        setSelectedSlot({
+            hours: timeSlot.hours,
+            arrivalWindow: timeSlot.arrival_window,
+            isPremium,
+        });
     };
 
-    const availableTimes = spots.length > 0 ? spots[0].spots.filter(spot => spot.free) : [];
+    const availableTimes = spots.length > 0 ? spots[0].spots.filter((spot) => spot.free) : [];
+    const regularSpots = availableTimes.filter((spot) => spot.arrival_window === 240);
+    const premiumSpots = availableTimes.filter((spot) => spot.arrival_window === 120);
+
+    const formatTime = (hours, minutes, arrivalWindow) => {
+        const startTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        const endTime = new Date();
+        endTime.setHours(hours, minutes + arrivalWindow);
+        return `${startTime} - ${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}`;
+    };
 
     return (
         <>
@@ -106,29 +128,59 @@ export default function Step5({ formData, onStepDataChange }) {
                             placeholderText="Select Date"
                         />
 
-                        <div className={styles.sectionTitle}>Preferred Starting Time</div>
+                        <div className={styles.sectionTitle}>Regular Booking Spots</div>
                         <div className={styles.radioGroup}>
-                            {availableTimes.length > 0 ? (
-                                availableTimes.map((timeSlot, index) => {
-                                    const time = `${String(timeSlot.hours).padStart(2, '0')}:${String(timeSlot.minutes).padStart(2, '0')}`;
+                            {regularSpots.length > 0 ? (
+                                regularSpots.map((timeSlot, index) => {
+                                    const timeRange = formatTime(timeSlot.hours, timeSlot.minutes, timeSlot.arrival_window);
                                     return (
                                         <label key={index} className={styles.radioOption}>
                                             <input
                                                 type="radio"
                                                 name="startingTime"
-                                                value={time}
-                                                checked={selectedTime === time}
-                                                onChange={(e) => handleTimeChange(e.target.value)}
+                                                value={`${timeSlot.hours}-${timeSlot.minutes}-${timeSlot.arrival_window}-regular`}
+                                                checked={selectedTime === timeRange}
+                                                onChange={() =>
+                                                    handleTimeChange(timeSlot, timeRange.split(' - ')[0], timeRange.split(' - ')[1], false)
+                                                }
                                                 className={styles.radioInput}
                                             />
                                             <span className={styles.radioLabel}>
-                                                <span className={styles.radioLabelText}>{time}</span>
+                                                <span className={styles.radioLabelText}>{timeRange}</span>
                                             </span>
                                         </label>
                                     );
                                 })
                             ) : (
-                                <p>No available times for the selected date.</p>
+                                <p>No available regular times for the selected date.</p>
+                            )}
+                        </div>
+
+                        <div className={styles.sectionTitle}>Premium Booking Spots</div>
+                        <div className={styles.radioGroup}>
+                            {premiumSpots.length > 0 ? (
+                                premiumSpots.map((timeSlot, index) => {
+                                    const timeRange = formatTime(timeSlot.hours, timeSlot.minutes, timeSlot.arrival_window);
+                                    return (
+                                        <label key={index} className={styles.radioOption}>
+                                            <input
+                                                type="radio"
+                                                name="startingTime"
+                                                value={`${timeSlot.hours}-${timeSlot.minutes}-${timeSlot.arrival_window}-premium`}
+                                                checked={selectedTime === timeRange}
+                                                onChange={() =>
+                                                    handleTimeChange(timeSlot, timeRange.split(' - ')[0], timeRange.split(' - ')[1], true)
+                                                }
+                                                className={styles.radioInput}
+                                            />
+                                            <span className={styles.radioLabel}>
+                                                <span className={styles.radioLabelText}>{timeRange}</span>
+                                            </span>
+                                        </label>
+                                    );
+                                })
+                            ) : (
+                                <p>No available premium times for the selected date.</p>
                             )}
                         </div>
                     </div>
@@ -156,6 +208,7 @@ export default function Step5({ formData, onStepDataChange }) {
                     {frequency && <p>Frequency: {frequency}</p>}
                     {selectedDate && <p>Date: {selectedDate.toLocaleDateString()}</p>}
                     {selectedTime && <p>Starting Time: {selectedTime}</p>}
+                    {selectedSlot.isPremium ? <p>Premium Slot</p> : <p>Regular Slot</p>}
                 </div>
             </div>
         </>

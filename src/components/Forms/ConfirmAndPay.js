@@ -78,9 +78,19 @@ const ConfirmAndPay = () => {
 
     const formatServiceDate = (dateString, timeString) => {
         const date = new Date(dateString);
-        const [hours, minutes] = timeString.split(':');
+    
+        // Extract just the start time (HH:MM) from the timeString "08:00 - 12:00"
+        const startTime = timeString.split(' - ')[0]; 
+    
+        const [hours, minutes] = startTime.split(':').map(Number); // Ensure we convert hours and minutes to numbers
+        if (isNaN(hours) || isNaN(minutes)) {
+            console.error("Invalid time string provided:", timeString);
+            return null; // Return null if there's an error in the time string
+        }
         date.setUTCHours(hours);
         date.setUTCMinutes(minutes);
+        date.setUTCSeconds(0); // Set seconds to 0 to match the required format
+    
         const year = date.getUTCFullYear();
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const day = String(date.getUTCDate()).padStart(2, '0');
@@ -89,22 +99,23 @@ const ConfirmAndPay = () => {
         const second = String(date.getUTCSeconds()).padStart(2, '0');
         return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const customFieldsData = [
-            {
-                id: customFields.propertyAccessFieldId,
-                values: [{ id: customFields.propertyAccessValue }]
-            },
-            {
-                id: customFields.accessNotesFieldId,
-                value: customFields.accessNotesValue
-            }
-        ];
+            step6.cleanerAccess,
+            step6.cleanerAccessDetails
+        ].filter(field => field && (field.values && field.values[0] && (field.values[0].id || field.values[0].value)));
+        
 
         const serviceDate = formatServiceDate(step5.selectedDate, step5.selectedTime);
+
+        if (!serviceDate) {
+            console.error("Failed to format service date. Aborting submission.");
+            return;
+        }
 
         const bookingData = {
             user: {
@@ -120,7 +131,7 @@ const ConfirmAndPay = () => {
             sms_notifications: formData.smsNotifications,
             frequency_id: step5.frequencyId,
             service_date: serviceDate,
-            arrival_window: 30,
+            arrival_window: step5.selectedSlot.arrivalWindow,
             services: pricingParameters.map(service => ({
                 id: service.id,
                 pricing_parameters: Object.values(service.parameters).map(param => ({
@@ -146,8 +157,12 @@ const ConfirmAndPay = () => {
             });
             const result = await response.json();
             console.log('Booking successful', result);
+            alert("Booking successful")
+            localStorage.clear()
+            window.location.reload();
         } catch (error) {
             console.error('Error booking service:', error);
+            alert("Error booking service")
         }
     };
 
@@ -158,8 +173,6 @@ const ConfirmAndPay = () => {
                 <div className={styles.section}>
                     <h3>Address</h3>
                     <p><strong>Postcode:</strong> {step6?.postcode}</p>
-                    <p><strong>Cleaner Access:</strong> {step6?.cleanerAccess.split(':')[0]}</p>
-                    <p><strong>Note:</strong> {step6?.cleanerAccessDetails}</p>
                     <p><strong>Cleaner Parking Spot:</strong> {step6?.parkingSpot}</p>
                 </div>
                 <div className={styles.section}>

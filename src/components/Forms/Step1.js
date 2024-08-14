@@ -9,7 +9,7 @@ export default function Step1({ formData, onStepDataChange }) {
   const [selectedServices, setSelectedServices] = useState(formData?.services || {});
   const [pricingParameters, setPricingParameters] = useState(formData?.pricingParameters || []);
 
-  useEffect(() => {
+  useEffect(() => { 
     fetch('https://smile.launch27.com/latest/booking/services')
       .then(response => response.json())
       .then(data => {
@@ -19,11 +19,24 @@ export default function Step1({ formData, onStepDataChange }) {
   }, []);
 
   useEffect(() => {
-    // Notify parent component of the step data
-    onStepDataChange({
-      services: selectedServices,
-      pricingParameters: pricingParameters
-    });
+     // Check if it's the first time arriving at Step1
+     const isFirstTime = !localStorage.getItem('hasVisitedStep1');
+
+     if (isFirstTime) {
+       // Clear localStorage
+       localStorage.clear();
+ 
+       // Mark that the user has visited Step1
+       localStorage.setItem('hasVisitedStep1', 'true');
+     } else {
+        // Notify parent component of the step data
+        onStepDataChange({
+          services: selectedServices,
+          pricingParameters: pricingParameters
+        });
+     }
+
+   
   }, [selectedServices, pricingParameters, onStepDataChange]);
 
   const handleToggleService = (serviceName, serviceId) => {
