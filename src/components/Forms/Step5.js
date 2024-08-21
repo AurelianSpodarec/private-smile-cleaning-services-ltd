@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as styles from './Scheduler.module.css';
-
-const FREQUENCY_URL = 'https://smile.launch27.com/latest/booking/frequencies';
-const SPOTS_URL = 'https://smile.launch27.com/latest/booking/spots';
+import { getFrequencies, getBookingSpots } from '../../utils/launch27-client';
+import { getSummary } from './utils';
 
 export default function Step5({ formData, onStepDataChange }) {
     const parseDate = (date) => (date ? new Date(date) : new Date());
@@ -33,38 +32,54 @@ export default function Step5({ formData, onStepDataChange }) {
                 selectedSlot,
             },
         };
+
+        // Add or remove premium booking slot extra if selected
+        if (selectedSlot.isPremium) {
+            const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+            const premiumExtra = selectedService?.extras.find((extra) => extra.name === 'Premium Booking Slot');
+
+            if (premiumExtra) {
+                updatedFormData.counterStates = updatedFormData.counterStates || [];
+                const existingPremium = updatedFormData.counterStates.find((cs) => cs.service === 'Premium Booking Slot');
+
+                if (!existingPremium) {
+                    updatedFormData.counterStates.push({
+                        service: 'Premium Booking Slot',
+                        parameters: {
+                            'Premium Booking Slot': {
+                                quantity: 1,
+                                id: premiumExtra.id,
+                                price: premiumExtra.price,
+                                duration: 0, // no additional time for premium slot
+                            },
+                        },
+                    });
+                }
+            }
+        } else {
+            updatedFormData.counterStates = updatedFormData.counterStates.filter((cs) => cs.service !== 'Premium Booking Slot');
+        }
+
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
         onStepDataChange(updatedFormData);
     }, [frequency, frequencyId, selectedDate, selectedTime, selectedSlot]);
 
     useEffect(() => {
-        fetch(FREQUENCY_URL)
-            .then((response) => response.json())
-            .then((data) => {
-                setFrequencies(data);
-            })
+        getFrequencies()
+            .then((response) => setFrequencies(response.data))
             .catch((error) => console.error('Error fetching frequencies:', error));
     }, []);
 
     useEffect(() => {
         if (selectedDate) {
-            fetchAvailableSpots(selectedDate, 1); // Fetching spots for 1 day
+            fetchAvailableSpots(selectedDate, 1);
         }
     }, [selectedDate]);
 
     const fetchAvailableSpots = (date, days) => {
-        const formattedDate = date.toISOString().split('T')[0]; // Format date to YYYY-MM-DD
-        fetch(SPOTS_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ date: formattedDate, days, mode: 'new' }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setSpots(data);
-            })
+        const formattedDate = date.toISOString().split('T')[0];
+        getBookingSpots(formattedDate, days, 'new')
+            .then((response) => setSpots(response.data))
             .catch((error) => console.error('Error fetching spots:', error));
     };
 
@@ -186,29 +201,45 @@ export default function Step5({ formData, onStepDataChange }) {
                     </div>
                 </div>
                 <div className={styles.billFormStep3}>
-                    <h3>Summary</h3>
-                    {formData?.bedrooms !== undefined && (
-                        <p>Bedrooms: {formData.bedrooms}</p>
-                    )}
-                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
-                        <div key={service.service}>
-                            <p><b>{service.service}</b>:</p>
-                            {Object.entries(service.parameters).map(([param, value]) => (
-                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                    <h3>Order Summary</h3>
+                    <b>Schedule</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Recurring</td>
+                                <td>{frequency}</td>
+                            </tr>
+                            <tr>
+                                <td>Start Date</td>
+                                <td>{selectedDate ? selectedDate.toLocaleDateString() : '-'}</td>
+                            </tr>
+                            <tr>
+                                <td>Preferred Time</td>
+                                <td>{selectedTime}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <b>Order Details</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            {getSummary(formData.pricingParameters)}
+
+                            {/* Include extras from Step2 */}
+                            {formData?.counterStates.map(service => (
+                                <React.Fragment key={service.service}>
+                                    {Object.entries(service.parameters).map(([param, value]) => (
+                                        value.quantity > 0 && (
+                                            <tr key={param}>
+                                                <td>{value.quantity} {param} <br /> <p style={{ fontSize: "small" }}>({value.duration} minutes each)</p></td>
+                                                <td>£{(value.quantity * value.price).toFixed(2)}</td>
+                                            </tr>
+                                        )
+                                    ))}
+                                </React.Fragment>
                             ))}
-                        </div>
-                    ))}
-                    <h3>Extras</h3>
-                    {formData?.step2 && Object.entries(formData.step2).map(([key, value]) => (
-                        value ? <p key={key}>{key.replace('_', ' ')}</p> : null
-                    ))}
-                    <h3>Booked Time:</h3>
-                    {formData?.step3 && <p>Selected Hours: {formData.step3}</p>}
-                    {formData?.step4 && <p>Cleaning Supplies: {formData.step4 === 'yes' ? 'Yes, Please' : 'No, Thanks'}</p>}
-                    {frequency && <p>Frequency: {frequency}</p>}
-                    {selectedDate && <p>Date: {selectedDate.toLocaleDateString()}</p>}
-                    {selectedTime && <p>Starting Time: {selectedTime}</p>}
-                    {selectedSlot.isPremium ? <p>Premium Slot</p> : <p>Regular Slot</p>}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './BookingForm.module.css';
 import { getCountyCode } from './countyCodes';
+import { getCustomFields } from '../../utils/launch27-client';
+import { getSummary } from './utils';
 
 const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
 const URL = `https://api.ideal-postcodes.co.uk/v1/postcodes/`;
-const CUSTOM_FIELDS_URL = 'https://smile.launch27.com/latest/booking/custom_fields';
 
 export default function Step6({ formData, onStepDataChange }) {
     const [postcode, setPostcode] = useState(formData?.step6?.postcode || '');
@@ -17,12 +18,12 @@ export default function Step6({ formData, onStepDataChange }) {
     const [propertyAccessOptions, setPropertyAccessOptions] = useState(null);
 
     useEffect(() => {
-        fetch(CUSTOM_FIELDS_URL)
-            .then((response) => response.json())
-            .then((data) => {
-                setCustomFields(data);
+        // Fetch custom fields using the service client
+        getCustomFields()
+            .then((response) => {
+                setCustomFields(response.data);
             })
-            .catch((error) => console.error('Error fetching custom_fields:', error));
+            .catch((error) => console.error('Error fetching custom fields:', error));
     }, []);
 
     useEffect(() => {
@@ -98,8 +99,7 @@ export default function Step6({ formData, onStepDataChange }) {
                     other: null
                 }
             ]
-        }
-        console.log(customFieldStructure)
+        };
 
         setCleanerAccess(customFieldStructure);
     };
@@ -117,7 +117,7 @@ export default function Step6({ formData, onStepDataChange }) {
                     other: null
                 }
             ]
-        }
+        };
 
         setCleanerAccessDetails(customFieldStructure);
     };
@@ -211,43 +211,53 @@ export default function Step6({ formData, onStepDataChange }) {
                     </div>
                 </div>
                 <div className={styles.billForm}>
-                    <h3>Summary</h3>
-                    {formData?.bedrooms !== undefined && (
-                        <p>Bedrooms: {formData.bedrooms}</p>
-                    )}
-                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
-                        <div key={service.service}>
-                            <p><b>{service.service}</b>:</p>
-                            {Object.entries(service.parameters).map(([param, value]) => (
-                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                    <h3>Order Summary</h3>
+                    <b>Schedule</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Recurring</td>
+                                <td>{formData?.step5?.frequency || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td>Start Date</td>
+                                <td>{formData?.step5?.selectedDate ? new Date(formData.step5.selectedDate).toLocaleDateString() : '-'}</td>
+                            </tr>
+                            <tr>
+                                <td>Preferred Time</td>
+                                <td>{formData?.step5?.selectedTime || '-'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <b>Order Details</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            {getSummary(formData.pricingParameters)}
+
+                            {/* Include extras from Step2 */}
+                            {formData?.counterStates.map(service => (
+                                <React.Fragment key={service.service}>
+                                    {Object.entries(service.parameters).map(([param, value]) => (
+                                        value.quantity > 0 && (
+                                            <tr key={param}>
+                                                <td>{value.quantity} {param} <br /> <p style={{ fontSize: "small" }}>({value.duration} minutes each)</p></td>
+                                                <td>£{(value.quantity * value.price).toFixed(2)}</td>
+                                            </tr>
+                                        )
+                                    ))}
+                                </React.Fragment>
                             ))}
-                        </div>
-                    ))}
-                    <h3>Extras</h3>
-                    {formData?.step2 && Object.entries(formData.step2).map(([key, value]) => (
-                        value ? <p key={key}>{key.replace('_', ' ')}</p> : null
-                    ))}
-                    <h3>Booked Time:</h3>
-                    {formData?.step3 && <p>Selected Hours: {formData.step3}</p>}
-                    {formData?.step4 && <p>Cleaning Supplies: {formData.step4 === 'yes' ? 'Yes, Please' : 'No, Thanks'}</p>}
-                    {formData?.step5?.frequency && <p>Frequency: {formData.step5.frequency}</p>}
-                    {formData?.step5?.frequency === 'Daily' && formData.step5.startDate && formData.step5.endDate && (
-                        <p>Date Range: {new Date(formData.step5.startDate).toLocaleDateString()} - {new Date(formData.step5.endDate).toLocaleDateString()}</p>
-                    )}
-                    {formData?.step5?.frequency === 'Multiple per Week' && formData.step5.selectedDays.length > 0 && formData.step5.startDate && formData.step5.endDate && (
-                        <>
-                            <p>Days: {formData.step5.selectedDays.join(', ')}</p>
-                            <p>Date Range: {new Date(formData.step5.startDate).toLocaleDateString()} - {new Date(formData.step5.endDate).toLocaleDateString()}</p>
-                        </>
-                    )}
-                    {formData?.step5?.frequency === 'Weekly' && formData.step5.startDate && formData.step5.endDate && (
-                        <p>Date Range: {new Date(formData.step5.startDate).toLocaleDateString()} - {new Date(formData.step5.endDate).toLocaleDateString()}</p>
-                    )}
-                    {formData?.step5?.frequency && formData.step5.frequency !== 'Daily' && formData.step5.frequency !== 'Multiple per Week' && formData.step5.frequency !== 'Weekly' && formData.step5.selectedDate && (
-                        <p>{formData.step5.frequency === 'Once' ? 'Date' : 'Day'}: {new Date(formData.step5.selectedDate).toLocaleDateString()}</p>
-                    )}
-                    {formData?.step5?.selectedTime && <p>Starting Time: {formData.step5.selectedTime}</p>}
-                    {formData?.step5?.beginTime && <p>Beginning Time: {formData.step5.beginTime}</p>}
+
+                            {/* Include cleaning supplies if selected */}
+                            {formData.step4 === 'yes' && (
+                                <tr>
+                                    <td>Cleaning Supplies</td>
+                                    <td>£6.00</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

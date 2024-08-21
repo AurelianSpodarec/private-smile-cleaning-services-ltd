@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HoursSelection from './HoursSelection';
 import * as styles from './HoursSelection.module.css';
+import { getSummary, toHours } from './utils';
 
 const hours = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
 
@@ -8,55 +9,47 @@ export default function Step3({ formData, onStepDataChange }) {
     const [selectedHour, setSelectedHour] = useState(formData?.step3 || null);
     const [disabledOptions, setDisabledOptions] = useState([]);
     const [recommendedHour, setRecommendedHour] = useState(null);
-    const [servicesData, setServicesData] = useState([]);
+    const [selectedService, setSelectedService] = useState(null);
 
     useEffect(() => {
-        // Fetch services data to get the durations
-        fetch('https://smile.launch27.com/latest/booking/services')
-            .then(response => response.json())
-            .then(data => {
-                setServicesData(data);
-            })
-            .catch(error => console.error('Error fetching services:', error));
+        // Retrieve the selected service from localStorage
+        const storedService = JSON.parse(localStorage.getItem('selectedService'));
+        if (storedService) {
+            setSelectedService(storedService);
+        }
     }, []);
 
     useEffect(() => {
-        if (servicesData.length > 0) {
+        if (selectedService) {
             // Calculate total duration from step1 and step2 selections
-            const { bedrooms, pricingParameters, step2 } = formData;
+            const { bedrooms, pricingParameters, counterStates } = formData;
             let totalDuration = 0;
 
             // Calculate duration for bedrooms
             if (bedrooms) {
-                const bedroomService = servicesData.find(service => service.pricing_parameters?.some(p => p.name === 'Bedrooms'));
-                const bedroomParam = bedroomService?.pricing_parameters?.find(p => p.name === 'Bedrooms');
+                const bedroomParam = selectedService.pricing_parameters.find(p => p.name === 'Bedrooms');
                 totalDuration += bedrooms * (bedroomParam?.duration || 30); // Default 30 minutes per bedroom
             }
 
             // Calculate duration for other pricing parameters
             if (pricingParameters) {
-                pricingParameters.forEach(service => {
-                    Object.entries(service.parameters).forEach(([paramName, paramData]) => {
-                        const paramService = servicesData.find(s => s.pricing_parameters?.some(p => p.name === paramName));
-                        const param = paramService?.pricing_parameters?.find(p => p.name === paramName);
-                        if (param) {
-                            totalDuration += paramData.quantity * (param.duration || 0);
-                        }
-                    });
+                Object.entries(pricingParameters).forEach(([paramName, paramData]) => {
+                    const param = selectedService.pricing_parameters.find(p => p.name === paramName);
+                    if (param) {
+                        totalDuration += paramData.quantity * (param.duration || 0);
+                    }
                 });
             }
 
             // Calculate duration for extras
-            if (step2) {
-                Object.entries(step2).forEach(([extraName, value]) => {
-                    if (value) {
-                        servicesData.forEach(service => {
-                            const extra = service.extras?.find(e => e.name === extraName);
-                            if (extra) {
-                                totalDuration += extra.quantity_based ? value * (extra.duration || 0) : (extra.duration || 0);
-                            }
-                        });
-                    }
+            if (counterStates) {
+                counterStates.forEach(service => {
+                    Object.entries(service.parameters).forEach(([extraName, paramData]) => {
+                        const extra = selectedService.extras?.find(e => e.name === extraName);
+                        if (extra) {
+                            totalDuration += paramData.quantity * (extra.duration || 0);
+                        }
+                    });
                 });
             }
 
@@ -66,7 +59,7 @@ export default function Step3({ formData, onStepDataChange }) {
             const disabled = hours.filter(hour => hour < closestHour);
             setDisabledOptions(disabled);
         }
-    }, [formData, servicesData]);
+    }, [formData, selectedService]);
 
     useEffect(() => {
         if (selectedHour !== null) {
@@ -96,27 +89,47 @@ export default function Step3({ formData, onStepDataChange }) {
                         disabledOptions={disabledOptions}
                         recommendedHour={recommendedHour}
                     />
-                    <p>Selected hour: {selectedHour}</p>
                 </div>
                 <div className={styles.billFormStep3}>
-                    <h3>Summary</h3>
-                    {formData?.bedrooms !== undefined && (
-                        <p>Bedrooms: {formData.bedrooms}</p>
-                    )}
-                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
-                        <div key={service.service}>
-                            <p><b>{service.service}</b>:</p>
-                            {Object.entries(service.parameters).map(([param, value]) => (
-                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                    <h3>Order Summary</h3>
+                    <b>Schedule</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Recurring</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Start Date</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Preferred Time</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <b>Order Details</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            {getSummary(formData.pricingParameters)}
+
+                            {/* Include extras in the Order Details */}
+                            {formData?.counterStates.map(service => (
+                                <React.Fragment key={service.service}>
+                                    {Object.entries(service.parameters).map(([param, value]) => (
+                                        value.quantity > 0 && (
+                                            <tr key={param}>
+                                                <td>{value.quantity} {param} <br /> <p style={{ fontSize: "small" }}>({value.duration} minutes each)</p></td>
+                                                <td>£{(value.quantity * value.price).toFixed(2)}</td>
+                                            </tr>
+                                        )
+                                    ))}
+                                </React.Fragment>
                             ))}
-                        </div>
-                    ))}
-                    <h3>Extras</h3>
-                    {formData?.step2 && Object.entries(formData.step2).map(([key, value]) => (
-                        value ? <p key={key}>{key.replace('_', ' ')}</p> : null
-                    ))}
-                    <h3>Booked Time:</h3>
-                    {selectedHour && <p>Hours: {selectedHour}</p>}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

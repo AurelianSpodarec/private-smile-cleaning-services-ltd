@@ -1,30 +1,110 @@
 const axios = require('axios')
 
-const baseUrl = "https://smile.launch27.com/latest"
-const token = "live_JfK0XlqejIKqhsAY6Cr0"
 
-const getBookingForm = async () => {
-    const endpoint = "/booking/form"
+const inferBaseUrl = () => {
+    if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+
+        if (hostname === 'smile.cleaning') {
+            return "https://smile.launch27.com/latest";
+        } else if (hostname === 'staging.smile.cleaning' || hostname === 'localhost') {
+            return "https://smile-sandbox.launch27.com/latest";
+        }
+    }
+    return "https://smile.launch27.com/latest";
+};
+
+const inferToken = () => {
+    if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+
+        if (hostname === 'smile.cleaning') {
+            return "live_JfK0XlqejIKqhsAY6Cr0";
+        } else if (hostname === 'staging.smile.cleaning' || hostname === 'localhost') {
+            return "sandbox_gxgtsLJIsDSuxtubStfw";
+        }
+    }
+    return "sandbox_gxgtsLJIsDSuxtubStfw";
+}
+
+const baseUrl = inferBaseUrl()
+const token = inferToken()
+
+const getSettings = async () => {
+    const endpoint = "/settings"
     const requestUrl = `${baseUrl}${endpoint}`
-    console.log(requestUrl)
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: requestUrl,
-        headers: { }
-      };
-      
 
-    const data = await axios.request(config)
+    const settings = await axios.get(requestUrl)
         .catch((error) => {
-            console.log(error);
-            return null
-        });
+            console.error(error)
+            return null;
+        })
 
+    return settings
+}
 
-    return data.data;
+const getServices = () => {
+    const endpoint = "/booking/services"
+    const requestUrl = `${baseUrl}${endpoint}`
+
+    const services = axios.get(requestUrl)
+
+    return services
+}
+
+const getFrequencies = () => {
+    const endpoint = "/booking/frequencies"
+    const requestUrl = `${baseUrl}${endpoint}`
+
+    const frequencies = axios.get(requestUrl)
+
+    return frequencies
+}
+
+const getBookingSpots = (date, days, mode) => {
+    const endpoint = "/booking/spots"
+    const requestUrl = `${baseUrl}${endpoint}`
+
+    const spots = axios.post(requestUrl, {
+        date,
+        days,
+        mode
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return spots
+}
+
+const getCustomFields = () => {
+    const endpoint = "/booking/custom_fields"
+    const requestUrl = `${baseUrl}${endpoint}`
+
+    const customFields = axios.get(requestUrl)
+
+    return customFields
+}
+
+const sendBooking = (bookingData) => {
+    const endpoint = "/booking"
+    const requestUrl = `${baseUrl}${endpoint}`
+
+    const bookingResult = axios.post(requestUrl, bookingData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return bookingResult
 }
 
 module.exports = {
-    getBookingForm
+    getServices,
+    getSettings,
+    getFrequencies,
+    getBookingSpots,
+    getCustomFields,
+    sendBooking
 }

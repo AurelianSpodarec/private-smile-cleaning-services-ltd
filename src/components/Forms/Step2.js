@@ -3,29 +3,25 @@ import ToggleSwitch from './ToggleSwitch';
 import CounterInput from './CounterInput';
 import * as styles from './BookingForm.module.css';
 import { serviceImageMap } from './serviceImageMap';
+import { getSummary } from './utils';
 
 export default function Step2({ formData, onStepDataChange }) {
     const initialState = formData?.step2 || {};
     const [toggleStates, setToggleStates] = useState(initialState);
     const [counterStates, setCounterStates] = useState(formData?.counterStates || []);
-    const [extrasByService, setExtrasByService] = useState([]);
+    const [extras, setExtras] = useState([]);
 
     useEffect(() => {
-        fetch('https://smile.launch27.com/latest/booking/services')
-            .then(response => response.json())
-            .then(data => {
-                // Filter extras based on selected services from Step1
-                const selectedServices = formData?.services || {};
-                const filteredExtras = data
-                    .filter(service => selectedServices[service.name])
-                    .map(service => ({
-                        serviceName: service.name,
-                        extras: service.extras,
-                    }));
-                setExtrasByService(filteredExtras);
-            })
-            .catch(error => console.error('Error fetching extras:', error));
-    }, [formData]);
+        // Load selected service from localStorage
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+        if (selectedService && selectedService.extras) {
+            // Filter out unwanted extras
+            const filteredExtras = selectedService.extras.filter(
+                (extra) => extra.name !== 'Cleaning Products' && extra.name !== 'Premium Booking Slot'
+            );
+            setExtras(filteredExtras);
+        }
+    }, []);
 
     useEffect(() => {
         // Sync component state with formData when the component mounts or formData changes
@@ -49,16 +45,16 @@ export default function Step2({ formData, onStepDataChange }) {
         }));
     };
 
-    const handleCounterIncrement = (serviceName, extra) => {
+    const handleCounterIncrement = (extra) => {
         setCounterStates(prev => {
-            const serviceIndex = prev.findIndex(p => p.service === serviceName);
-            if (serviceIndex >= 0) {
-                const updatedService = {
-                    ...prev[serviceIndex],
+            const existingIndex = prev.findIndex(p => p.service === extra.name);
+            if (existingIndex >= 0) {
+                const updatedExtra = {
+                    ...prev[existingIndex],
                     parameters: {
-                        ...prev[serviceIndex].parameters,
+                        ...prev[existingIndex].parameters,
                         [extra.name]: {
-                            quantity: (prev[serviceIndex].parameters[extra.name]?.quantity || 0) + 1,
+                            quantity: (prev[existingIndex].parameters[extra.name]?.quantity || 0) + 1,
                             id: extra.id,
                             price: extra.price,
                             duration: extra.duration
@@ -66,13 +62,13 @@ export default function Step2({ formData, onStepDataChange }) {
                     }
                 };
                 return [
-                    ...prev.slice(0, serviceIndex),
-                    updatedService,
-                    ...prev.slice(serviceIndex + 1)
+                    ...prev.slice(0, existingIndex),
+                    updatedExtra,
+                    ...prev.slice(existingIndex + 1)
                 ];
             } else {
-                const newService = {
-                    service: serviceName,
+                const newExtra = {
+                    service: extra.name,
                     parameters: {
                         [extra.name]: {
                             quantity: 1,
@@ -82,21 +78,21 @@ export default function Step2({ formData, onStepDataChange }) {
                         }
                     }
                 };
-                return [...prev, newService];
+                return [...prev, newExtra];
             }
         });
     };
 
-    const handleCounterDecrement = (serviceName, extra) => {
+    const handleCounterDecrement = (extra) => {
         setCounterStates(prev => {
-            const serviceIndex = prev.findIndex(p => p.service === serviceName);
-            if (serviceIndex >= 0) {
-                const updatedService = {
-                    ...prev[serviceIndex],
+            const existingIndex = prev.findIndex(p => p.service === extra.name);
+            if (existingIndex >= 0) {
+                const updatedExtra = {
+                    ...prev[existingIndex],
                     parameters: {
-                        ...prev[serviceIndex].parameters,
+                        ...prev[existingIndex].parameters,
                         [extra.name]: {
-                            quantity: Math.max((prev[serviceIndex].parameters[extra.name]?.quantity || 0) - 1, 0),
+                            quantity: Math.max((prev[existingIndex].parameters[extra.name]?.quantity || 0) - 1, 0),
                             id: extra.id,
                             price: extra.price,
                             duration: extra.duration
@@ -104,9 +100,9 @@ export default function Step2({ formData, onStepDataChange }) {
                     }
                 };
                 return [
-                    ...prev.slice(0, serviceIndex),
-                    updatedService,
-                    ...prev.slice(serviceIndex + 1)
+                    ...prev.slice(0, existingIndex),
+                    updatedExtra,
+                    ...prev.slice(existingIndex + 1)
                 ];
             }
             return prev;
@@ -123,67 +119,75 @@ export default function Step2({ formData, onStepDataChange }) {
             </div>
             <div className="row">
                 <div className="col-9">
-                    {extrasByService.map(({ serviceName, extras }) => (
-                        <div key={serviceName} className="pb-15">
-                            <h3 className={styles.serviceName}>{serviceName}</h3>
-                            <div className={styles.divider}></div>
-                            {extras.map(extra => (
-                                <div key={extra.id} className="row pb-15">
-                                    <div className="col">
-                                        <img
-                                            className={styles.homeLayoutImg}
-                                            src={serviceImageMap[extra.name] || '/img/booking/default.png'}
-                                            alt={`do you need ${extra.name.toLowerCase()}?`}
-                                        />
-                                        <span className={styles.spaceLeft}><b>{extra.name}</b></span>
-                                    </div>
-                                    <div className="col">
-                                        {extra.quantity_based ? (
-                                            <CounterInput
-                                                count={counterStates.find(p => p.service === serviceName)?.parameters[extra.name]?.quantity || 0}
-                                                onIncrement={() => handleCounterIncrement(serviceName, extra)}
-                                                onDecrement={() => handleCounterDecrement(serviceName, extra)}
-                                            />
-                                        ) : (
-                                            <ToggleSwitch
-                                                initialValue={toggleStates[extra.name] || false}
-                                                onToggle={(value) => handleToggle(extra.name, value)}
-                                            />
-                                        )}
-                                    </div>
+                    {extras.map(extra => (
+                        <div key={extra.id} className="pb-15">
+                            <div className="row">
+                                <div className="col">
+                                    <img
+                                        className={styles.homeLayoutImg}
+                                        src={serviceImageMap[extra.name] || '/img/booking/default.png'}
+                                        alt={`do you need ${extra.name.toLowerCase()}?`}
+                                    />
+                                    <span className={styles.spaceLeft}><b>{extra.name}</b></span>
                                 </div>
-                            ))}
-                            <div className={styles.divider}></div>
+                                <div className="col">
+                                    {extra.quantity_based ? (
+                                        <CounterInput
+                                            count={counterStates.find(p => p.service === extra.name)?.parameters[extra.name]?.quantity || 0}
+                                            onIncrement={() => handleCounterIncrement(extra)}
+                                            onDecrement={() => handleCounterDecrement(extra)}
+                                        />
+                                    ) : (
+                                        <ToggleSwitch
+                                            initialValue={toggleStates[extra.name] || false}
+                                            onToggle={(value) => handleToggle(extra.name, value)}
+                                        />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
                 <div className={styles.billForm}>
-                    <h3>Summary</h3>
-                    {/* Display summary from step 1 */}
-                    {formData?.bedrooms !== undefined && (
-                        <p>Bedrooms: {formData.bedrooms}</p>
-                    )}
-                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
-                        <div key={service.service}>
-                            <p><b>{service.service}</b>:</p>
-                            {Object.entries(service.parameters).map(([param, value]) => (
-                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
-                            ))}
-                        </div>
-                    ))}
-                    <h3>Extras</h3>
-                    {/* Display summary from step 2 */}
-                    {Object.entries(toggleStates).map(([key, value]) => (
-                        value ? <p key={key}>{key.replace('_', ' ')}</p> : null
-                    ))}
-                    {Object.entries(counterStates).map(([service, data]) => (
-                        <div key={service}>
-                            <p><b>{service}</b>:</p>
-                            {Object.entries(data.parameters).map(([param, value]) => (
-                                value.quantity > 0 ? <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p> : null
-                            ))}
-                        </div>
-                    ))}
+                    <h3>Order Summary</h3>
+                    <b>Schedule</b>
+                    <table className='table table-hover'>
+                        <tbody>
+                        <tr>
+                            <td>Recurring</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Preferred Time</td>
+                            <td>-</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <b>Order Details</b>
+                    <table className='table table-hover'>
+                        <tbody>
+                        {getSummary(formData.pricingParameters)}
+
+                        {/* Add extras to the Order Details */}
+                        {counterStates.map(service => (
+                            <React.Fragment key={service.service}>
+                                {Object.entries(service.parameters).map(([param, value]) => (
+                                    value.quantity > 0 && (
+                                        <tr key={param}>
+                                            <td>{value.quantity} {param} <br/> <p style={{fontSize: "small"}}>({value.duration} minutes each)</p></td>
+                                            <td>£{(value.quantity * value.price).toFixed(2)}</td>
+                                        </tr>
+                                    )
+                                ))}
+                            </React.Fragment>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './BookingForm.module.css';
+import { getSummary } from './utils';
 
 export default function Step4({ formData, onStepDataChange }) {
     const [selectedOption, setSelectedOption] = useState(formData?.step4 || '');
@@ -14,6 +15,10 @@ export default function Step4({ formData, onStepDataChange }) {
     useEffect(() => {
         onStepDataChange({ step4: selectedOption });
     }, [selectedOption, onStepDataChange]);
+
+    const cleaningSuppliesExtra = JSON.parse(localStorage.getItem('selectedService'))?.extras.find(
+        (extra) => extra.name === 'Cleaning Products'
+    );
 
     return (
         <>
@@ -37,7 +42,7 @@ export default function Step4({ formData, onStepDataChange }) {
                             />
                             <label className={styles.checkboxLabel}>
                                 <span className={styles.checkboxLabelTitle}>Yes, Please</span>
-                                <span className={styles.checkboxLabelDescription}>Our agent will bring the cleaning products for additional £6.00</span>
+                                <span className={styles.checkboxLabelDescription}>Our agent will bring the cleaning products for additional £{cleaningSuppliesExtra?.price.toFixed(2)}</span>
                             </label>
                         </div>
                         <div
@@ -58,25 +63,53 @@ export default function Step4({ formData, onStepDataChange }) {
                     </div>
                 </div>
                 <div className={styles.billForm}>
-                    <h3>Summary</h3>
-                    {formData?.bedrooms !== undefined && (
-                        <p>Bedrooms: {formData.bedrooms}</p>
-                    )}
-                    {formData?.pricingParameters && formData.pricingParameters.map(service => (
-                        <div key={service.service}>
-                            <p><b>{service.service}</b>:</p>
-                            {Object.entries(service.parameters).map(([param, value]) => (
-                                <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
+                    <h3>Order Summary</h3>
+                    <b>Schedule</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Recurring</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Start Date</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Preferred Time</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <b>Order Details</b>
+                    <table className="table table-hover">
+                        <tbody>
+                            {getSummary(formData.pricingParameters)}
+
+                            {/* Include the cleaning supplies option in the Order Details */}
+                            {selectedOption === 'yes' && cleaningSuppliesExtra && (
+                                <tr>
+                                    <td>Cleaning Supplies <br /> <p style={{ fontSize: "small" }}>Eco-friendly, sustainable products</p></td>
+                                    <td>£{cleaningSuppliesExtra.price.toFixed(2)}</td>
+                                </tr>
+                            )}
+
+                            {/* Include extras from Step2 */}
+                            {formData?.counterStates.map(service => (
+                                <React.Fragment key={service.service}>
+                                    {Object.entries(service.parameters).map(([param, value]) => (
+                                        value.quantity > 0 && (
+                                            <tr key={param}>
+                                                <td>{value.quantity} {param} <br /> <p style={{ fontSize: "small" }}>({value.duration} minutes each)</p></td>
+                                                <td>£{(value.quantity * value.price).toFixed(2)}</td>
+                                            </tr>
+                                        )
+                                    ))}
+                                </React.Fragment>
                             ))}
-                        </div>
-                    ))}
-                    <h3>Extras</h3>
-                    {formData?.step2 && Object.entries(formData.step2).map(([key, value]) => (
-                        value ? <p key={key}>{key.replace('_', ' ')}</p> : null
-                    ))}
-                    <h3>Booked Time:</h3>
-                    {formData?.step3 && <p>Hours: {formData.step3}</p>}
-                    {selectedOption && <p>Cleaning Supplies: {selectedOption === 'yes' ? 'Yes, Please' : 'No, Thanks'}</p>}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

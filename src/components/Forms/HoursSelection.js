@@ -17,7 +17,7 @@ const HoursSelection = ({ onSelect, disabledOptions = [], recommendedHour }) => 
 
   return (
     <div className={styles.hoursContainer}>
-      <div className={styles.hoursTitle}>Estimate number of hours needed for the cleaning</div>
+      
       <div className={styles.hoursSelectionContainer}>
         {hours.map((hour) => (
           <div

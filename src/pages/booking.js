@@ -1,13 +1,13 @@
 import * as React from "react"
 
 import Layout1 from '../layouts/Layout1'
-import AppSlider1 from '../components/Home1/AppSlider1'
+import ServiceSelector from "../components/Service/ServiceSelector"
 
 const BookingPage = () => {
     return(
         
             <Layout1>
-                <AppSlider1/>
+                <ServiceSelector/>
             </Layout1>
         
     )
