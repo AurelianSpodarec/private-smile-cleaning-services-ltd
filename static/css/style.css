@@ -17278,7 +17278,8 @@ div.page__title-content h2, div.page__title-content .h2 {
 }
 @media (min-width: 768px) and (max-width: 1459px){
   .hero-content-conatiner{
-    margin: 0; 
+    margin-left: 637px;
+    margin-top: -455px;
   }
 }
 

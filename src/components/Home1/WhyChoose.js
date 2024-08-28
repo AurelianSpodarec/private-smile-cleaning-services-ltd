@@ -138,7 +138,7 @@ export default function WhyChoose() {
                                 </div>
                             </div>
                             <div className="col-xl-12 col-lg-12 col-md-12 mb-50 mt-30 text-center">
-                                <Link to="/sign-up" className="btn btn-primary btn-explore">Book Now</Link>
+                                <Link to="/booking" className="btn btn-primary btn-explore">Book Now</Link>
                             </div>
                         </div>
                         <div className='col div-why'>

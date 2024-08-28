@@ -153,7 +153,7 @@ export default function MegaSlider() {
                 </div>
                 <div className='row'>
                     <div className="col-xl-12 col-lg-12 col-md-12 mt-30 service">
-                        <Link to="/sign-up" className="btn btn-primary" style={{width: "217px"}}>Book Now</Link>
+                        <Link to="/booking" className="btn btn-primary" style={{width: "217px"}}>Book Now</Link>
                     </div>
                 </div>
             </div>

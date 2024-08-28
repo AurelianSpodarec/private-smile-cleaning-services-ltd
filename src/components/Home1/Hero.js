@@ -1,31 +1,43 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
+import { getCountyCode } from '../Forms/countyCodes';
+
+import * as styles from '../Forms/BookingForm.module.css';
+
+const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
+const URL = `https://api.ideal-postcodes.co.uk/v1/postcodes/`;
 
 export default function NewHeroSection() {
   const [zipcode, setZipcode] = useState('');
   const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
 
+  const [postcode, setPostcode] = useState('');
+  const [results, setResults] = useState([]);
+  const [error, setError] = useState(null);
+
   // TODO: Make coverage areas manageable in wp?
   const coveredPostalCodes = [
       'E4', 'E17', 'E11', 'E10', 'E18', 'IG7', 'IG8', 'IG10', 'EN9'
   ];
 
-  const handleZipcodeChange = (e) => {
-      setZipcode(e.target.value);
-  };
-
   const handleEmailChange = (e) => {
       setEmail(e.target.value);
   };
 
+  const zipCodeSupported = (candidate) => {
+    const normalizedCandidate = candidate.replace(/\s+/g, '').toUpperCase();
+    return coveredPostalCodes.some((code) => normalizedCandidate.startsWith(code));
+  }
+
   const handleSubmit = (e) => {
       e.preventDefault();
-      const prefix = zipcode.toUpperCase().substring(0, 3);
-      if (coveredPostalCodes.includes(prefix)) {
-      navigate('/sign-up', { state: { zipcode } });
+      
+      console.log(zipcode)
+      if (zipCodeSupported(zipcode)) {
+        navigate('/booking', { state: { zipcode } });
       } else {
-      setShowModal(true);
+        setShowModal(true);
       }
   };
 
@@ -37,6 +49,46 @@ export default function NewHeroSection() {
       console.log(`Email submitted for coverage notification: ${email}`);
       // TODO: add email to mailing list
       setShowModal(false);
+  };
+
+  const handlePostcodeChange = async (e) => {
+    const inputValue = e.target.value;
+    setPostcode(inputValue);
+
+    if (inputValue.length >= 6) {
+        try {
+            const response = await fetch(`${URL}${inputValue}?api_key=${API_KEY}`);
+            const data = await response.json();
+            if (data.result) {
+                setResults(data.result);
+                setError(null);
+            } else {
+                setResults([]);
+                setError('No results found');
+            }
+        } catch (err) {
+            setResults([]);
+            setError('Error fetching postcode');
+        }
+    } else {
+        setResults([]);
+    }
+  };
+
+  const handleSelectPostcode = (result) => {
+    const address = `${result.line_1}, ${result.line_2}, ${result.line_3}, ${result.post_town}, ${result.postcode}`;
+    const selectedAddress = {
+        line1: result.line_1,
+        line2: result.line_2,
+        line3: result.line_3,
+        city: result.post_town,
+        postcode: result.postcode,
+        county: getCountyCode(result.traditional_county)
+    };
+    localStorage.setItem("selectedAddress", JSON.stringify(selectedAddress));
+    setPostcode(address);
+    setZipcode(selectedAddress.postcode);
+    setResults([]);
   };
 
   return (
@@ -58,13 +110,23 @@ export default function NewHeroSection() {
                     <div className="col">
                       <label className='pb-2 label-code' htmlFor='zipcode' >Postcode</label>
                       <input
-                      type="text"
-                      className="form-control form-control-lg"
-                      id="zipcode"
-                      placeholder="Enter your location or postcode"
-                      value={zipcode}
-                      onChange={handleZipcodeChange}
+                        type="text"
+                        className="form-control form-control-lg"
+                        id="zipcode"
+                        placeholder="Enter your postcode"
+                        value={postcode}
+                        onChange={handlePostcodeChange}
                       />
+                      {results.length > 0 && (
+                          <ul className={styles.postCode}>
+                              {results.map((result, index) => (
+                                  <li key={index} onClick={() => handleSelectPostcode(result)}>
+                                      {result.line_1}, {result.line_2}, {result.line_3}, {result.post_town}, {result.postcode}
+                                  </li>
+                              ))}
+                          </ul>
+                      )}
+                      {error && <p className={styles.postcodeError}>{error}</p>}
                     </div>
                   </div>
                   <div className="row pt-10">

@@ -46,7 +46,7 @@ export default function Header() {
                             </div>
                             <div className="col-xl-10 col-lg-10 col-md-4 col-8 min-head">
                                 <div className="header-btn f-right d-md-block">
-                                    <Link to="/sign-in" className="btn btn-primary header-button">Sign In</Link>
+                                    <Link to="/login" className="btn btn-primary header-button">Sign In</Link>
                                 </div>
                                 <div className="main-menu colormenu d-none d-lg-block">
                                     <NavBar />

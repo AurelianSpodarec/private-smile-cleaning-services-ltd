@@ -41,7 +41,7 @@ export default function FeaturesContent() {
                         />
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 text-center mb-50">
-                        <Link to="/sign-up" className="btn btn-primary responsive-button" >Book Now</Link>
+                        <Link to="/booking" className="btn btn-primary responsive-button" >Book Now</Link>
                     </div>
                 </div>
             </div>

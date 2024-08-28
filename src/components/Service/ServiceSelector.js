@@ -17,7 +17,7 @@ const ServiceSelector = () => {
 
     const handleBookNow = (service) => {
         localStorage.setItem('selectedService', JSON.stringify(service));
-        window.location.href = '/sign-up';
+        window.location.href = '/service-booking';
     };
 
     const handleGetCall = () => {

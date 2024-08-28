@@ -61,7 +61,7 @@ export default function ExploreServices() {
                         </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 text-center">
-                        <Link to="/sign-up" className="btn btn-primary btn-explore" >Book Now</Link>
+                        <Link to="/booking" className="btn btn-primary btn-explore" >Book Now</Link>
                     </div>
                 </div>
             </div>
