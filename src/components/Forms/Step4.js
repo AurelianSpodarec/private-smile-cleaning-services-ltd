@@ -3,22 +3,34 @@ import * as styles from './BookingForm.module.css';
 import { getSummary } from './utils';
 
 export default function Step4({ formData, onStepDataChange }) {
-    const [selectedOption, setSelectedOption] = useState(formData?.step4 || '');
-
-    const handleOptionChange = (value) => {
-        setSelectedOption(value);
-        // Store selected option in localStorage
-        const updatedFormData = { ...formData, step4: value };
-        localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
-    };
-
-    useEffect(() => {
-        onStepDataChange({ step4: selectedOption });
-    }, [selectedOption, onStepDataChange]);
+    const cacheValue = (typeof formData?.step4) == 'object' ? 'yes': 'no'
+    const [selectedOption, setSelectedOption] = useState(cacheValue);
 
     const cleaningSuppliesExtra = JSON.parse(localStorage.getItem('selectedService'))?.extras.find(
         (extra) => extra.name === 'Cleaning Products'
     );
+
+    const handleOptionChange = (value) => {
+        setSelectedOption(value);
+        // Store selected option in localStorage
+        let updatedFormData = { ...formData };
+        if(value == "yes") {
+            updatedFormData = { ...formData, step4: cleaningSuppliesExtra };
+        } else {
+            updatedFormData = { ...formData, step4: "no" };
+        }
+
+        localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
+    };
+
+    useEffect(() => {
+        if(selectedOption == "yes") {
+            onStepDataChange({ step4:  cleaningSuppliesExtra });
+        } else {
+            onStepDataChange({ step4:  "no" });
+        }
+        
+    }, [selectedOption, onStepDataChange]);
 
     return (
         <>

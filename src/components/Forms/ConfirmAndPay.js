@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getSettings, sendBooking } from '../../utils/launch27-client';
 import * as styles from './ConfirmAndPay.module.css';
+import * as styles2 from './BookingForm.module.css';
+import { getSummary } from './utils';
+import { Link } from 'gatsby'
+
+const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
+const URL = `https://api.ideal-postcodes.co.uk/v1/postcodes/`;
 
 const ConfirmAndPay = () => {
     const [settings, setSettings] = useState(null);
@@ -12,6 +18,16 @@ const ConfirmAndPay = () => {
     const [cardNumber, setCardNumber] = useState('');
     const [cardCVC, setCardCVC] = useState('');
     const [cardExpiration, setCardExpiration] = useState('');
+    const [hideBillingAddress, setHideBillingAddress] = useState(false)
+    const [addressLine1, setAddressLine1] = useState('')
+    const [addressLine2, setAddressLine2] = useState('')
+    const [town, setTown] = useState('')
+    const [county, setCounty] = useState('')
+    const [postCode, setPostCode] = useState('') // The one in the billing address form
+
+    // postcode fetching
+    const [results, setResults] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -42,21 +58,30 @@ const ConfirmAndPay = () => {
     }
 
     const {
-        bedrooms,
         pricingParameters,
         step2,
         step3,
         step4,
         step5,
         step6,
-        customFields
     } = formData;
+
+    const getAccessOptions = () => {
+        const values = formData?.step6
+        const fieldId = values.cleanerAccess.id
+        const valueId = values.cleanerAccess.values[0].id
+        const fields = JSON.parse(localStorage.getItem("customFields"));
+        const matchingField = fields.filter(f => f.id == fieldId).pop()
+        const matchingOption = matchingField.options.filter(o => o.id == valueId).pop()
+        
+        return matchingOption.label
+    }
 
     const calculateTotal = () => {
         let total = 0;
-        if (bedrooms) {
-            total += bedrooms * 39;
-        }
+        const selectedService = JSON.parse(localStorage.getItem("selectedService"))
+        total += selectedService.price
+        
         if (pricingParameters) {
             Object.values(pricingParameters).forEach(param => {
                 total += param.quantity * param.price;
@@ -69,7 +94,7 @@ const ConfirmAndPay = () => {
                 });
             });
         }
-        if (step4 === 'yes') total += 6;
+        if (step4 !== 'no') total += step4.price;
         return total;
     };
 
@@ -195,74 +220,234 @@ const ConfirmAndPay = () => {
         }
     };
 
+    const toggleBillingAddress = (e) => {
+        setHideBillingAddress(e.target.checked)
+    }
+
+    const handlePostcodeChange = async (e) => {
+        const inputValue = e.target.value;
+        setPostCode(e.target.value)
+        
+        if (inputValue.length >= 6) {
+            try {
+                const response = await fetch(`${URL}${inputValue}?api_key=${API_KEY}`);
+                const data = await response.json();
+                if (data.result) {
+                    setResults(data.result);
+                    setError(null);
+                } else {
+                    setResults([]);
+                    setError('No results found');
+                }
+            } catch (err) {
+                setResults([]);
+                setError('Error fetching postcode');
+            }
+        } else {
+            setResults([]);
+        }
+    }
+
+    const handleSelectPostcode = (selected) => {
+         // TODO: send this somewhere
+        setAddressLine1(selected.line_1);
+        setAddressLine2(selected.line_2 + " " + selected.line_3)
+        setTown(selected.post_town)
+        setCounty(selected.traditional_county)
+        setResults([]);
+    }
+
     return (
         <div className="container pt-120 pb-120">
             <div className={styles.confirmAndPay}>
                 <h2>Confirm and Pay</h2>
                 <div className={styles.section}>
                     <h3>Address</h3>
-                    <p><strong>Postcode:</strong> {step6?.postcode}</p>
-                    <p><strong>Cleaner Parking Spot:</strong> {step6?.parkingSpot}</p>
+                    <table className="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>Cleaning Address</td>
+                                <td style={{textAlign: "right"}}>{step6?.postcode}</td>
+                            </tr>
+                            <tr>
+                                <td>Cleaner Access</td>
+                                <td style={{textAlign: "right"}}>{getAccessOptions()}</td>
+                            </tr>
+                            <tr>
+                                <td>Note</td>
+                                <td style={{textAlign: "right"}}>{step6?.cleanerAccessDetails || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td>Parking Spot</td>
+                                <td style={{textAlign: "right"}}>{step6?.parkingSpot}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div className={styles.section}>
                     <h3>Schedule</h3>
-                    <p><strong>Frequency:</strong> {step5?.frequency}</p>
-                    {step5?.selectedDate && <p><strong>Date:</strong> {new Date(step5.selectedDate).toLocaleDateString()}</p>}
-                    {step5?.selectedTime && <p><strong>Preferred Time:</strong> {step5.selectedTime}</p>}
+                    <table className="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>Recurring</td>
+                                <td style={{textAlign: "right"}}>{step5?.frequency}</td>
+                            </tr>
+                            <tr>
+                                <td>Start Date</td>
+                                <td style={{textAlign: "right"}}>{new Date(step5.selectedDate).toLocaleDateString()}</td>
+                            </tr>
+                            <tr>
+                                <td>Preferred Time</td>
+                                <td style={{textAlign: "right"}}>{step5.selectedTime}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    
                 </div>
                 <div className={styles.section}>
                     <h3>Order details</h3>
-                    {Object.entries(pricingParameters).map(([param, value]) => (
-                        <p key={param}>{param}: {value.quantity} x £{value.price.toFixed(2)} = £{(value.quantity * value.price).toFixed(2)} ({value.duration} minutes each)</p>
-                    ))}
-                    {step4 === 'yes' && <p>Cleaning Supplies: £6.00</p>}
-                    <p><strong>Sub Total:</strong> £{total}</p>
-                    <p><strong>VAT (20%):</strong> £{(total * 0.2).toFixed(2)}</p>
-                    <p><strong>Total:</strong> £{(total * 1.2).toFixed(2)}</p>
-                </div>
-                <div className={styles.section}>
-                    <h3>User Information</h3>
-                    <div className={styles.inputContainer}>
-                        <label className={styles.inputLabel} htmlFor="email">Email</label>
-                        <input id="email" type="email" className={styles.textInput} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <label className={styles.inputLabel} htmlFor="firstName">First Name</label>
-                        <input id="firstName" type="text" className={styles.textInput} placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <label className={styles.inputLabel} htmlFor="lastName">Last Name</label>
-                        <input id="lastName" type="text" className={styles.textInput} placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                    </div>
+                    <table className="table table-borderless">
+                        <tbody>
+                            {getSummary(formData.pricingParameters)}
+                             {/* Include the cleaning supplies option in the Order Details */}
+                             {formData?.step4 && (
+                                <tr>
+                                    <td>Cleaning Supplies <br /> <p style={{ fontSize: "small" }}>Eco-friendly, sustainable products</p></td>
+                                    <td style={{textAlign: "right"}}>£{formData?.step4.price.toFixed(2)}</td>
+                                </tr>
+                            )}
+                            {/* Include extras from Step2 */}
+                            {formData?.counterStates.map(service => (
+                                <React.Fragment key={service.service}>
+                                    {Object.entries(service.parameters).map(([param, value]) => (
+                                        value.quantity > 0 && (
+                                            <tr key={param}>
+                                                <td>{value.quantity} {param} <br /> <p style={{ fontSize: "small" }}>({value.duration} minutes each)</p></td>
+                                                <td style={{textAlign: "right"}}>£{(value.quantity * value.price).toFixed(2)}</td>
+                                            </tr>
+                                        )
+                                    ))}
+                                </React.Fragment>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <hr/>
+                    <table className="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>Sub Total</td>
+                                <td style={{textAlign: "right"}}>£{total}</td>
+                            </tr>
+                            <tr>
+                                <td>VAT (20%)</td>
+                                <td style={{textAlign: "right"}}>£{(total * 0.2).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td style={{fontSize: "x-large"}}>Total: </td>
+                                <td style={{textAlign: "right", fontSize: "x-large"}}>£{(total * 1.2).toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                   
                 </div>
                 <div className={styles.section}>
                     <h3>Payment Method</h3>
                     <form onSubmit={handleSubmit}>
                         <div className={styles.inputContainer}>
                             <label className={styles.inputLabel} htmlFor="cardName">Card Holder Name</label>
-                            <input id="cardName" type="text" className={styles.textInput} placeholder="Card Holder Name" required />
+                            <input id="cardName" type="text" className={styles.textInput} required />
                         </div>
                         <div className={styles.inputContainer}>
                             <label className={styles.inputLabel} htmlFor="cardNumber">Card Number</label>
-                            <input id="cardNumber" type="text" className={styles.textInput} value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder="1234 5678 9012 3456" required />
+                            <input id="cardNumber" type="text" className={styles.textInput} value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} required />
+                        </div>
+                        <div className='row'>
+                            <div className='col'>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="expiry">Expiry (MM/YY)</label>
+                                    <input id="expiry" type="text" className={styles.textInput} value={cardExpiration} onChange={(e) => setCardExpiration(e.target.value)} required />
+                                </div>
+                            </div>
+                            <div className='col'>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="cvv">SVN</label>
+                                    <input id="cvv" type="text" className={styles.textInput} value={cardCVC} onChange={(e) => setCardCVC(e.target.value)} required />
+                                </div>
+                            </div>
+                        </div>
+                        <h4>Billing Address</h4>
+                        <p>Billing address should match the card address</p>
+                        <div className='row'>
+                            <div className='col'>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="firstName">First Name</label>
+                                    <input id="firstName" type="text" className={styles.textInput} value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+                                </div>
+                            </div>
+                            <div className='col'>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="lastName">Last Name</label>
+                                    <input id="lastName" type="text" className={styles.textInput} value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+                                </div>
+                            </div>
                         </div>
                         <div className={styles.inputContainer}>
-                            <label className={styles.inputLabel} htmlFor="expiry">Expiry</label>
-                            <input id="expiry" type="text" className={styles.textInput} value={cardExpiration} onChange={(e) => setCardExpiration(e.target.value)} placeholder="MM/YY" required />
+                            <label className={styles.inputLabel} htmlFor="email">Email</label>
+                            <input id="email" type="email" className={styles.textInput} value={email} onChange={(e) => setEmail(e.target.value)} required />
                         </div>
                         <div className={styles.inputContainer}>
-                            <label className={styles.inputLabel} htmlFor="cvv">CVV</label>
-                            <input id="cvv" type="text" className={styles.textInput} value={cardCVC} onChange={(e) => setCardCVC(e.target.value)} placeholder="123" required />
+                            <input className="form-check-input" type="checkbox" value={hideBillingAddress} onClick={toggleBillingAddress} id="sameAddress" />
+                            <label className={styles.formCheckLabel} for="sameAddress">
+                                Same address as cleaning address
+                            </label>
                         </div>
-                        <div className={styles.inputContainer}>
-                            <label className={styles.inputLabel} htmlFor="billingAddress">Billing Address</label>
-                            <input id="billingAddress" type="text" className={styles.textInput} placeholder="Billing Address" required />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <label className={styles.inputLabel} htmlFor="postcode">Postcode</label>
-                            <input id="postcode" type="text" className={styles.textInput} placeholder="Postcode" required />
-                        </div>
-                        <button type="submit" className="btn btn-primary">Confirm and Pay</button>
+                        {!hideBillingAddress && (
+                            <>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="postcode">Postcode</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="search-box"><i className="fal fa-search"></i></span>
+                                        <input id="postcode" type="text" className="form-control" value={postCode} onChange={handlePostcodeChange} placeholder="Enter your location or postcode" aria-describedby="search-box" required />
+                                    </div>
+                                    {results.length > 0 && (
+                                        <ul className={styles2.postCode}>
+                                            {results.map((result, index) => (
+                                                <li key={index} onClick={() => handleSelectPostcode(result)}>
+                                                    {result.line_1}, {result.line_2}, {result.line_3}, {result.post_town}, {result.postcode}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="addressLine1">Address Line 1</label>
+                                    <input id="addressLine1" type="text" className={styles.textInput} value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} required />
+                                </div>
+                                <div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel} htmlFor="addressLine2">Address Line 2 (optional)</label>
+                                    <input id="addressLine2" type="text" className={styles.textInput} value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} />
+                                </div>
+                                <div className='row'>
+                                    <div className='col'>
+                                        <div className={styles.inputContainer}>
+                                            <label className={styles.inputLabel} htmlFor="town">Town / City</label>
+                                            <input id="town" type="text" className={styles.textInput} value={town} onChange={(e) => setTown(e.target.value)} required />
+                                        </div>
+                                    </div>
+                                    <div className='col'>
+                                        <div className={styles.inputContainer}>
+                                            <label className={styles.inputLabel} htmlFor="county">County (if applicable)</label>
+                                            <input id="county" type="text" className={styles.textInput} value={county} onChange={(e) => setCounty(e.target.value)} required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        <hr/>
+                        <p>By selecting the button below, I aggree to Smile Cleaning's <Link to="/page/terms-of-use/">Terms and Conditions</Link> and <Link to="/page/privacy-policy/">Privacy Policy</Link></p>
+                        <button type="submit" className="btn btn-primary" style={{width: "100%"}}>Confirm and Pay</button>
                     </form>
                 </div>
             </div>

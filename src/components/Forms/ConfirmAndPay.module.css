@@ -27,8 +27,17 @@
 }
 
 .inputLabel {
+    color: #2A2B2E;
     display: block;
     margin-bottom: 5px;
+}
+
+.formCheckLabel {
+    color: #2A2B2E;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 10px;
 }
 
 .textInput {

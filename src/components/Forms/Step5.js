@@ -77,9 +77,25 @@ export default function Step5({ formData, onStepDataChange }) {
     }, [selectedDate]);
 
     const fetchAvailableSpots = (date, days) => {
-        const formattedDate = date.toISOString().split('T')[0];
+        // const formattedDate = date.toISOString().split('T')[0];
+        const formattedDate = date.toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          }).split('/').reverse().join('-');
+        
         getBookingSpots(formattedDate, days, 'new')
-            .then((response) => setSpots(response.data))
+            .then((response) => {
+                const availableSpots = response.data
+                if(availableSpots[0].spots) {
+                    console.log("we have spots!")
+                    setSpots(availableSpots)
+                } else {
+                    console.log("we do not have spots!")
+                    setSpots([])
+                }
+                
+            })
             .catch((error) => console.error('Error fetching spots:', error));
     };
 
@@ -224,6 +240,14 @@ export default function Step5({ formData, onStepDataChange }) {
                     <table className="table table-hover">
                         <tbody>
                             {getSummary(formData.pricingParameters)}
+
+                            {/* Include the cleaning supplies option in the Order Details */}
+                            {formData?.step4 && (
+                                <tr>
+                                    <td>Cleaning Supplies <br /> <p style={{ fontSize: "small" }}>Eco-friendly, sustainable products</p></td>
+                                    <td>£{formData?.step4.price.toFixed(2)}</td>
+                                </tr>
+                            )}
 
                             {/* Include extras from Step2 */}
                             {formData?.counterStates.map(service => (

@@ -100,11 +100,25 @@ const sendBooking = (bookingData) => {
     return bookingResult
 }
 
+const estimateCost = (payload) => {
+    const endpoint = "/booking/estimate_price"
+    const requestUrl = `${baseUrl}${endpoint}`
+
+    const estimate = axios.post(requestUrl, payload, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return estimate
+}
+
 module.exports = {
     getServices,
     getSettings,
     getFrequencies,
     getBookingSpots,
     getCustomFields,
-    sendBooking
+    sendBooking,
+    estimateCost
 }

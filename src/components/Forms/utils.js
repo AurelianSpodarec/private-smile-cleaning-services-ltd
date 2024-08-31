@@ -20,10 +20,13 @@ export const getSummary = (servicePricingParameters) => {
     }
   });
 
+  const selectedService = JSON.parse(localStorage.getItem("selectedService"))
+  totalPrice += selectedService.price
+
   return (
     <tr>
       <td>{totalHours.toFixed(1)} Hours Cleaning <br/> <p style={{fontSize: "small"}}>({details.join(', ')})</p> </td>
-      <td>£{totalPrice.toFixed(2)}</td>
+      <td style={{textAlign: "right"}}>£{totalPrice.toFixed(2)}</td>
     </tr>
   );
 };

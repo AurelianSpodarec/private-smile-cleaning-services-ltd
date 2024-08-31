@@ -29,6 +29,7 @@ export default function Step6({ formData, onStepDataChange }) {
     useEffect(() => {
         if (customFields) {
             const cleanerAccessOptions = customFields.filter((cf) => cf.label.trim() === "Property Access" && cf.control_type === "radio_buttons");
+            localStorage.setItem('customFields', JSON.stringify(customFields))
             setPropertyAccessOptions(cleanerAccessOptions[0].options);
         }
     }, [customFields]);
@@ -235,6 +236,13 @@ export default function Step6({ formData, onStepDataChange }) {
                         <tbody>
                             {getSummary(formData.pricingParameters)}
 
+                            {/* Include the cleaning supplies option in the Order Details */}
+                            {formData?.step4 && (
+                                <tr>
+                                    <td>Cleaning Supplies <br /> <p style={{ fontSize: "small" }}>Eco-friendly, sustainable products</p></td>
+                                    <td>£{formData?.step4.price.toFixed(2)}</td>
+                                </tr>
+                            )}
                             {/* Include extras from Step2 */}
                             {formData?.counterStates.map(service => (
                                 <React.Fragment key={service.service}>
@@ -248,14 +256,6 @@ export default function Step6({ formData, onStepDataChange }) {
                                     ))}
                                 </React.Fragment>
                             ))}
-
-                            {/* Include cleaning supplies if selected */}
-                            {formData.step4 === 'yes' && (
-                                <tr>
-                                    <td>Cleaning Supplies</td>
-                                    <td>£6.00</td>
-                                </tr>
-                            )}
                         </tbody>
                     </table>
                 </div>
