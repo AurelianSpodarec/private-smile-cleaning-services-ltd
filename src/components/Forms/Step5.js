@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as styles from './Scheduler.module.css';
-import { getFrequencies, getBookingSpots } from '../../utils/launch27-client';
+import { getFrequencies, getBookingSpots, estimateCost } from '../../utils/launch27-client';
 import { getSummary } from './utils';
 
 export default function Step5({ formData, onStepDataChange }) {
@@ -14,6 +14,7 @@ export default function Step5({ formData, onStepDataChange }) {
     const [selectedTime, setSelectedTime] = useState(formData?.step5?.selectedTime || '');
     const [spots, setSpots] = useState([]);
     const [frequencyId, setFrequencyId] = useState(formData?.step5?.frequencyId || null);
+    const [estimateTotal, setEstimateTotal] = useState(0);
 
     const [selectedSlot, setSelectedSlot] = useState({
         hours: formData?.step5?.selectedSlot?.hours || '',
@@ -62,6 +63,9 @@ export default function Step5({ formData, onStepDataChange }) {
 
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
         onStepDataChange(updatedFormData);
+
+        // Call function to update cost estimate
+        updateEstimate(updatedFormData);
     }, [frequency, frequencyId, selectedDate, selectedTime, selectedSlot]);
 
     useEffect(() => {
@@ -77,24 +81,22 @@ export default function Step5({ formData, onStepDataChange }) {
     }, [selectedDate]);
 
     const fetchAvailableSpots = (date, days) => {
-        // const formattedDate = date.toISOString().split('T')[0];
         const formattedDate = date.toLocaleDateString('en-GB', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
-          }).split('/').reverse().join('-');
+        }).split('/').reverse().join('-');
         
         getBookingSpots(formattedDate, days, 'new')
             .then((response) => {
-                const availableSpots = response.data
-                if(availableSpots[0].spots) {
-                    console.log("we have spots!")
-                    setSpots(availableSpots)
+                const availableSpots = response.data;
+                if (availableSpots[0].spots) {
+                    console.log("we have spots!");
+                    setSpots(availableSpots);
                 } else {
-                    console.log("we do not have spots!")
-                    setSpots([])
+                    console.log("we do not have spots!");
+                    setSpots([]);
                 }
-                
             })
             .catch((error) => console.error('Error fetching spots:', error));
     };
@@ -114,6 +116,51 @@ export default function Step5({ formData, onStepDataChange }) {
             arrivalWindow: timeSlot.arrival_window,
             isPremium,
         });
+    };
+
+    const updateEstimate = (updatedFormData) => {
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+
+        if (selectedService && selectedDate) {
+            const formattedDate = selectedDate.toISOString().split('T')[0] + "T08:00:00"; // Use selected date
+           
+            // Prepare extras, including cleaning supplies if selected
+            const extras = updatedFormData.counterStates.flatMap((service) =>
+                Object.entries(service.parameters)
+                    .filter(([_, value]) => value.quantity > 0)
+                    .map(([_, value]) => ({
+                        id: value.id,
+                        quantity: value.quantity
+                    }))
+            );
+
+            // Add cleaning supplies if selected
+            if (updatedFormData.step4 && updatedFormData.step4 !== 'no') {
+                extras.push({
+                    id: updatedFormData.step4.id,
+                    quantity: 1
+                });
+            }
+
+            const costPayload = {
+                service_date: formattedDate,
+                frequency_id: frequencyId || 1, // Adjust as needed
+                services: [{
+                    id: selectedService.id,
+                    pricing_parameters: Object.entries(updatedFormData.pricingParameters).map(([name, param]) => ({
+                        id: param.id,
+                        quantity: param.quantity,
+                    })),
+                    extras: extras
+                }]
+            };
+
+            estimateCost(costPayload)
+                .then((data) => {
+                    setEstimateTotal(data.data.total);
+                })
+                .catch((error) => console.error('Error estimating cost:', error));
+        }
     };
 
     const availableTimes = spots.length > 0 ? spots[0].spots.filter((spot) => spot.free) : [];
@@ -264,6 +311,7 @@ export default function Step5({ formData, onStepDataChange }) {
                             ))}
                         </tbody>
                     </table>
+                    <b>Sub Total: £{estimateTotal.toFixed(2)}</b>
                 </div>
             </div>
         </>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import HoursSelection from './HoursSelection';
 import * as styles from './HoursSelection.module.css';
 import { getSummary, toHours } from './utils';
+import { estimateCost } from '../../utils/launch27-client'; // Import the estimateCost function
 
 const hours = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
 
@@ -10,6 +11,7 @@ export default function Step3({ formData, onStepDataChange }) {
     const [disabledOptions, setDisabledOptions] = useState([]);
     const [recommendedHour, setRecommendedHour] = useState(null);
     const [selectedService, setSelectedService] = useState(null);
+    const [estimateTotal, setEstimateTotal] = useState(0); // State to hold the estimated total cost
 
     useEffect(() => {
         // Retrieve the selected service from localStorage
@@ -66,6 +68,47 @@ export default function Step3({ formData, onStepDataChange }) {
             onStepDataChange({ step3: selectedHour });
         }
     }, [selectedHour, onStepDataChange]);
+
+    // Trigger cost estimation whenever pricing parameters, counterStates, or selectedHour change
+    useEffect(() => {
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+
+        if (selectedService) {
+            const date = new Date(); // Assume today
+            const formattedDate = date.toLocaleDateString('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            }).split('/').reverse().join('-') + "T08:00:00";
+
+            // Prepare the payload for cost estimation
+            const costPayload = {
+                service_date: formattedDate,
+                frequency_id: 1, // Adjust as needed
+                services: [{
+                    id: selectedService.id,
+                    pricing_parameters: Object.entries(formData.pricingParameters).map(([name, param]) => ({
+                        id: param.id,
+                        quantity: param.quantity,
+                    })),
+                    extras: formData.counterStates.flatMap((service) =>
+                        Object.entries(service.parameters)
+                            .filter(([_, value]) => value.quantity > 0)
+                            .map(([_, value]) => ({
+                                id: value.id,
+                                quantity: value.quantity
+                            }))
+                    )
+                }]
+            };
+
+            estimateCost(costPayload)
+                .then((data) => {
+                    setEstimateTotal(data.data.total);
+                })
+                .catch((error) => console.error('Error estimating cost:', error));
+        }
+    }, [formData.pricingParameters, formData.counterStates, selectedHour]); // Trigger whenever these dependencies change
 
     const handleHourSelect = (hour) => {
         setSelectedHour(hour);
@@ -130,6 +173,7 @@ export default function Step3({ formData, onStepDataChange }) {
                             ))}
                         </tbody>
                     </table>
+                    <b>Sub Total: £{estimateTotal.toFixed(2)}</b>
                 </div>
             </div>
         </>

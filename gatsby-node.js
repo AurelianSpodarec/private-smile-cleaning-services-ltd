@@ -1,98 +1,101 @@
-const path = require('path')
+const path = require('path');
 
 exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
   /**
    * PAGES
    */
   const result = await graphql(`
     query {
-      allWpPost(
-        filter: {
-          categories: { nodes: { elemMatch: { name: { eq: "pages" } } } }
-        }
-      ) {
+      allWpPost(filter: { categories: { nodes: { elemMatch: { name: { eq: "pages" } } } } }) {
         nodes {
           slug
+          seo {
+            fullHead
+            metaDesc
+            title
+          }
         }
       }
     }
-  `)
+  `);
 
   if (result.errors) {
-    console.error(result.errors)
-    return
+    console.error(result.errors);
+    throw new Error("Failed to fetch pages.");
   }
 
-  const pages = result.data.allWpPost.nodes
+  const pages = result.data.allWpPost.nodes;
 
   pages.forEach(post => {
-    console.log(`Creating page: /page/${post.slug}`)
+    console.log(`Creating page: /page/${post.slug}`);
     createPage({
       path: `/page/${post.slug}`,
       component: path.resolve(`./src/templates/post.js`),
       context: {
         slug: post.slug,
+        seo: post.seo // Pass SEO data to the context
       },
-    })
-  })
+    });
+  });
 
   //--------------------------------------------------------------------------------------
 
   const postsResult = await graphql(`
     query {
-      allWpPost(
-        filter: {
-          categories: { nodes: { elemMatch: { name: { eq: "Dev" } } } }
-        }
-      ) {
+      allWpPost(filter: { categories: { nodes: { elemMatch: { name: { eq: "Dev" } } } } }) {
         edges {
           node {
             title
             slug
             id
             content
+            seo {
+              fullHead
+              metaDesc
+              title
+            }
           }
         }
       }
     }
-  `)
+  `);
 
   if (postsResult.errors) {
-    console.error(postsResult.errors)
-    return
+    console.error(postsResult.errors);
+    throw new Error("Failed to fetch blog posts.");
   }
 
-  const blog = postsResult.data.allWpPost.edges
+  const blog = postsResult.data.allWpPost.edges;
 
   blog.forEach(({ node }) => {
-    // Desestructuración correcta
-    console.log(`Creating blogPost: /posts/${node.slug}`)
+    console.log(`Creating blogPost: /posts/${node.slug}`);
     createPage({
       path: `/posts/${node.slug}`,
       component: path.resolve("./src/templates/blog-list.js"),
       context: {
         slug: node.slug,
+        seo: node.seo // Pass SEO data to the context
       },
-    })
-  })
+    });
+  });
 
   const postsPerPage = 20;
   const totalPages = Math.ceil(blog.length / postsPerPage);
 
   Array.from({ length: totalPages }).forEach((_, i) => {
-    const thePath = i === 0 ? `/blog` : `/blog/${i}`
-    console.log(`Creating blogPostList: ${thePath}`)
+    const pathBase = i === 0 ? `/blog` : `/blog/${i + 1}`;
+    console.log(`Creating blogPostList: ${pathBase}`);
     createPage({
-      path: thePath,
+      path: pathBase,
       component: path.resolve("./src/templates/blog-posts.js"),
       context: {
         limit: postsPerPage,
         skip: i * postsPerPage,
         totalPages,
-        currentPage: i,
+        currentPage: i + 1,
       }
-    })
+    });
   });
-}
+};

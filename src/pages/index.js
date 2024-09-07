@@ -12,9 +12,32 @@ import WhyChoose from "../components/Home1/WhyChoose"
 import MegaSlider from "../components/Home1/MegaSlider"
 import OurTeam from "../components/Team/OurTeam"
 
+import { graphql, useStaticQuery } from 'gatsby';
+import { Helmet } from 'react-helmet';
+
 const IndexPage = () => {
+    // Fetch the SEO data for the "home" page
+    const data = useStaticQuery(graphql`
+        query {
+        wpPage(slug: { eq: "home" }) {
+            seo {
+            fullHead
+            metaDesc
+            title
+            }
+        }
+        }
+    `);
+
+    const seo = data.wpPage.seo;
+
     return(
         <>
+            <Helmet>
+                <title>{seo.title}</title>
+                <meta name="description" content={seo.metaDesc} />
+                <div dangerouslySetInnerHTML={{ __html: seo.fullHead }} />
+            </Helmet>
             <Layout1>
                 <NewHeroSection />
                 <ExploreServices />

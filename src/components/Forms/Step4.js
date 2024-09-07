@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './BookingForm.module.css';
 import { getSummary } from './utils';
+import { estimateCost } from '../../utils/launch27-client';
 
 export default function Step4({ formData, onStepDataChange }) {
-    const cacheValue = (typeof formData?.step4) == 'object' ? 'yes': 'no'
+    const cacheValue = (typeof formData?.step4) == 'object' ? 'yes' : 'no';
     const [selectedOption, setSelectedOption] = useState(cacheValue);
+    const [estimateTotal, setEstimateTotal] = useState(0); // State to hold the estimated total cost
 
     const cleaningSuppliesExtra = JSON.parse(localStorage.getItem('selectedService'))?.extras.find(
         (extra) => extra.name === 'Cleaning Products'
@@ -12,24 +14,71 @@ export default function Step4({ formData, onStepDataChange }) {
 
     const handleOptionChange = (value) => {
         setSelectedOption(value);
-        // Store selected option in localStorage
         let updatedFormData = { ...formData };
-        if(value == "yes") {
+        if (value === "yes") {
             updatedFormData = { ...formData, step4: cleaningSuppliesExtra };
         } else {
             updatedFormData = { ...formData, step4: "no" };
         }
 
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
+        updateEstimate(updatedFormData); // Call function to update cost estimate
+    };
+
+    const updateEstimate = (updatedFormData) => {
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+
+        if (selectedService) {
+            const date = new Date(); // Assume today
+            const formattedDate = date.toLocaleDateString('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            }).split('/').reverse().join('-') + "T08:00:00";
+
+            // Prepare the payload for cost estimation
+            const costPayload = {
+                service_date: formattedDate,
+                frequency_id: 1, // Adjust as needed
+                services: [{
+                    id: selectedService.id,
+                    pricing_parameters: Object.entries(updatedFormData.pricingParameters).map(([name, param]) => ({
+                        id: param.id,
+                        quantity: param.quantity,
+                    })),
+                    extras: [
+                        ...updatedFormData.counterStates.flatMap((service) =>
+                            Object.entries(service.parameters)
+                                .filter(([_, value]) => value.quantity > 0)
+                                .map(([_, value]) => ({
+                                    id: value.id,
+                                    quantity: value.quantity
+                                }))
+                        ),
+                        ...(selectedOption === 'yes' ? [{ id: cleaningSuppliesExtra.id, quantity: 1 }] : [])
+                    ]
+                }]
+            };
+
+            estimateCost(costPayload)
+                .then((data) => {
+                    setEstimateTotal(data.data.total);
+                })
+                .catch((error) => console.error('Error estimating cost:', error));
+        }
     };
 
     useEffect(() => {
-        if(selectedOption == "yes") {
-            onStepDataChange({ step4:  cleaningSuppliesExtra });
+        // Call the estimate function initially
+        updateEstimate(formData);
+    }, []);
+
+    useEffect(() => {
+        if (selectedOption === "yes") {
+            onStepDataChange({ step4: cleaningSuppliesExtra });
         } else {
-            onStepDataChange({ step4:  "no" });
+            onStepDataChange({ step4: "no" });
         }
-        
     }, [selectedOption, onStepDataChange]);
 
     return (
@@ -122,6 +171,7 @@ export default function Step4({ formData, onStepDataChange }) {
                             ))}
                         </tbody>
                     </table>
+                    <b>Sub Total: £{estimateTotal.toFixed(2)}</b>
                 </div>
             </div>
         </>

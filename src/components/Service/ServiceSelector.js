@@ -16,6 +16,9 @@ const ServiceSelector = () => {
     }, [])
 
     const handleBookNow = (service) => {
+        // clear previous bookings
+        localStorage.clear();
+        // start fresh
         localStorage.setItem('selectedService', JSON.stringify(service));
         window.location.href = '/service-booking';
     };

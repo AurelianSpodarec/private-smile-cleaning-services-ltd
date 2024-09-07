@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getSettings, sendBooking } from '../../utils/launch27-client';
+import { getSettings, sendBooking, estimateCost } from '../../utils/launch27-client';
 import * as styles from './ConfirmAndPay.module.css';
 import * as styles2 from './BookingForm.module.css';
 import { getSummary } from './utils';
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 
 const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
 const URL = `https://api.ideal-postcodes.co.uk/v1/postcodes/`;
@@ -28,7 +28,8 @@ const ConfirmAndPay = () => {
     // postcode fetching
     const [results, setResults] = useState([]);
     const [error, setError] = useState(null);
-
+    const [estimateTotal, setEstimateTotal] = useState(0);
+    
     useEffect(() => {
         const fetchSettings = async () => {
             const settingsResponse = await getSettings();
@@ -52,6 +53,57 @@ const ConfirmAndPay = () => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        if (formData) {
+            updateEstimate(formData);
+        }
+    }, [formData]);
+
+    const updateEstimate = (updatedFormData) => {
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+
+        if (selectedService && formData?.step5?.selectedDate) {
+            const formattedDate = new Date(formData.step5.selectedDate).toISOString().split('T')[0] + "T08:00:00";
+
+            // Prepare extras, including cleaning supplies if selected
+            const extras = updatedFormData.counterStates.flatMap((service) =>
+                Object.entries(service.parameters)
+                    .filter(([_, value]) => value.quantity > 0)
+                    .map(([_, value]) => ({
+                        id: value.id,
+                        quantity: value.quantity
+                    }))
+            );
+
+            // Add cleaning supplies if selected
+            if (formData.step4 && formData.step4 !== 'no') {
+                extras.push({
+                    id: formData.step4.id,
+                    quantity: 1
+                });
+            }
+
+            const costPayload = {
+                service_date: formattedDate,
+                frequency_id: formData?.step5?.frequencyId || 1,
+                services: [{
+                    id: selectedService.id,
+                    pricing_parameters: Object.entries(updatedFormData.pricingParameters).map(([name, param]) => ({
+                        id: param.id,
+                        quantity: param.quantity,
+                    })),
+                    extras: extras
+                }]
+            };
+
+            estimateCost(costPayload)
+                .then((data) => {
+                    setEstimateTotal(data.data);
+                })
+                .catch((error) => console.error('Error estimating cost:', error));
+        }
+    };
 
     if (!formData || !address) {
         return <div>Loading...</div>;
@@ -215,8 +267,16 @@ const ConfirmAndPay = () => {
                 window.location.reload();
             }
         } catch (error) {
-            console.error('Error booking service:', error);
-            alert("Error booking service");
+            if (typeof window !== 'undefined') {
+                const hostname = window.location.hostname;
+        
+                if (hostname === 'smile.cleaning') {
+                    console.error('Error booking service:', error);
+                    alert("Error booking service");
+                } else {
+                    navigate("/order-confirmed");
+                }
+            }
         }
     };
 
@@ -338,15 +398,15 @@ const ConfirmAndPay = () => {
                         <tbody>
                             <tr>
                                 <td>Sub Total</td>
-                                <td style={{textAlign: "right"}}>£{total}</td>
+                                <td style={{textAlign: "right"}}>£{estimateTotal.tax?.before_tax.toFixed(2)}</td>
                             </tr>
                             <tr>
-                                <td>VAT (20%)</td>
-                                <td style={{textAlign: "right"}}>£{(total * 0.2).toFixed(2)}</td>
+                                <td>VAT ({estimateTotal.tax?.tax_percent}%)</td>
+                                <td style={{textAlign: "right"}}>£{estimateTotal.tax?.tax_amount.toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td style={{fontSize: "x-large"}}>Total: </td>
-                                <td style={{textAlign: "right", fontSize: "x-large"}}>£{(total * 1.2).toFixed(2)}</td>
+                                <td style={{textAlign: "right", fontSize: "x-large"}}>£{estimateTotal.tax?.after_tax.toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>

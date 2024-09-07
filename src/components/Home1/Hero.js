@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { navigate } from 'gatsby';
 import { getCountyCode } from '../Forms/countyCodes';
 
+import { getServices } from '../../utils/launch27-client';
 import * as styles from '../Forms/BookingForm.module.css';
 
 const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
@@ -15,6 +16,15 @@ export default function NewHeroSection() {
   const [postcode, setPostcode] = useState('');
   const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
+
+  const [services, setServices] = useState(null);
+
+  useEffect(() => {
+    getServices()
+        .then((response) => {
+            setServices(response.data)
+        })
+}, [])
 
   // TODO: Make coverage areas manageable in wp?
   const coveredPostalCodes = [
@@ -33,7 +43,15 @@ export default function NewHeroSection() {
   const handleSubmit = (e) => {
       e.preventDefault();
       
-      console.log(zipcode)
+      //clear previous bookings
+      localStorage.clear();
+
+      // obtain residential cleaning
+      const selectedService = services.filter(s => s.name == "Residential Cleaning").pop();
+
+      //start fresh
+      localStorage.setItem('selectedService', JSON.stringify(selectedService));
+
       if (zipCodeSupported(zipcode)) {
         navigate('/booking', { state: { zipcode } });
       } else {

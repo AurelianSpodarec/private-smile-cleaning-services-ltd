@@ -4,12 +4,14 @@ import CounterInput from './CounterInput';
 import * as styles from './BookingForm.module.css';
 import { serviceImageMap } from './serviceImageMap';
 import { getSummary } from './utils';
+import { estimateCost } from '../../utils/launch27-client';
 
 export default function Step2({ formData, onStepDataChange }) {
     const initialState = formData?.step2 || {};
     const [toggleStates, setToggleStates] = useState(initialState);
     const [counterStates, setCounterStates] = useState(formData?.counterStates || []);
     const [extras, setExtras] = useState([]);
+    const [estimateTotal, setEstimateTotal] = useState(0);
 
     useEffect(() => {
         // Load selected service from localStorage
@@ -38,11 +40,89 @@ export default function Step2({ formData, onStepDataChange }) {
         onStepDataChange({ step2: toggleStates, counterStates: counterStates });
     }, [toggleStates, counterStates, onStepDataChange]);
 
+    // Trigger price estimation whenever extras or pricing parameters change
+    useEffect(() => {
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+    
+        if (selectedService) {
+            const date = new Date(); // Assume today
+            const formattedDate = date.toLocaleDateString('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            }).split('/').reverse().join('-') + "T08:00:00";
+    
+            // Prepare the payload for cost estimation
+            const costPayload = {
+                service_date: formattedDate,
+                frequency_id: 1, // Adjust as needed
+                services: [{
+                    id: selectedService.id,
+                    pricing_parameters: Object.entries(formData.pricingParameters).map(([name, param]) => ({
+                        id: param.id,
+                        quantity: param.quantity,
+                    })),
+                    extras: counterStates.flatMap((service) =>
+                        Object.entries(service.parameters)
+                            .filter(([_, value]) => value.quantity > 0)
+                            .map(([_, value]) => ({
+                                id: value.id,
+                                quantity: value.quantity
+                            }))
+                    )
+                }]
+            };
+    
+            estimateCost(costPayload)
+                .then((data) => {
+                    setEstimateTotal(data.data.total);
+                })
+                .catch((error) => console.error('Error estimating cost:', error));
+        }
+    }, [counterStates, formData.pricingParameters]);  // Trigger whenever counterStates or pricingParameters change
+
     const handleToggle = (key, value) => {
         setToggleStates((prevStates) => ({
             ...prevStates,
             [key]: value,
         }));
+    
+        // Update the counterStates to reflect the toggle selection
+        setCounterStates(prev => {
+            const existingIndex = prev.findIndex(p => p.service === key);
+            if (existingIndex >= 0) {
+                const updatedExtra = {
+                    ...prev[existingIndex],
+                    parameters: {
+                        ...prev[existingIndex].parameters,
+                        [key]: {
+                            ...prev[existingIndex].parameters[key],
+                            quantity: value ? 1 : 0 // Set quantity to 1 if selected, otherwise 0
+                        }
+                    }
+                };
+                return [
+                    ...prev.slice(0, existingIndex),
+                    updatedExtra,
+                    ...prev.slice(existingIndex + 1)
+                ];
+            } else {
+                // Add new entry if it doesn't exist
+                const selectedExtra = extras.find(extra => extra.name === key);
+                const newExtra = {
+                    service: key,
+                    parameters: {
+                        [key]: {
+                            quantity: value ? 1 : 0,
+                            id: selectedExtra.id,
+                            price: selectedExtra.price,
+                            duration: selectedExtra.duration
+                        }
+                    }
+                };
+                return [...prev, newExtra];
+            }
+        });
     };
 
     const handleCounterIncrement = (extra) => {
@@ -188,6 +268,7 @@ export default function Step2({ formData, onStepDataChange }) {
                         ))}
                         </tbody>
                     </table>
+                    <b>Sub Total: £{estimateTotal.toFixed(2)}</b>
                 </div>
             </div>
         </>

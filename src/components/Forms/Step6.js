@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './BookingForm.module.css';
 import { getCountyCode } from './countyCodes';
-import { getCustomFields } from '../../utils/launch27-client';
+import { getCustomFields, estimateCost } from '../../utils/launch27-client';
 import { getSummary } from './utils';
 
 const API_KEY = 'ak_lyflbtreoGGLHcAKHUlpc0NIdk0fO';
@@ -16,6 +16,7 @@ export default function Step6({ formData, onStepDataChange }) {
     const [error, setError] = useState(null);
     const [customFields, setCustomFields] = useState(null);
     const [propertyAccessOptions, setPropertyAccessOptions] = useState(null);
+    const [estimateTotal, setEstimateTotal] = useState(0);
 
     useEffect(() => {
         // Fetch custom fields using the service client
@@ -46,6 +47,9 @@ export default function Step6({ formData, onStepDataChange }) {
         };
         localStorage.setItem('bookingFormData', JSON.stringify(updatedFormData));
         onStepDataChange(updatedFormData);
+
+        // Call function to update cost estimate
+        updateEstimate(updatedFormData);
     }, [postcode, cleanerAccess, cleanerAccessDetails, parkingSpot]);
 
     const handlePostcodeChange = async (e) => {
@@ -125,6 +129,51 @@ export default function Step6({ formData, onStepDataChange }) {
 
     const handleParkingSpotChange = (value) => {
         setParkingSpot(value);
+    };
+
+    const updateEstimate = (updatedFormData) => {
+        const selectedService = JSON.parse(localStorage.getItem('selectedService'));
+
+        if (selectedService && formData?.step5?.selectedDate) {
+            const formattedDate = new Date(formData.step5.selectedDate).toISOString().split('T')[0] + "T08:00:00";
+
+            // Prepare extras, including cleaning supplies if selected
+            const extras = updatedFormData.counterStates.flatMap((service) =>
+                Object.entries(service.parameters)
+                    .filter(([_, value]) => value.quantity > 0)
+                    .map(([_, value]) => ({
+                        id: value.id,
+                        quantity: value.quantity
+                    }))
+            );
+
+            // Add cleaning supplies if selected
+            if (formData.step4 && formData.step4 !== 'no') {
+                extras.push({
+                    id: formData.step4.id,
+                    quantity: 1
+                });
+            }
+
+            const costPayload = {
+                service_date: formattedDate,
+                frequency_id: formData?.step5?.frequencyId || 1, // Adjust as needed
+                services: [{
+                    id: selectedService.id,
+                    pricing_parameters: Object.entries(updatedFormData.pricingParameters).map(([name, param]) => ({
+                        id: param.id,
+                        quantity: param.quantity,
+                    })),
+                    extras: extras
+                }]
+            };
+
+            estimateCost(costPayload)
+                .then((data) => {
+                    setEstimateTotal(data.data.total);
+                })
+                .catch((error) => console.error('Error estimating cost:', error));
+        }
     };
 
     return (
@@ -258,6 +307,7 @@ export default function Step6({ formData, onStepDataChange }) {
                             ))}
                         </tbody>
                     </table>
+                    <b>Sub Total: £{estimateTotal.toFixed(2)}</b>
                 </div>
             </div>
         </>

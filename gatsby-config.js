@@ -32,6 +32,7 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-image`,
     `gatsby-plugin-postcss`,
+    `gatsby-plugin-react-helmet`,
   ],
   siteMetadata: {
     title: "Smile Cleaning",

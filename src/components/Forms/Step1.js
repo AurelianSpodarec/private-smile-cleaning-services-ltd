@@ -10,34 +10,7 @@ export default function Step1({ formData, onStepDataChange }) {
 
   const [selectedService, setSelectedService] = useState(null);
   const [pricingParameters, setPricingParameters] = useState(formData?.pricingParameters || {});
-  const [estimateTotal, setEstimateTotal] = useState(0)
-
-  useEffect(() => {
-    const date = new Date() // assume today
-    const formattedDate = date.toLocaleDateString('en-GB', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).split('/').reverse().join('-') + "T08:00:00";
-    const storedService = JSON.parse(localStorage.getItem('selectedService'));
-
-    const costPayload = {
-      service_date: formattedDate,
-      frequency_id: 1,
-      services: [{
-        id: storedService.id,
-        pricing_parameters:  storedService.pricing_parameters.map(s => ({
-          id: s.id,
-          quantity: 0
-        }))
-      }]
-    }
-
-    estimateCost(costPayload)
-      .then((data) => {
-        setEstimateTotal(data.data.total)
-      })
-  })
+  const [estimateTotal, setEstimateTotal] = useState(0);
 
   useEffect(() => {
     // Retrieve the selected service from localStorage
@@ -68,6 +41,36 @@ export default function Step1({ formData, onStepDataChange }) {
       });
     }
   }, [selectedService, pricingParameters, onStepDataChange]);
+
+  useEffect(() => {
+    if (selectedService) {
+      const date = new Date(); // Assume today
+      const formattedDate = date.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).split('/').reverse().join('-') + "T08:00:00";
+
+      // Prepare the payload for cost estimation
+      const costPayload = {
+        service_date: formattedDate,
+        frequency_id: 1, // Adjust as needed
+        services: [{
+          id: selectedService.id,
+          pricing_parameters: Object.entries(pricingParameters).map(([name, param]) => ({
+            id: param.id,
+            quantity: param.quantity,
+          }))
+        }]
+      };
+
+      estimateCost(costPayload)
+        .then((data) => {
+          setEstimateTotal(data.data.total);
+        })
+        .catch((error) => console.error('Error estimating cost:', error));
+    }
+  }, [pricingParameters, selectedService]); // Trigger whenever pricingParameters or selectedService changes
 
   const handleIncrement = (param) => {
     setPricingParameters(prev => {
@@ -163,7 +166,7 @@ export default function Step1({ formData, onStepDataChange }) {
               {getSummary(pricingParameters)}
             </tbody>
           </table>
-          
+          <b>Sub Total: £{estimateTotal.toFixed(2)}</b>
         </div>
       </div>
     </>
