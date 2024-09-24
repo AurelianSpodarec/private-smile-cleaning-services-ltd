@@ -7,8 +7,6 @@ import BookingList from "./BookingList"
 async function Account() {
   const session = await auth()
 
-  console.log("mwmslslls",session.token)
-
   return (
     <div className="pt-20">
       <Section>

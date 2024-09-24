@@ -3,31 +3,33 @@
 import { getBookingList, getBookingListCount, getBookingSettings, getCustomerBookingList, getSettings } from "@/services/apis/launch27/requests/bookings";
 import { useQuery } from "@tanstack/react-query";
 
+const objectMap = (obj, callback) => {
+  if(!obj) return
+  return Object.entries(obj).map(([key, value]) => {
+    return callback(key, value);
+  });
+};
+
 function BookingList() {
 
-  // const bookingList = useQuery({
-  //   queryKey: ['bookingList'],
-  //   queryFn: async () => await getBookingList()
-  // })
-
-  const a = useQuery({
-    queryKey: ['a'],
+  const bookingList = useQuery({
+    queryKey: ['bookingList'],
     queryFn: async () => await getCustomerBookingList()
   })
+  const data = bookingList.data
 
-  console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", a.data)
+  console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", data)
 
   return (
     <div>
       BookingList
-      {/* {bookingList.data?.map((item) => {
+      {data?.map((item) => {
         return (
           <div>
-            {item.company_name}
+            {item.id}
           </div>
         )
-      })} */}
-
+      })}
     </div>
   );
 }
