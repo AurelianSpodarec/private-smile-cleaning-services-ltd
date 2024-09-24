@@ -1,6 +1,6 @@
 'use client'
 
-import { getBookingList, getBookingListCount, getBookingSettings, getSettings } from "@/services/apis/launch27/requests/bookings";
+import { getBookingList, getBookingListCount, getBookingSettings, getCustomerBookingList, getSettings } from "@/services/apis/launch27/requests/bookings";
 import { useQuery } from "@tanstack/react-query";
 
 function BookingList() {
@@ -12,10 +12,10 @@ function BookingList() {
 
   const a = useQuery({
     queryKey: ['a'],
-    queryFn: async () => await getSettings()
+    queryFn: async () => await getCustomerBookingList()
   })
 
-  console.log(a.data)
+  console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", a.data)
 
   return (
     <div>

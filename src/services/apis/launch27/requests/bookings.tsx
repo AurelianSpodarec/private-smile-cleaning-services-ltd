@@ -20,7 +20,8 @@ export async function getBookingListCount(): Promise<BookingListResponse> {
   return await FetchSmileCleaning('customer/bookings/count', 'GET');
 }
 
-export async function getSettings(): Promise<BookingListResponse> {
+export async function getCustomerBookingList(): Promise<BookingListResponse> {
+  console.log("WOOF")
   return await FetchSmileCleaning('customer/bookings', 'GET');
 }
 
