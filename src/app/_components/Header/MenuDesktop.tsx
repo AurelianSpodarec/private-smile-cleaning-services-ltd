@@ -65,7 +65,10 @@ async function MenuDesktop() {
             <form
               action={async () => {
                 'use server'
-                await signIn('credentials', {})
+                await signIn('credentials', {
+                  email: "smile.cleaning.101+cust1@gmail.com",
+                  password: "Digital09%",
+                })
               }}
             >
               <button className="bg-black rounded-2xl inline-block px-4 py-2 font-sm">Login</button>

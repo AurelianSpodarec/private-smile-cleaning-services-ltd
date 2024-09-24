@@ -1,0 +1,35 @@
+'use client'
+
+import { getBookingList, getBookingListCount, getBookingSettings, getSettings } from "@/services/apis/launch27/requests/bookings";
+import { useQuery } from "@tanstack/react-query";
+
+function BookingList() {
+
+  // const bookingList = useQuery({
+  //   queryKey: ['bookingList'],
+  //   queryFn: async () => await getBookingList()
+  // })
+
+  const a = useQuery({
+    queryKey: ['a'],
+    queryFn: async () => await getSettings()
+  })
+
+  console.log(a.data)
+
+  return (
+    <div>
+      BookingList
+      {/* {bookingList.data?.map((item) => {
+        return (
+          <div>
+            {item.company_name}
+          </div>
+        )
+      })} */}
+
+    </div>
+  );
+}
+
+export default BookingList
