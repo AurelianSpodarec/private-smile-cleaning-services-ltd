@@ -36,3 +36,84 @@ Launch 27
 Website: https://www.launch27.com/
 Docs: https://bitbucket.org/awoo23/api-2.0/wiki/Home
 CMS: https://smile.launch27.com/admin/bookings
+
+
+
+
+
+
+
+Bookings
+
+
+
+
+# Account View Bookings
+
+
+Past Bookings
+Upcoming
+
+
+<!-- Once job is confirrmed, then invoice is avilable -->
+Invoice
+
+
+emphasis enviromental stuff
+
+
+
+
+
+
+
+
+
+
+
+Schedule
+- Select Service: Residentual Cleaning, End of tenancy, Ironing
+- Pricing Parameters: Rooms
+- Extras (don't show: cleaning products, premium booking slot) Adding time to extra
+- Estimate hours (recommended - 4) - can't select less hours than what it adds up
+- Additional Supplies: Yes/No (cleaning products - max 1/true/false, same with booking slot)
+  
+  
+- Frequency
+- CHoose date
+- Slots (can't book withing 3days) - multiple per week etc
+
+Hours of cleaning
+
+
+
+
+
+
+
+
+
+
+
+Extra: Additional Extras
+
+(Cleaning Products, Premium Booking)
+
+
+
+Pricing Paramenters: Rooms
+
+Services(pricing parameters - rooms) - Residential Cleaning
+
+Ironing: 
+
+
+
+
+
+- Rooms: Kitchen
+
+Customers Home Owers or renters: 40avg age, children, busy in the lifes to clean - appriciate time
+Maybe dont have time to clean, busy family, elder people - 
+
+

@@ -1,7 +1,8 @@
 export interface IMenuItem {
-  name: string;
-  url: string;
-  isActive?: boolean;
+  name: string
+  url: string
+  isActive?: boolean
+  className?: string
 }
 
 const dataMenu: IMenuItem[] = [

@@ -7,7 +7,6 @@ import { ThemeProvider, useTheme } from 'next-themes'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-
 function usePrevious<T>(value: T) {
   let ref = useRef<T>()
 
@@ -42,7 +41,6 @@ function ThemeWatcher() {
   return null
 }
 
-
 export const AppContext = createContext<{ previousPathname?: string }>({})
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -52,9 +50,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <AppContext.Provider value={{ previousPathname }}>
-      <ThemeProvider attribute="class" disableTransitionOnChange>
+      <ThemeProvider attribute="class" forcedTheme="light" disableTransitionOnChange>
         <QueryClientProvider client={client}>
-          <ThemeWatcher />
+          {/* <ThemeWatcher /> */}
           {children}
           <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
         </QueryClientProvider>
