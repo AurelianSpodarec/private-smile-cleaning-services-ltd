@@ -1,8 +1,8 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query";
-import { getCustomerBookingList } from "@/services/apis/launch27/requests/bookings";
 import { IBooking } from "@/interfaces/IBooking";
+import { getCustomerBookingList } from "@/services/apis/launch27/requests/booking";
 
 function CardBookingExcerpt({ item }: { item: IBooking }) {
   console.log(item)
@@ -10,14 +10,14 @@ function CardBookingExcerpt({ item }: { item: IBooking }) {
   return (
     <div>
 
-    <div>
+      <div>
 
-    </div>
+      </div>
 
 
       {item?.services[0].name}
       <div>
-        
+
       </div>
       {/* {item.services[0]} */}
       {/* {item.service_date}
