@@ -1,15 +1,16 @@
 // ============================================================
 // API Bookings
 // ============================================================
-import FetchSmileCleaning from "../fetch/FetchSmileCleaning"
 import { IBooking } from "@/interfaces/IBooking"
+import FetchSmileCleaning from "../../fetch/FetchSmileCleaning";
 
 // Types
 // ===========================================
 
 export interface BookingListResponse {
-  [key: string]: IBooking; // Each key is a booking ID, and the value is a Booking object
+  [key: string]: IBooking;
 }
+
 // Booking
 // ===========================================
 
@@ -26,6 +27,14 @@ export async function getCustomerBookingList(): Promise<IBooking[]> {
   return Object.values(res)
 }
 
-export async function getBookingSettings(): Promise<BookingListResponse> {
-  return await FetchSmileCleaning('settings', 'GET');
+export async function createBooking({ data }): Promise<BookingListResponse> {
+  return await FetchSmileCleaning('booking', 'POST', data);
+}
+
+export async function getBookingById({ id }): Promise<BookingListResponse> {
+  return await FetchSmileCleaning(`customer/bookings/${id}`, 'POST');
+}
+
+export async function cancelBooking({ id }): Promise<BookingListResponse> {
+  return await FetchSmileCleaning(`customer/bookings/${id}/cancel`, 'POST');
 }

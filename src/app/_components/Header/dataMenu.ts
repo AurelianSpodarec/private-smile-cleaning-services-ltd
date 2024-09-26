@@ -17,11 +17,7 @@ const dataMenu: IMenuItem[] = [
   {
     name: "Pricing",
     url: "#pricing",
-  },
-  // {
-  //   name: "Support",
-  //   url: "/support",
-  // },
+  }
 ]
 
 export default dataMenu;

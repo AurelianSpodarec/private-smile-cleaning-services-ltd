@@ -1,16 +1,36 @@
 'use client'
 
-import { getCustomerBookingList } from "@/services/apis/launch27/requests/bookings";
 import { useQuery } from "@tanstack/react-query";
+import { getCustomerBookingList } from "@/services/apis/launch27/requests/bookings";
+import { IBooking } from "@/interfaces/IBooking";
 
-function CardBookingExcerpt({ item }) {
+function CardBookingExcerpt({ item }: { item: IBooking }) {
+  console.log(item)
+
   return (
     <div>
-        {item.service_date}
-        {item.duration}
-        Address
-        From till
-        Price {item?.summary?.total}
+
+    <div>
+
+    </div>
+
+
+      {item?.services[0].name}
+      <div>
+        
+      </div>
+      {/* {item.services[0]} */}
+      {/* {item.service_date}
+      {item.arrival_window}
+      {item.duration}
+      {item.address.street}
+      {item.address.city}
+
+      {item.active} {item.completed}
+
+      Price {item?.summary?.total} */}
+
+      {/* <button>Rebook</button> */}
     </div>
   )
 }

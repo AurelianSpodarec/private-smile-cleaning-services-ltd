@@ -18,13 +18,15 @@ export default auth((req: NextRequest) => {
   // const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
   // const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+  const isRootRoute = nextUrl.pathname === "/";
 
   // if (isApiAuthRoute) {
   //   return null
   // }
 
-  if(isLoggedIn && isPublicRoute) {
-    return Response.redirect(new URL("/account", nextUrl))
+   // If the user is logged in and is on the root route, redirect to /account
+   if (isLoggedIn && isRootRoute) {
+    return Response.redirect(new URL("/account", nextUrl));
   }
 
   // if (isAuthRoute) {
@@ -34,9 +36,9 @@ export default auth((req: NextRequest) => {
   //   return null
   // }
 
-  // if (!isLoggedIn && !isPublicRoute) {
-  //   return Response.redirect(new URL("/auth/login", nextUrl))
-  // }
+  if (!isLoggedIn && !isPublicRoute) {
+    return Response.redirect(new URL("/auth/login", nextUrl))
+  }
 
 })
 

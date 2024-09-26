@@ -9,11 +9,11 @@ async function Account() {
 
   return (
     <div className="pt-20">
-      <header>
-        <h1 className="">Bookings</h1>
-      </header>
-
-      <BookingList />
+      <Section>
+        <Container>
+          <BookingList />
+        </Container>
+      </Section>
     </div>
   )
 }
