@@ -13,7 +13,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="h-full">
       <body suppressHydrationWarning={true} className={`h-full w-full ${teko.variable} ${montserrat.variable} ${barlow.variable} font-openSans`}>
         <Providers>
           {children}
