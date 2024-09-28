@@ -28,7 +28,7 @@ export async function getCustomerBookingList(): Promise<IBooking[]> {
 }
 
 export async function createBooking({ data }): Promise<BookingListResponse> {
-  return await FetchSmileCleaning('booking', 'POST', data);
+  return await FetchSmileCleaning('customer/bookings', 'POST', data);
 }
 
 export async function getBookingById({ id }): Promise<BookingListResponse> {

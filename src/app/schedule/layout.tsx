@@ -3,7 +3,7 @@ function ScheduleLayout({ children }: { children: React.ReactNode }) {
     <main
       className="flex items-center justify-center h-full"
       style={{
-        backgroundImage: "url('https://www.marthastewart.com/thmb/NLI4rM1tiYNOecGZMs0hoqcnhEA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/modern-living-rooms-wb-7-f005bbeda775431fa002ce2bd40bacd4.jpg')",
+        backgroundImage: "url('https://assets.blackandmilk.co.uk/1920x1080/aedb7aacb4/modern-new-build-home-in-hampstead-03.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}

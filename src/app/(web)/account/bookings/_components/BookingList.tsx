@@ -10,12 +10,7 @@ function CardBookingExcerpt({ item }: { item: IBooking }) {
   return (
     <div>
 
-      <div>
-
-      </div>
-
-
-      {item?.services[0].name}
+      {/* {item?.services[0].name} */}
       <div>
 
       </div>
