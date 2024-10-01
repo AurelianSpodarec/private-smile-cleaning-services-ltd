@@ -25,7 +25,7 @@ function SectionHero() {
           <ul className="flex flex-col">
             <li>Highly Rated Professionals</li>
             <li>No Obligations, Just Smiles</li>
-            <li>Cancel Anytime, No Stress</li>
+            <li>Cancel Anytime withing 48h</li>
           </ul>
         </div>
 
