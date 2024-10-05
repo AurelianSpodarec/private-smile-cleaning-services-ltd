@@ -17,32 +17,34 @@ const dataProduct = [
   }
 ]
 
-function ProductSpotlight() {
+function SectionProductSpotlight() {
   return (
     <Section>
       <Container>
 
-        <div className="flex">
+        <div className="flex justify-between">
 
-          <div>
+          <div className="max-w-2xl">
             <PageHeader
-              className="align-left"
-              title="Manage Everything Effortlessly with Our Web App"
+              className="align-left max-w-1xl mx-0"
+              title={`Manage Everything withing our app effortesly`}
+              subheader="Book Cleaning Services Effortlessly, Right from Our App"
+              textAlign="text-left"
             />
-            <div>
+            <div className="flex flex-col mb-12 space-y-6">
               {dataProduct.map((item => {
                 return (
                   <div>
-                    {item.title}
+                    <h3 className="text-2xl font-semibold">{item.title}</h3>
                     {item.desc}
                   </div>
                 )
               }))}
             </div>
-            <button>Book a cleaner</button>
+            <button className="hidden lg:inline-flex nav-cta bg-[#834e91] rounded-lg border py-3 shadow-xl px-8 font-bold text-white">Book a cleaner</button>
           </div>
 
-          <div>
+          <div className="max-w-[370px]">
             <img src="https://d17x34b9fcvxk7.cloudfront.net/static/marketing/images/iphone-extra-tasks.webp" />
           </div>
         </div>
@@ -51,4 +53,4 @@ function ProductSpotlight() {
   );
 }
 
-export default ProductSpotlight
+export default SectionProductSpotlight

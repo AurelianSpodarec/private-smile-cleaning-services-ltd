@@ -39,14 +39,14 @@ export const dataPainPoints: IItem[] = [
     desc: "We handpick professional cleaners, train them, and ensure they’re not contractors - each undergoes thorough background checks to guarantee your home is in safe, reliable hands.",
     icon: timer
   },
-  {
-    title: "Tailored Cleaning Plans Just for You",
-    desc: "Our cleaners assess your needs to create a customized plan for your home - no surprise costs, just a spotless space that suits your lifestyle!",
-    icon: timer
-  },
-  {
-    title: "Here to Support",
-    desc: "We're just a call away, ready to help! You can count on us to be there for you whenever you need assistance - your satisfaction is our priority.",
-    icon: timer
-  }
+  // {
+  //   title: "Tailored Cleaning Plans Just for You",
+  //   desc: "Our cleaners assess your needs to create a customized plan for your home - no surprise costs, just a spotless space that suits your lifestyle!",
+  //   icon: timer
+  // },
+  // {
+  //   title: "Here to Support",
+  //   desc: "We're just a call away, ready to help! You can count on us to be there for you whenever you need assistance - your satisfaction is our priority.",
+  //   icon: timer
+  // }
 ]

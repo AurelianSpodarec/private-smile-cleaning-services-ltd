@@ -1,160 +1,138 @@
-'use client'
+"use client";
 
-import { useState } from "react"
-import BookingCard from "./_components/Card"
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-import StepCleaningProducts from "./_steps/CleaningProducts"
-import StepLocation from "./_steps/Location"
-import StepPropertyType from "./_steps/PropertyType"
-import StepRooms from "./_steps/Rooms"
-import StepExtra from "./_steps/Extra"
-import StepSelectTime from "./_steps/SelectTime"
+import { getServices } from "@/services/apis/launch27/requests/booking/helpers";
+import Container from "@/components/_layout/Container";
+
+import ScheduleStepIndex from "./_steps";
+import CheckoutExcerpt from "./_components/CheckoutExcerpt";
+import useSchedule from "@/context/schedule/useSchedule";
 
 function Page() {
+  const { setFetchedStepsData } = useSchedule()
 
-  const [activeStep, setActiveStep] = useState(1)
-  const [selectedPropertyType, setSelectedPropertyType] = useState("")
+  const servicesQuery = useQuery({
+    queryKey: ["services"],
+    queryFn: () => getServices(),
+    staleTime: Infinity,
+  })
 
-  const [bookingData, setBookingData] = useState(
-    {
-      booking_type: "default",
-
-      payment_method: "cash",
-      // "payment_method": "stripe",
-      // "card_cvc": "321",
-      // "card_expires": "10/27",
-      // "card_number": "4242424242424242",
-      // "stripe_token": "pk_test_51PFYyyDHh5fcObfcpESlkFB9FMIyAfrVuR2hUFzBTqWpRii6TctHaGlKWFQYkw0Lt7ts9Xkd7PRe0h73NMhGdJiV00ec4hkerq",
-
-      user: {
-        first_name: "",
-        last_name: "",
-        email: ""
-      },
-      address: "",
-      city: "",
-      zip: "",
-
-      phone: "",
-      location_id: 1,
-
-      frequency_id: 1,
-      service_date: "2024-10-02T12:00:00",
-      arrival_window: 120,
-
-      discount_code: null,
-      services: [
-        {
-          id: 7,
-          hourly: null,
-          extras: [
-            {
-              id: 2,
-              quantity: 3
-            }
-          ],
-          pricing_parameters: [
-            {
-              id: 3,
-              quantity: 0
-            }
-          ]
-        }
-      ],
-
-      custom_fields: [
-        {
-          id: 255,
-          values: [
-            {
-              id: 1,
-              other: null
-            }
-          ]
-        }
-      ],
-      meta: [
-        {
-          code: "form",
-          value: "widget"
-        }
-      ],
+  useEffect(() => {
+    if (servicesQuery.isFetched) {
+      console.log(servicesQuery.data);
+      setFetchedStepsData(servicesQuery)
     }
-  );
-
-  // handleNextStep
-  // handlePrevStep
-  // handleCustom Step
-
-  // stepComplete
-
-  const steps = [
-    {
-      name: "Choose Service Type", // Ironing, Residential, End of tnency
-      component: <StepPropertyType />
-    },
-    {
-      name: "Location", // Optional Location if not selected already
-      component: <StepLocation />
-    },
-
-    {
-      name: "Rooms", // rooms
-      component: <StepRooms />
-    },
-
-
-    {
-      name: "Extra",
-      component: <StepExtra />
-    },
-    {
-      name: "Select Time/ Recommended time", // 
-      component: <StepSelectTime />
-    },
-    {
-      name: "Cleaning Products", // Upsell ECO cleaning products yes/no
-      component: <StepCleaningProducts />
-    },
-    {
-      name: "Checkout" // pay
-    }
-  ]
-
-  // Pets/Move in/out - less important
-
-
-  // Push Deep Cleaning yes/no
-  // Push Eco yes/no
-
-  // our cleaners are the best not contractos, other businesses hire cotnractss
-
-  // pets: boolean
-  //   Deep Cleaning Boolean
-  // Move in OUt : boolean
-
-
-  // Fridges:
-
-  // windows: 0 - 4, 4 - 8
-  // ironing: Equivalant of 5 shirts Equivalant of 5shirts
-  // walls: per room
-
-
-  // How clean is your house: 
-  // Deep cleaning: Upsell the deep cleaning, for the first clean: If its dirty the standard might be bad
-
-  // Estimate your work
-  // This is just estimation: analisis needs to be done
-  // If less time, refund the money
-
-
+  }, [servicesQuery.isFetched, servicesQuery.data]);
 
   return (
-    <BookingCard>
-      {steps[activeStep].component}
-    </BookingCard>
+    <Container>
+      <div className="grid p-8 grid-cols-3">
+        <div className="col-span-2">
+          <ScheduleStepIndex />
+        </div>
+        <div className="col-span-1">
+          <CheckoutExcerpt />
+        </div>
+      </div>
+    </Container>
   );
 }
 
-export default Page
+export default Page;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// handleNextStep
+// handlePrevStep
+// handleCustom Step
+
+// stepComplete
+
+// Initial
+// ------------------------
+// Location (search in an input and then select from one result)
+// Choose Property Type [Residential Property][End of Tennancy][Ironing]
+
+// Rooms
+// -------------------------
+
+// Bedrooms
+// Bathrooms
+// Kitchens
+// Reception
+// Other Rooms
+
+// Deep Cleaning: yes/no (recommended forfirsttimers)
+
+// Pets: yes/no
+
+// Services
+// --------------------------
+// Fridges: 1-2
+// [1-4/5-8/9-12/13-16] Windows
+// 5 Shirt: Ironing (Equivalant of 5 shirts Equivalant of 5shirts)
+// Walls per room
+
+// Bring cleaning products: boolean
+// [Cleaner will bring (+6)] [I have my own]
+
+// Move in OUt : boolean
+
+// Checkout
+// -----------------
+
+// Cleaner parking spot
+// Private parking spot
+// n street   - no parking restrictoin
+
+// i will prove permit
+// pay and display (separate charrge)
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Pets/Move in/out - less important
+
+// our cleaners are the best not contractos, other businesses hire cotnractss
+
+// Push Deep Cleaning yes/
+// Push Eco yes/no
+
+// pets: boolean
+//   Deep Cleaning Boolean
+// Move in OUt : boolean
+
+// Fridges:
+
+// windows: 0 - 4, 4 - 8
+// ironing: Equivalant of 5 shirts Equivalant of 5shirts
+// walls: per room
+
+// How clean is your house:
+// Deep cleaning: Upsell the deep cleaning, for the first clean: If its dirty the standard might be bad
+
+// Estimate your work
+// This is just estimation: analisis needs to be done
+// If less time, refund the money

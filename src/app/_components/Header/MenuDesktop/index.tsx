@@ -11,7 +11,7 @@ async function MenuDesktop() {
   const isLogged = session?.user
 
   return (
-    <nav className="fixed left-0 right-0 px-16 py-4 w-full flex items-center justify-between">
+    <nav className=" left-0 right-0 px-16 py-4 w-full flex items-center justify-between">
       <div className="flex items-center space-x-2">
 
         <Link href="/" className="px-2">

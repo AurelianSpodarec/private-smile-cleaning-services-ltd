@@ -16,3 +16,19 @@ export function parseCookies(cookiesString:string) {
 
   return cookies
 }
+
+export function extractAddressFromApi(suggestion: string) {
+  const addressPattern = /^(\d+\s[\w\s]+(?:\s\w)?)\,\s([\w\s]+),\s([A-Z]+\d+\s?[A-Z]+\d*)$/;
+  const matchedAddress = suggestion.match(addressPattern);
+
+  if (matchedAddress) {
+    return {
+      address: matchedAddress[1],
+      city: matchedAddress[2],
+      zip: matchedAddress[3],
+    };
+  } else {
+    console.error("Address format does not match the expected pattern.");
+    return null
+  }
+}
