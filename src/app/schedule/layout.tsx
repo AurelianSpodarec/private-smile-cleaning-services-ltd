@@ -27,8 +27,7 @@ function ScheduleLayout({ children }: { children: React.ReactNode }) {
           ></path>
         </svg>
       </div>
-    {children}
-    
+      {children}
     </main>
   )
 }

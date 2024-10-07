@@ -1,51 +1,46 @@
 'use client'
 
 import { useState, useEffect, useMemo, createContext } from "react";
+import { ExtrasType } from "@/config/extras";
 
+import stateSteps, { IStep, IStepData } from "./stateSteps";
 import scheduleState from "../../app/schedule/_components/scheduleState";
-import StepPropertyType from "../../app/schedule/_steps/ServiceType";
-import StepRooms from "../../app/schedule/_steps/Rooms";
-import StepExtra from "../../app/schedule/_steps/Extra";
-import StepSelectTime from "../../app/schedule/_steps/SelectTime";
-import StepCheckoutSummary from "@/app/schedule/_steps/CheckoutSummary";
+import { IService } from "@/interfaces/IService";
 
 export const ScheduleContext = createContext<any>({});
 
 function ScheduleProvider({ children }: { children: React.ReactNode }) {
-  const [activeMenuStep, setActiveMenuStep] = useState(0);
-  const [fetchedStepsData, setFetchedStepsData] = useState([])
-  const [selectedPropertyType, setSelectedPropertyType] = useState("");
+  const [fetchedStepsData, setFetchedStepsData] = useState<IService[]>([])
+
+  const [activeMenuIndex, setActiveMenuIndex] = useState(0);
+  const [selectedServiceIndex, setSelectedServiceIndex] = useState(11);
 
   const [bookingData, setBookingData] = useState(scheduleState);
+  const [steps, setSteps] = useState(stateSteps);
 
-  const steps = [
-    {
-      name: "Choose Service Type",
-      component: <StepPropertyType />,
-    },
-    {
-      name: "Rooms",
-      component: <StepRooms />,
-    },
-    {
-      name: "Extra",
-      component: <StepExtra />,
-    },
-    {
-      name: "Select Time/Recommended time",
-      component: <StepSelectTime />,
-    },
-    {
-      name: "Checkout",
-      component: <StepCheckoutSummary />
-    },
-  ];
+  // ==============================================================================
+  // Update Steps
+  // ==============================================================================
+
+  function updateStepData({ stepId, newData }: { stepId: IStep['id']; newData: IStepData }): boolean {
+    setSteps((prevSteps) => {
+      return prevSteps.map((step) => {
+        if (step.id === stepId) {
+          return {
+            ...step,
+            data: newData
+          }
+        }
+        return step
+      });
+    });
+    return true
+  }
 
   // ===================================================================================
-  // Functions
+  // Update Create Booking State
   // ===================================================================================
 
-  // Function to update booking data
   function updateBookingData(updates: Partial<typeof scheduleState>) {
     setBookingData((prevData) => ({
       ...prevData,
@@ -53,7 +48,9 @@ function ScheduleProvider({ children }: { children: React.ReactNode }) {
     }));
   }
 
-  // Update functions
+  // Update Specific Segments of Booking Data
+  // ------------------------------------------------------------
+
   function setServiceType(serviceType: string) {
     updateBookingData({
       services: [
@@ -99,25 +96,64 @@ function ScheduleProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  // Create Steps
+  // ===================================================================================
+
+  function createStepIntro() {
+    const servicesType = fetchedStepsData
+
+    return {
+      servicesType
+    }
+
+    // update the services steps
+  }
+
+  function createStepRooms() {
+    if (fetchedStepsData.length === 0) {
+      console.warn("No data fetched yet.");
+      return
+    }
+
+    const rooms = fetchedStepsData[selectedServiceIndex]?.pricing_parameters
+    const deepCleaning = fetchedStepsData[selectedServiceIndex]?.extras?.[ExtrasType.deepCleaning]
+    const pets = fetchedStepsData[selectedServiceIndex]?.extras?.[ExtrasType.pets]
+
+    updateStepData({
+      stepId: "intro",
+      newData: {
+        ...rooms,
+        ...deepCleaning,
+        ...pets
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (fetchedStepsData.length !== 0) {
+      createStepRooms()
+    }
+  }, [fetchedStepsData])
+
   // ===================================================================================
   // Menu Config
   // ===================================================================================
 
   function menuNext() {
-    if (activeMenuStep < steps.length - 1) {
-      setActiveMenuStep(activeMenuStep + 1);
+    if (activeMenuIndex < steps.length - 1) {
+      setActiveMenuIndex(activeMenuIndex + 1);
     }
   }
 
   function menuPrev() {
-    if (activeMenuStep > 0) {
-      setActiveMenuStep(activeMenuStep - 1);
+    if (activeMenuIndex > 0) {
+      setActiveMenuIndex(activeMenuIndex - 1);
     }
   }
 
   function menuGoTo(stepIndex: number) {
     if (stepIndex >= 0 && stepIndex < steps.length) {
-      setActiveMenuStep(stepIndex);
+      setActiveMenuIndex(stepIndex);
     }
   }
 
@@ -127,8 +163,8 @@ function ScheduleProvider({ children }: { children: React.ReactNode }) {
 
   const contextValues = {
     steps,
-    activeMenuStep,
-    setActiveMenuStep,
+    activeMenuIndex,
+    setActiveMenuIndex,
     // Menu Gonfig
     menuNext,
     menuPrev,

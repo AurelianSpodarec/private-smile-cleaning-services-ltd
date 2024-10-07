@@ -5,7 +5,7 @@ import useSchedule from "@/context/schedule/useSchedule";
 import { getServices } from "@/services/apis/launch27/requests/booking/helpers";
 
 function ScheduleStepIndex() {
-  const { steps, activeMenuStep, menuNext, menuPrev } = useSchedule()
+  const { steps, activeMenuIndex, menuNext, menuPrev } = useSchedule()
 
   // const servicesQuery = useQuery({
   //   queryKey: ["services"],
@@ -23,7 +23,7 @@ function ScheduleStepIndex() {
         Shchedule Step Index
       </header>
 
-      {steps[activeMenuStep].component}
+      {steps[activeMenuIndex].component}
 
       <footer>
         <button type="button" onClick={() => menuPrev()}>Previous</button>

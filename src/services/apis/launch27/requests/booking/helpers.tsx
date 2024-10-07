@@ -3,10 +3,11 @@
 // ============================================================
 import FetchSmileCleaning from "../../fetch/FetchSmileCleaning";
 import { BookingListResponse } from ".";
+import { IService } from "@/interfaces/IBooking";
 
-export async function getServices(): Promise<BookingListResponse> {
+export async function getServices(): Promise<IService> {
   const res = await FetchSmileCleaning(`booking/services`, 'GET');
-  return Object.values(res)
+  return Object.values(res) as IService[];
 }
 
 export async function getPriceEstimation({ data }): Promise<BookingListResponse> {

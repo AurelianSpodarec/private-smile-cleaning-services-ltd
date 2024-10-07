@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function parseCookies(cookiesString:string) {
+export function parseCookies(cookiesString: string) {
   const cookiePairs = cookiesString.split('; ')
   const cookies = {}
   cookiePairs.forEach(cookiePair => {
@@ -17,18 +17,30 @@ export function parseCookies(cookiesString:string) {
   return cookies
 }
 
-export function extractAddressFromApi(suggestion: string) {
-  const addressPattern = /^(\d+\s[\w\s]+(?:\s\w)?)\,\s([\w\s]+),\s([A-Z]+\d+\s?[A-Z]+\d*)$/;
-  const matchedAddress = suggestion.match(addressPattern);
+export function extractAddressFromApi(fullAddress) {
+  // Split the address by commas
+  const addressParts = fullAddress.split(',');
 
-  if (matchedAddress) {
+  // If there are four parts, ignore the first one (business name)
+  if (addressParts.length === 4) {
+    const [, address, city, zip] = addressParts.map(part => part.trim());
     return {
-      address: matchedAddress[1],
-      city: matchedAddress[2],
-      zip: matchedAddress[3],
+      address,
+      city,
+      zip,
     };
-  } else {
-    console.error("Address format does not match the expected pattern.");
-    return null
   }
+
+  // If it's not four parts, handle it as usual (3-part address)
+  if (addressParts.length === 3) {
+    const [address, city, zip] = addressParts.map(part => part.trim());
+    return {
+      address,
+      city,
+      zip,
+    };
+  }
+
+  // Return null or handle cases where the format is unexpected
+  return null;
 }
