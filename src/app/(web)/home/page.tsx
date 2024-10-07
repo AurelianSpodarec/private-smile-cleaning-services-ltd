@@ -3,17 +3,19 @@ import SectionServices from "./_sections/Services"
 import SectionFooterCTA from "./_sections/FooterCTA"
 import SectionFAQ from "./_sections/FAQ"
 import SectionHowItWorks from "./_sections/HowItWorks"
-import SectionPainPointsSolution from "./_sections/PainPointsSolution"
-import ProductSpotlight from "./_sections/ProductSpotlight"
+import SectionPasSolution from "./_sections/PasSolution"
+import SectionProductSpotlight from "./_sections/ProductSpotlight"
+import SectionPasProblem from "./_sections/PasProblem"
 
 function Home() {
   return (
     <main>
       <SectionHero />
-      <SectionPainPointsSolution />
       <SectionHowItWorks />
+      <SectionPasProblem />
+      <SectionPasSolution />
       <SectionServices />
-      <ProductSpotlight />
+      <SectionProductSpotlight />
       <SectionFAQ />
       <SectionFooterCTA />
     </main>

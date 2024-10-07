@@ -43,7 +43,7 @@ const servicesData = [
   // Blog
   // Careers
   // Policy
-  
+
 
   // Mobile Users 80%
 
@@ -96,15 +96,13 @@ function StepExtra() {
   return (
     <div>
       StepExtra
-      {
-        servicesData.map((item) => {
-          return (
-            <div>
-              {item.name}
-            </div>
-          )
-        })
-      }
+      {servicesData.map((item) => {
+        return (
+          <div>
+            {item.name}
+          </div>
+        )
+      })}
     </div>
   );
 }

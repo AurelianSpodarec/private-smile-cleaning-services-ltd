@@ -8,6 +8,7 @@ import Container from "@/components/_layout/Container"
 
 import { dataPainPoints } from "./data"
 import { IItem } from "./IItem"
+import PageHeader from "@/components/molecules/PageHeader"
 
 function CardPoint({ item }: { item: IItem }) {
   return (
@@ -37,31 +38,29 @@ function CardPoint({ item }: { item: IItem }) {
   )
 }
 
-function SectionPainPointsSolution() {
+function SectionPasSolution() {
   return (
     <Section id="process">
-      <Container size="8xl">
 
-        <header className="flex flex-col text-center justify-center max-w-3xl mx-auto mb-20">
-          <h2 className="font-playFair font-extrabold text-6xl">
-            {/* The Solution: <RoughNotation type="underline" show={true} color="#913c6d" strokeWidth={3} padding={[-13, 20]}>Personalized</RoughNotation>, Hands-On <RoughNotation type="underline" show={true} color="#913c6d" strokeWidth={3} padding={[-13, 20]}>HR Support</RoughNotation> */}
-            We Hire Trusted, Vetted Cleaning Professionals
-          </h2>
-          <p>Relax knowing our cleaners are thoroughly vetted and trained - no contractors. Enjoy quality time with your family while we handle the cleaning.</p>
-        </header>
+      <PageHeader
+        title=" We Hire Trusted, Vetted Cleaning Professionals"
+        subheader="Relax knowing our cleaners are thoroughly vetted and trained - no contractors. Enjoy quality time with your family while we handle the cleaning."
+        className="max-w-4xl"
+      />
 
-        <div className="grid grid-cols-3 gap-6">
+      <Container size="7xl">
+        <div className="grid grid-cols-2 gap-6">
           {dataPainPoints.map((item, index) => {
             return <CardPoint item={item} key={index} />
           })}
         </div>
-
-        {/* <div className="text-center mt-16">
-          <button className="hidden lg:inline-flex nav-cta bg-[#913c6d] rounded-lg border py-3 shadow-xl px-8 font-bold text-white">Show packages</button>
-        </div> */}
       </Container>
-    </Section>
+
+      <div className="text-center mt-16">
+          <button className="hidden lg:inline-flex nav-cta bg-[#913c6d] rounded-lg border py-3 shadow-xl px-8 font-bold text-white">Show packages</button>
+        </div>
+    </Section >
   )
 }
 
-export default SectionPainPointsSolution
+export default SectionPasSolution

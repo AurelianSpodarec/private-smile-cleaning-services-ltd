@@ -1,10 +1,6 @@
-
-
 const serviceType = [
   {
     id: 5,
-    slug: "residential-property",
-    name: "Residential Property",
     icon: <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
@@ -16,27 +12,7 @@ const serviceType = [
     </svg>
   },
   {
-    id: 5,
-    slug: "commercial-property",
-    name: "Commercial Property",
-    icon: <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="currentColor"
-      className="w-8 h-8"
-      data-slot="icon"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fillRule="evenodd"
-        d="M4.5 2.25a.75.75 0 000 1.5v16.5h-.75a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5h-.75V3.75a.75.75 0 000-1.5h-15zM9 6a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H9zm-.75 3.75A.75.75 0 019 9h1.5a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM9 12a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H9zm3.75-5.25A.75.75 0 0113.5 6H15a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM13.5 9a.75.75 0 000 1.5H15A.75.75 0 0015 9h-1.5zm-.75 3.75a.75.75 0 01.75-.75H15a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM9 19.5v-2.25a.75.75 0 01.75-.75h4.5a.75.75 0 01.75.75v2.25a.75.75 0 01-.75.75h-4.5A.75.75 0 019 19.5z"
-        clipRule="evenodd"
-      ></path>
-    </svg>
-  },
-  {
     id: 2,
-    slug: "end-of-tenancy",
-    name: "End of Tenancy",
     icon: <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
@@ -48,8 +24,6 @@ const serviceType = [
   },
   {
     id: 3,
-    slug: "ironing",
-    name: "Ironing",
     icon: <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -67,24 +41,4 @@ const serviceType = [
   }
 ]
 
-function StepPropertyType() {
-  return (
-    <div>
-      {serviceType.map((item) => {
-        return (
-          <button type="button" className="bg-white hover:bg-gray-200 border border-gray-100 p-4 flex items-center justify-between">
-            <div className="flex items-center align-center space-x-4">
-              <span className="h-6 w-6">{item.icon}</span>
-              <span>{item.name}</span>
-            </div>
-            <svg className="w-4 h-4" viewBox="0 0 320 512">
-              <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path>
-            </svg>
-          </button>
-        )
-      })}
-    </div>
-  );
-}
 
-export default StepPropertyType

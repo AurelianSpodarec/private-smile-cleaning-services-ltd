@@ -1,14 +1,14 @@
-interface IBookingRequestLoggedIn extends IBookingRequestBase {
+export interface IBookingRequestLoggedIn extends IBookingRequestBase {
   original_booking_id?: number | null;
   // No 'user' and 'stripe_token' required as it's a logged-in user
 }
 
-interface IBookingRequestNonLoggedIn extends IBookingRequestBase {
+export interface IBookingRequestNonLoggedIn extends IBookingRequestBase {
   user: string; // required for non-logged-in users
   stripe_token?: string; // required if payment_method="stripe" for non-logged-in users
 }
 
-interface IBookingRequestBase {
+export interface IBookingRequestBase {
   location_id?: number | null;
   original_booking_id?: number | null;
   address: string;
@@ -29,36 +29,36 @@ interface IBookingRequestBase {
   custom_fields?: ICustomField[] | null;
 }
 
-interface IService {
+export interface IService {
   id: number;
   hourly?: IHourly | null;
   extras?: IExtra[] | null;
   pricing_parameters?: IPricingParameter[] | null;
 }
 
-interface IHourly {
+export interface IHourly {
   quantity: number;
   minutes: number;
 }
 
-interface IExtra {
+export interface IExtra {
   id: number;
   quantity: number;
   recurring?: boolean | null;
 }
 
-interface IPricingParameter {
+export interface IPricingParameter {
   id: number;
   quantity: number;
 }
 
-interface ICustomField {
+export interface ICustomField {
   id: number;
   value?: string;
   values?: ICustomFieldValue[];
 }
 
-interface ICustomFieldValue {
+export interface ICustomFieldValue {
   id: number;
   other?: string | null;
 }
