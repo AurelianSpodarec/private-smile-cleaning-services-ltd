@@ -17,11 +17,20 @@ export function parseCookies(cookiesString: string) {
   return cookies
 }
 
+/**
+ * Extracts the address, city, and zip code from a full address string.
+ * 
+ * The function splits the input string by commas and trims whitespace. 
+ * The first part is excluded because it is assumed to be a business name, 
+ * which is not needed for the API. It supports both 3-part and 4-part address formats.
+ *
+ * @param {string} fullAddress - The full address string to parse.
+ * @returns {Object|null} An object containing the address, city, and zip code,
+ *                       or null if the input format is incorrect.
+ */
 export function extractAddressFromApi(fullAddress) {
-  // Split the address by commas
   const addressParts = fullAddress.split(',');
 
-  // If there are four parts, ignore the first one (business name)
   if (addressParts.length === 4) {
     const [, address, city, zip] = addressParts.map(part => part.trim());
     return {
@@ -31,7 +40,6 @@ export function extractAddressFromApi(fullAddress) {
     };
   }
 
-  // If it's not four parts, handle it as usual (3-part address)
   if (addressParts.length === 3) {
     const [address, city, zip] = addressParts.map(part => part.trim());
     return {
@@ -40,7 +48,11 @@ export function extractAddressFromApi(fullAddress) {
       zip,
     };
   }
-
-  // Return null or handle cases where the format is unexpected
   return null;
 }
+
+export const excludeItemsFromArrayById = (array: [], extrasIdsToExclude: []): number[] => {
+  return array.filter(item => {
+    return !extrasIdsToExclude.some(excludedId => item.id === excludedId);
+  });
+};

@@ -5,9 +5,16 @@ import FetchSmileCleaning from "../../fetch/FetchSmileCleaning";
 import { BookingListResponse } from ".";
 import { IService } from "@/interfaces/IBooking";
 
-export async function getServices(): Promise<IService> {
+export async function getServices(): Promise<{ [key: string]: IService }> {
   const res = await FetchSmileCleaning(`booking/services`, 'GET');
-  return Object.values(res) as IService[];
+
+  // Transformer
+  const serviceHashTable: { [key: string]: IService } = {};
+  Object.values(res).forEach((service: IService) => {
+    serviceHashTable[service.id] = service; 
+  });
+
+  return serviceHashTable;
 }
 
 export async function getPriceEstimation({ data }): Promise<BookingListResponse> {

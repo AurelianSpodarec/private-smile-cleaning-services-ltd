@@ -2,7 +2,6 @@
 // # API Bookings/Frequencies
 // ============================================================
 import FetchSmileCleaning from "../../fetch/FetchSmileCleaning"
-import { IBooking } from "@/interfaces/IBooking"
 
 type IntervalType =
   | 'o'          // One Time
@@ -33,7 +32,12 @@ interface IGetBookingFrequenciesParams {
   filterBy?: IFilterOption;
 }
 
-export async function getBookingFrequencies({ booking_uuid, location_id, filterBy }: IGetBookingFrequenciesParams = {}): Promise<IBookingListResponse> {
+export async function getBookingFrequencies() {
+  const res = await FetchSmileCleaning('booking/frequencies', 'GET');
+  return Object.values(res)
+}
+
+export async function getBookingFrequenciesByType({ booking_uuid, location_id, filterBy }: IGetBookingFrequenciesParams = {}): Promise<IBookingListResponse> {
 
   const params = new URLSearchParams();
   if (booking_uuid) params.append('booking_uuid', booking_uuid);

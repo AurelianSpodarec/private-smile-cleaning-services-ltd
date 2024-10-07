@@ -9,9 +9,10 @@ import Container from "@/components/_layout/Container";
 import ScheduleStepIndex from "./_steps";
 import CheckoutExcerpt from "./_components/CheckoutExcerpt";
 import useSchedule from "@/context/schedule/useSchedule";
+import { getBookingFrequencies } from "@/services/apis/launch27/requests/booking/frequency";
 
 function Page() {
-  const { setFetchedStepsData } = useSchedule()
+  const { setFetchedStepsData, setFetchedBookingFrequenciesData } = useSchedule()
 
   const servicesQuery = useQuery({
     queryKey: ["services"],
@@ -19,12 +20,23 @@ function Page() {
     staleTime: Infinity,
   })
 
+  const bookingFrequencyOptionsQuery = useQuery({
+    queryKey: ["booking-frequencies"],
+    queryFn: () => getBookingFrequencies(),
+    staleTime: Infinity
+  })
+
   useEffect(() => {
     if (servicesQuery.isFetched) {
-      console.log(servicesQuery.data);
       setFetchedStepsData(servicesQuery.data)
     }
   }, [servicesQuery.isFetched, servicesQuery.data]);
+
+  useEffect(() => {
+    if (bookingFrequencyOptionsQuery.isFetched) {
+      setFetchedBookingFrequenciesData(bookingFrequencyOptionsQuery.data)
+    }
+  }, [bookingFrequencyOptionsQuery.isFetched, bookingFrequencyOptionsQuery.data]);
 
   return (
     <Container>

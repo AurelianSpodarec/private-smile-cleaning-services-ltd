@@ -11,9 +11,9 @@ function SearchAddress() {
   const [error, setError] = useState('');
 
   const fetchData = async () => {
-    const res = await lookupPostcodeAutocomplete(postcode); // Mocked API call
-    setResult(res);
-    setError('');
+    const res = await lookupPostcodeAutocomplete(postcode)
+    setResult(res)
+    setError('')
   };
 
   useEffect(() => {

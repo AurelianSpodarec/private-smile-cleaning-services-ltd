@@ -1,21 +1,7 @@
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-
 import useSchedule from "@/context/schedule/useSchedule";
-import { getServices } from "@/services/apis/launch27/requests/booking/helpers";
 
 function ScheduleStepIndex() {
-  const { steps, activeMenuIndex, menuNext, menuPrev } = useSchedule()
-
-  // const servicesQuery = useQuery({
-  //   queryKey: ["services"],
-  //   queryFn: () => getServices(),
-  // })
-
-  // useEffect(() => {
-  //   // fetchData()
-  //   console.log(servicesQuery.data)
-  // }, [])
+  const { steps, activeStepIndex, menuNext, menuPrev } = useSchedule()
 
   return (
     <div>
@@ -23,7 +9,7 @@ function ScheduleStepIndex() {
         Shchedule Step Index
       </header>
 
-      {steps[activeMenuIndex].component}
+      {steps[activeStepIndex].component}
 
       <footer>
         <button type="button" onClick={() => menuPrev()}>Previous</button>
