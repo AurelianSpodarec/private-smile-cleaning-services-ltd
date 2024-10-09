@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "main": "page.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -42,6 +43,7 @@
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
+    "react-rough-notation": "^1.0.5",
     "remark-gfm": "^4.0.0",
     "sass": "^1.70.0",
     "tailwind-merge": "^2.4.0",

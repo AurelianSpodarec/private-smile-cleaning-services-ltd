@@ -8,8 +8,8 @@ function CardPoint({ item, index }: { item: ICardPoint, index: number }) {
       </div>
 
       <div className="px-10">
-        <h3 className="text-3xl font-bold mb-1 font-roboto">{item.title}</h3>
-        <p className="text-lg text-[#07111D]">{item.desc}</p>
+        <h3 className="text-4xl font-bold mb-1 font-roboto">{item.title}</h3>
+        <p className="text-md text-[#07111D]">{item.desc}</p>
       </div>
 
       {index === 1 &&

@@ -9,7 +9,7 @@ import PageHeader from "@/components/molecules/PageHeader";
 function CardExcerptService({ item }) {
   return (
     <div className=" p-4 rounded-lg">
-      <img src={item.thumbnail} className="h-[350px] w-full rounded-xl object-cover" />
+      <img src={item.thumbnail} className="h-[300px] w-full rounded-xl object-cover" />
       <h3 className="text-2xl font-semibold">{item.title}</h3>
       <p>{item.excerpt}</p>
     </div>
@@ -31,7 +31,15 @@ function SectionServices() {
           })}
         </div>
 
-        <Link href="/" className="inline-flex px-3 rounded-xl py-2 bg-[#eca869]">Schedule a cleaner</Link>
+        <div className="text-center">
+          <button className="hidden lg:inline-flex nav-cta bg-[#eca869] rounded-lg py-3 shadow-xl px-8 font-bold text-gray-900">Book a cleaner</button>
+        </div>
+
+        <div className="m-10 bg-gray-200">
+          Dusting
+          Vacuum
+          Mop Floors
+        </div>
 
       </Container>
     </Section>

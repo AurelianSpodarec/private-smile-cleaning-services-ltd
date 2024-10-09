@@ -1,7 +1,7 @@
 'use client'
 
 import Lottie from "lottie-react"
-// import { RoughNotation } from "react-rough-notation"
+import { RoughNotation } from "react-rough-notation"
 
 import Section from "@/components/_layout/Section"
 import Container from "@/components/_layout/Container"
@@ -41,11 +41,19 @@ function CardPoint({ item }: { item: IItem }) {
 function SectionPasSolution() {
   return (
     <Section id="process">
-
+      {/* <Roug type="underline" show={true} color="#913c6d" strokeWidth={3} padding={[-20, 20]}>
+        Personalized
+      </RoughNotation> */}
       <PageHeader
-        title=" We Hire Trusted, Vetted Cleaning Professionals"
-        subheader="Relax knowing our cleaners are thoroughly vetted and trained - no contractors. Enjoy quality time with your family while we handle the cleaning."
-        className="max-w-4xl"
+        title={
+          <>We Hire <RoughNotation type="underline" show={true} color="#b08bbb" strokeWidth={3} padding={[-20, 20]}>Trusted, Vetted</RoughNotation> <span className="text-[#b08bbb]"> Cleaning Professionals</span></>
+          // <>We Hire <span className="text-[#b08bbb]">Trusted, Vetted</span> Cleaning <RoughNotation type="underline" show={true} color="#b08bbb" strokeWidth={3} padding={[-20, 20]}>Professionals</RoughNotation></>
+        }
+        subheader={`
+          
+          Relax knowing our cleaners are thoroughly vetted and trained - no contractors. Enjoy quality time with your family while we handle the cleaning.
+        `}
+        className="max-w-3xl"
       />
 
       <Container size="7xl">
@@ -56,9 +64,10 @@ function SectionPasSolution() {
         </div>
       </Container>
 
-      <div className="text-center mt-16">
-          <button className="hidden lg:inline-flex nav-cta bg-[#913c6d] rounded-lg border py-3 shadow-xl px-8 font-bold text-white">Show packages</button>
-        </div>
+      <div className="text-center mx-auto justify-center flex mt-16">
+        <button className="hidden lg:inline-flex nav-cta bg-[#eca869] rounded-lg py-3 shadow-xl px-8 font-bold text-gray-900">Show Services</button>
+      </div>
+
     </Section >
   )
 }

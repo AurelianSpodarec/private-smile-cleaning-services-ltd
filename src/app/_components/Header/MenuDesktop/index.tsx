@@ -11,8 +11,8 @@ async function MenuDesktop() {
   const isLogged = session?.user
 
   return (
-    <nav className=" left-0 right-0 px-16 py-4 w-full flex items-center justify-between">
-      <div className="flex items-center space-x-2">
+    <nav className=" left-0 right-0 px-16 py-6 w-full flex items-center justify-between">
+      <div className="flex items-center space-x-8">
 
         <Link href="/" className="px-2">
           <Logo />
@@ -32,7 +32,7 @@ async function MenuDesktop() {
         }
       </div>
 
-      <div className="flex items-center align-center space-x-2">
+      <div className="flex items-center align-center space-x-3">
         {!isLogged &&
           <>
             <form
@@ -44,11 +44,11 @@ async function MenuDesktop() {
                 })
               }}
             >
-              <button className="rounded-2xl inline-block px-4 py-2 font-sm">Login</button>
+              <button className="inline-block px-6 py-3 text-sm font-semibold border border-gray-200 rounded-full">Login</button>
             </form>
           </>
         }
-        <Link href="/schedule" className="hidden lg:flex items-center gap-1 nav-cta bg-black rounded-xl py-2 px-4 text-sm text-white font-semibold">Schedule a cleaner</Link>
+        <Link href="/schedule" className="hidden lg:flex items-center gap-1 nav-cta bg-[#96769f] rounded-3xl py-3 px-6 text-sm text-black font-semibold">Book a cleaner</Link>
 
         {isLogged &&
           <UserAvatar user={session?.user} />

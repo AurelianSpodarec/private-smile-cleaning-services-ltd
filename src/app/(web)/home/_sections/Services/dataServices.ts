@@ -1,6 +1,18 @@
 const dataServices = [
   {
-    title: "On-Demand Home Cleaning", //Residential Cleaning
+    title: "Home Cleaning", //Residential Cleaning
+    thumbnail: "https://cdn.mos.cms.futurecdn.net/WCqnyAwNFAzYFXyUq4EMLZ-415-80.jpg",
+    excerpt: "Our flexible cleaning solutions are here to lighten your load. Perfect for busy homeowners or renters needing a clean space.",
+    fullDescription: "Feeling overwhelmed by the chaos of everyday life? Our flexible cleaning solutions are here to lighten your load. Whether you're a busy homeowner or a renter preparing for a special occasion, we offer one-time and deep cleaning services tailored to your needs.",
+    keyFeatures: [
+      "Customizable Options: Choose the specific cleaning tasks that matter most to you.",
+      "Vetted Professionals: Rest easy knowing our trained staff will treat your home with care.",
+      "Eco-Friendly Products: We prioritize your family's health with safe, green cleaning supplies.",
+      "Flexible Scheduling: Book a cleaning at your convenience, fitting seamlessly into your life."
+    ]
+  },
+  {
+    title: "Commercial Cleaning",
     thumbnail: "https://cdn.mos.cms.futurecdn.net/WCqnyAwNFAzYFXyUq4EMLZ-415-80.jpg",
     excerpt: "Our flexible cleaning solutions are here to lighten your load. Perfect for busy homeowners or renters needing a clean space.",
     fullDescription: "Feeling overwhelmed by the chaos of everyday life? Our flexible cleaning solutions are here to lighten your load. Whether you're a busy homeowner or a renter preparing for a special occasion, we offer one-time and deep cleaning services tailored to your needs.",

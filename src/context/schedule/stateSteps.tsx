@@ -18,7 +18,7 @@ export interface IStep {
 const stateSteps:IStep[] = [
   {
     id: "intro",
-    name: "Choose Service Type",
+    name: "Service Type",
     component: <StepPropertyType />,
     data: []
   },
@@ -36,13 +36,13 @@ const stateSteps:IStep[] = [
   },
   {
     id: "selectTime",
-    name: "Select Time/Recommended time",
+    name: "Choose your Time",
     component: <StepSelectTime />,
     data: []
   },
   {
     id: "checkout",
-    name: "Checkout",
+    name: "Payment",
     component: <StepCheckoutSummary />,
     data: [],
   },

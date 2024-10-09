@@ -6,7 +6,7 @@ function ScheduleStepIndex() {
   return (
     <div>
       <header>
-        Shchedule Step Index
+        {/* Shchedule Step Index */}
       </header>
 
       {steps[activeStepIndex].component}

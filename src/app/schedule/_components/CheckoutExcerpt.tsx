@@ -2,9 +2,7 @@ import useSchedule from "@/context/schedule/useSchedule";
 
 function CheckoutExcerpt() {
 
-  // const { } = useSchedule()
-
-
+  // const {  } = useSchedule()
 
   return (
     <aside className="shadow p-6 w-full">

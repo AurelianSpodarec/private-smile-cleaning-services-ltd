@@ -1,14 +1,14 @@
 export const dataHowItWorks = [
   {
-    title: "Understanding",
-    desc: "You tell me what you want.",
+    title: "Enter Your Postcode",
+    desc: "Let us know where you are, and we'll get a fully vetted cleaner ready going your way!",
   },
   {
-    title: "Creation",
-    desc: "The phase where I bring words into reality",
+    title: "Book & Confirm",
+    desc: "Pay securely, and our cleaner will verify the price upon arrival.",
   },
   {
-    title: "Delivery",
-    desc: "Expect your site in 5working days with as many revisions as you need.",
+    title: "Sit Back & Enjoy",
+    desc: "Relax in your sparkling space - you deserve it!",
   }
 ]
