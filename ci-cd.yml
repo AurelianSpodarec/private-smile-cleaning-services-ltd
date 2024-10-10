@@ -1,31 +1,52 @@
-name: CI/CD
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - staging  # Trigger on pushes to staging
-      - main      # Trigger on pushes to production (main)
+      - staging    # Trigger on pushes to the staging branch
+      - production  # Trigger on pushes to the production branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # Step 1: Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '18'  # Specify your Node.js version
 
-      - name: Install dependencies and build
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Build the application
+      - name: Build the application
+        run: npm run build
+
+      # Step 5: Deploy to server
+      - name: Deploy to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}        # Your server IP or domain
+          username: ${{ secrets.USERNAME }}  # SSH username
+          key: ${{ secrets.KEY }}            # SSH private key
+          source: "."
+          # Use conditionals to set the target based on the branch
+          target: ${{ github.ref == 'refs/heads/staging' && '/home/vpn-user/Projects/staging' || '/home/vpn-user/Projects/production' }}
+
+      # Step 6: Start/Restart the application with PM2
+      - name: Start/Restart application
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
-            cd ~/Projects/staging  # Path for staging
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
+          if [ '${{ github.ref }}' = 'refs/heads/staging' ]; then
+              pm2 start app.js --name my-app-staging || pm2 restart my-app-staging;
           else
-            cd ~/Projects/production  # Path for production
-          fi
-          npm install
-          npm run build
-          npm run start
+              pm2 start app.js --name my-app-production || pm2 restart my-app-production;
+          fi"
+
