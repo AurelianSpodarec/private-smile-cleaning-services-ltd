@@ -1,3 +1,8 @@
+const express = require('express'); // Assuming you're using Express
+const { exec } = require('child_process'); // Add this line
+
+const app = express();
+
 // Function to execute a command and return a promise
 function runCommand(command) {
     return new Promise((resolve, reject) => {
