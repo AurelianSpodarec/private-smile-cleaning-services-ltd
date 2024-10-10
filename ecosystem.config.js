@@ -1,19 +1,17 @@
 module.exports = {
   apps: [
     {
-      name: 'smile-web-staging',
-      script: 'app.js',
-      env_staging: {
+      name: 'smile-app-staging', // Change as needed
+      script: './app.js',      // Entry point of your application
+      env: {
         NODE_ENV: 'staging',
-        // Add other staging environment variables here
       },
     },
     {
-      name: 'smile-web-production',
-      script: 'app.js',
-      env_production: {
-        NODE_ENV: 'main',
-        // Add other production environment variables here
+      name: 'smile-app-production', // Change as needed
+      script: './app.js',        // Entry point of your application
+      env: {
+        NODE_ENV: 'production',
       },
     },
   ],
