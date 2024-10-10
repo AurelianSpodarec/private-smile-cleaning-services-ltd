@@ -1,4 +1,5 @@
 import Container from "@/components/_layout/Container";
+import Section from "@/components/_layout/Section";
 import PageHeader from "@/components/molecules/PageHeader";
 import { RoughNotation } from "react-rough-notation";
 
@@ -31,7 +32,7 @@ function CardPoint({ item }: { item: IItem }) {
 
 function SectionPasProblem() {
   return (
-    <div>
+    <Section>
       <PageHeader
         // title="When Cleanliness Competes with Family Time"
         title={
@@ -47,7 +48,7 @@ function SectionPasProblem() {
           })}
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }
 
