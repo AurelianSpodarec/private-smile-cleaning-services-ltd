@@ -1,0 +1,41 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - staging  # Adjust to your needs
+      - production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'  # Specify your Node.js version
+
+      - name: Install dependencies
+        run: npm install  # Changed from npm run install to npm install
+
+      - name: Build the application
+        run: npm run build
+
+      - name: Start the application
+        run: npm run start
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/Projects/staging  # Adjust the path as necessary for staging
+            npm install
+            npm run build
+            npm run start
