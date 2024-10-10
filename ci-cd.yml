@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - staging    # Trigger on pushes to the staging branch
-      - production  # Trigger on pushes to the production branch
+      - main  # Trigger on pushes to the production branch
 
 jobs:
   deploy:
@@ -27,7 +27,7 @@ jobs:
 
       # Step 4: Build the application
       - name: Build the application
-        run: npm run build
+        run: npm run build  # Ensure you have a build script defined in package.json
 
       # Step 5: Deploy to server
       - name: Deploy to server
@@ -36,17 +36,16 @@ jobs:
           host: ${{ secrets.HOST }}        # Your server IP or domain
           username: ${{ secrets.USERNAME }}  # SSH username
           key: ${{ secrets.KEY }}            # SSH private key
-          source: "."
+          source: "."                        # Source directory (current directory)
           # Use conditionals to set the target based on the branch
-          target: ${{ github.ref == 'refs/heads/staging' && '/home/vpn-user/Projects/staging' || '/home/vpn-user/Projects/production' }}
+          target: ${{ github.ref == 'refs/heads/staging' && '/home/vps-user/Projects/staging' || '/home/vps-user/Projects/production' }}
 
       # Step 6: Start/Restart the application with PM2
       - name: Start/Restart application
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
           if [ '${{ github.ref }}' = 'refs/heads/staging' ]; then
-              pm2 start app.js --name smile-app-staging  || pm2 restart smile-app-staging ;
+              pm2 start /home/vps-user/Projects/staging/app.js --name smile-app-staging || pm2 restart smile-app-staging ;
           else
-              pm2 start app.js --name smile-app-production   || pm2 restart smile-app-production  ;
+              pm2 start /home/vps-user/Projects/production/app.js --name smile-app-production || pm2 restart smile-app-production ;
           fi"
-
