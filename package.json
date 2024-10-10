@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "main": "app.js"
+    "main": "app.js",
     "staging": "app.js"
   },
   "dependencies": {
