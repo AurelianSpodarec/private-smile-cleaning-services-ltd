@@ -1,10 +1,10 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
     branches:
-      - staging  # Adjust to your needs
-      - production
+      - staging  # Trigger on pushes to staging
+      - main      # Trigger on pushes to production (main)
 
 jobs:
   build:
@@ -17,25 +17,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Specify your Node.js version
+          node-version: '18'
 
-      - name: Install dependencies
-        run: npm install  # Changed from npm run install to npm install
-
-      - name: Build the application
-        run: npm run build
-
-      - name: Start the application
-        run: npm run start
-
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd ~/Projects/staging  # Adjust the path as necessary for staging
-            npm install
-            npm run build
-            npm run start
+      - name: Install dependencies and build
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            cd ~/Projects/staging  # Path for staging
+          else
+            cd ~/Projects/production  # Path for production
+          fi
+          npm install
+          npm run build
+          npm run start
