@@ -45,8 +45,8 @@ jobs:
         run: |
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
           if [ '${{ github.ref }}' = 'refs/heads/staging' ]; then
-              pm2 start app.js --name my-app-staging || pm2 restart my-app-staging;
+              pm2 start app.js --name smile-app-staging  || pm2 restart smile-app-staging ;
           else
-              pm2 start app.js --name my-app-production || pm2 restart my-app-production;
+              pm2 start app.js --name smile-app-production   || pm2 restart smile-app-production  ;
           fi"
 
