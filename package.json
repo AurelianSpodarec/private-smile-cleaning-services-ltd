@@ -5,11 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prod:build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "main": "app.js",
-    "staging": "app.js"
+    "main": "app.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
