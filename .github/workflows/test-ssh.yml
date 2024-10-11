@@ -1,10 +1,31 @@
-- name: Test SSH Connection
-  env:
-    VPS_USER: ${{ secrets.VPS_USER }}
-    VPS_HOST: ${{ secrets.VPS_HOST }}
-    VPS_KEY: ${{ secrets.VPS_KEY }}
-  run: |
-    mkdir -p ~/.ssh
-    echo "$VPS_KEY" > ~/.ssh/id_rsa
-    chmod 600 ~/.ssh/id_rsa
-    ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "echo 'SSH connection successful'"
+name: Test SSH Connection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        env:
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_KEY: ${{ secrets.VPS_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$VPS_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Test SSH Connection
+        env:
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "echo 'SSH connection successful'"
