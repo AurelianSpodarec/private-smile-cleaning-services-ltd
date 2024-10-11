@@ -8,12 +8,8 @@
     "prod:build": "next build",
     "start": "next start",
     "lint": "next lint",
-<<<<<<< HEAD
-    "main": "app.js"
-=======
     "main": "app.js",
     "staging": "app.js"
->>>>>>> a5a3b163f3f78bb4677d0acf0450c4ef7a78e8fd
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
