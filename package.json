@@ -1,14 +1,19 @@
-{
+
   "name": "smile-website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "PORT=3001 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start"
   },
   "devDependencies": {
-    "eslint": "^8.0.0"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -51,13 +56,5 @@
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
   }
 }
