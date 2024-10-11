@@ -35,8 +35,8 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_KEY: ${{ secrets.VPS_KEY }}
-          PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
-          STAGING_PATH: ${{ secrets.STAGING_PATH }}
+          PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}  # Reference to secret
+          STAGING_PATH: ${{ secrets.STAGING_PATH }}        # Reference to secret
         run: |
           echo "$VPS_KEY" > key.pem
           chmod 600 key.pem
