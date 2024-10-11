@@ -1,4 +1,4 @@
-name: Test SSH
+name: Test SSH Connection
 
 on:
   push:
@@ -11,15 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
 
-      - name: Test SSH connection
-        run: ssh -T git@github.com
+    - name: Start SSH Agent
+      run: |
+        eval $(ssh-agent -s)
+        echo "${{ secrets.VPS_KEY }}" | tr -d '\r' | ssh-add -
+
+    - name: Test SSH Connection
+      env:
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_USER: ${{ secrets.VPS_USER }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "echo 'SSH connection successful'"
