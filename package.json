@@ -6,7 +6,9 @@
     "dev": "PORT=3001 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
