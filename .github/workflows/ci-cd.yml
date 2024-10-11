@@ -11,62 +11,48 @@ jobs:
     name: Deploy to VPS
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        environment: [production, staging]
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Cache Node.js modules
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-npm-
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y some-dependency
 
-    - name: Install dependencies
-      run: |
-        npm ci
-        npm run build
+      - name: Install Node.js dependencies
+        run: npm install
 
-    - name: Deploy to VPS
-      env:
-        VPS_HOST: ${{ secrets.VPS_HOST }}
-        VPS_USER: ${{ secrets.VPS_USER }}
-        VPS_PORT: ${{ secrets.VPS_PORT }}
-        VPS_KEY: ${{ secrets.VPS_KEY }}
-        PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
-        STAGING_PATH: ${{ secrets.STAGING_PATH }}
-      run: |
-        echo "$VPS_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+      - name: Build the project
+        run: npm run build
 
-        echo "Deploying to environment: ${{ matrix.environment }}"
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
-        if [ "${{ matrix.environment }}" == "production" ]; then
-          scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
-          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm ci && pm2 restart production"
-        else
-          scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
-          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm ci && pm2 restart staging"
-        fi
+      - name: Deploy to Staging or Production
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_KEY: ${{ secrets.VPS_KEY }}
+          PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
+          STAGING_PATH: ${{ secrets.STAGING_PATH }}
+        run: |
+          echo "$VPS_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-    - name: Restart PM2 Processes
-      env:
-        VPS_HOST: ${{ secrets.VPS_HOST }}
-        VPS_USER: ${{ secrets.VPS_USER }}
-        VPS_PORT: ${{ secrets.VPS_PORT }}
-        VPS_KEY: ${{ secrets.VPS_KEY }}
-      run: |
-        echo "$VPS_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+          echo "Deploying to environment based on branch: $GITHUB_REF"
 
-        # Restart PM2 processes
-        if [ "${{ matrix.environment }}" == "production" ]; then
-          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "pm2 restart production"
-        else
-          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "pm2 restart staging"
-        fi
+          if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
+            echo "Deploying to production"
+            scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
+            ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm ci && pm2 restart production"
+          elif [ "${GITHUB_REF}" == "refs/heads/staging" ]; then
+            echo "Deploying to staging"
+            scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
+            ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm ci && pm2 restart staging"
+          fi
