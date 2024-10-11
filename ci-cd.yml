@@ -1,51 +1,45 @@
-name: CI/CD Pipeline
+name: CI/CD for Next.js
 
 on:
   push:
     branches:
-      - staging    # Trigger on pushes to the staging branch
-      - main  # Trigger on pushes to the production branch
+      - main
+      - staging
 
 jobs:
   deploy:
+    name: Deploy to VPS
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        environment: [production, staging]
+
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'  # Specify your Node.js version
+    - name: Install dependencies
+      run: |
+        npm install
+        npm run build
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+    - name: Deploy to VPS
+      env:
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_USER: ${{ secrets.VPS_USER }}
+        VPS_PORT: ${{ secrets.VPS_PORT }}
+        VPS_KEY: ${{ secrets.VPS_KEY }}
+        PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
+        STAGING_PATH: ${{ secrets.STAGING_PATH }}
+      run: |
+        echo "$VPS_KEY" > key.pem
+        chmod 600 key.pem
 
-      # Step 4: Build the application
-      - name: Build the application
-        run: npm run build  # Ensure you have a build script defined in package.json
-
-      # Step 5: Deploy to server
-      - name: Deploy to server
-        uses: appleboy/scp-action@v0.1.5
-        with:
-          host: ${{ secrets.HOST }}        # Your server IP or domain
-          username: ${{ secrets.USERNAME }}  # SSH username
-          key: ${{ secrets.KEY }}            # SSH private key
-          source: "."                        # Source directory (current directory)
-          # Use conditionals to set the target based on the branch
-          target: ${{ github.ref == 'refs/heads/staging' && '/home/vps-user/Projects/staging' || '/home/vps-user/Projects/production' }}
-
-      # Step 6: Start/Restart the application with PM2
-      - name: Start/Restart application
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
-          if [ '${{ github.ref }}' = 'refs/heads/staging' ]; then
-              pm2 start /home/vps-user/Projects/staging/app.js --name smile-app-staging || pm2 restart smile-app-staging ;
-          else
-              pm2 start /home/vps-user/Projects/production/app.js --name smile-app-production || pm2 restart smile-app-production ;
-          fi"
+        if [ "${{ matrix.environment }}" == "production" ]; then
+          scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
+          ssh -i key.pem $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm install && pm2 restart production"
+        else
+          scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
+          ssh -i key.pem $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm install && pm2 restart staging"
+        fi
