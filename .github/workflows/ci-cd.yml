@@ -11,10 +11,6 @@ jobs:
     name: Deploy to VPS
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        environment: [production, staging]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,12 +18,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Ensure the Node.js version is specified here
+          node-version: '20'
 
       - name: Install dependencies
         run: |
           npm install
           npm run build
+
+      - name: Determine Environment
+        id: set-env
+        run: echo "ENVIRONMENT=$(if [ '${GITHUB_REF#refs/heads/}' = 'main' ]; then echo 'production'; else echo 'staging'; fi)" >> $GITHUB_ENV
 
       - name: Deploy to VPS
         env:
@@ -35,13 +35,13 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_KEY: ${{ secrets.VPS_KEY }}
-          PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}  # Reference to secret
-          STAGING_PATH: ${{ secrets.STAGING_PATH }}        # Reference to secret
+          PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
+          STAGING_PATH: ${{ secrets.STAGING_PATH }}
         run: |
           echo "$VPS_KEY" > key.pem
           chmod 600 key.pem
 
-          if [ "${{ matrix.environment }}" == "production" ]; then
+          if [ "$ENVIRONMENT" == "production" ]; then
             scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
             ssh -i key.pem $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm install && pm2 restart production"
           else
