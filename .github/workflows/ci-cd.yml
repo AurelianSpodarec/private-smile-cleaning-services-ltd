@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'  # Match with the version on VPS
+          node-version: 'v20.18.0'  # Match with the version on VPS
 
       - name: Update package list
         run: sudo apt-get update
