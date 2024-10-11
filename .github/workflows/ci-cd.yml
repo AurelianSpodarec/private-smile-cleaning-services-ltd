@@ -11,40 +11,52 @@ jobs:
     name: Deploy to VPS
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        environment: [production, staging]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+    - name: Install dependencies
+      run: |
+        npm install
+        npm run build
 
-      - name: Install dependencies
-        run: |
-          npm install
-          npm run build
+    - name: Deploy to VPS
+      env:
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_USER: ${{ secrets.VPS_USER }}
+        VPS_PORT: ${{ secrets.VPS_PORT }}
+        VPS_KEY: ${{ secrets.VPS_KEY }}
+        PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
+        STAGING_PATH: ${{ secrets.STAGING_PATH }}
+      run: |
+        echo "$VPS_KEY" > key.pem
+        chmod 600 key.pem
 
-      - name: Determine Environment
-        id: set-env
-        run: echo "ENVIRONMENT=$(if [ '${GITHUB_REF#refs/heads/}' = 'main' ]; then echo 'production'; else echo 'staging'; fi)" >> $GITHUB_ENV
+        if [ "${{ matrix.environment }}" == "production" ]; then
+          scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
+          ssh -i key.pem $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm install && pm2 restart production"
+        else
+          scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
+          ssh -i key.pem $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm install && pm2 restart staging"
+        fi
 
-      - name: Deploy to VPS
-        env:
-          VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PORT: ${{ secrets.VPS_PORT }}
-          VPS_KEY: ${{ secrets.VPS_KEY }}
-          PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
-          STAGING_PATH: ${{ secrets.STAGING_PATH }}
-        run: |
-          echo "$VPS_KEY" > key.pem
-          chmod 600 key.pem
+    - name: Restart PM2 Processes
+      env:
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_USER: ${{ secrets.VPS_USER }}
+        VPS_PORT: ${{ secrets.VPS_PORT }}
+        VPS_KEY: ${{ secrets.VPS_KEY }}
+      run: |
+        echo "$VPS_KEY" > key.pem
+        chmod 600 key.pem
 
-          if [ "$ENVIRONMENT" == "production" ]; then
-            scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
-            ssh -i key.pem $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm install && pm2 restart production"
-          else
-            scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
-            ssh -i key.pem $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm install && pm2 restart staging"
-          fi
+        # Restart PM2 processes
+        if [ "${{ matrix.environment }}" == "production" ]; then
+          ssh -i key.pem $VPS_USER@$VPS_HOST "pm2 restart production"
+        else
+          ssh -i key.pem $VPS_USER@$VPS_HOST "pm2 restart staging"
+        fi
