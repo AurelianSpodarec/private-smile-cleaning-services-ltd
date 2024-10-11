@@ -19,10 +19,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
+    - name: Cache Node.js modules
+      uses: actions/cache@v4
       with:
-        node-version: '20'
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
 
     - name: Install dependencies
       run: |
@@ -40,6 +43,8 @@ jobs:
       run: |
         echo "$VPS_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
+
+        echo "Deploying to environment: ${{ matrix.environment }}"
 
         if [ "${{ matrix.environment }}" == "production" ]; then
           scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
