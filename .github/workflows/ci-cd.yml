@@ -33,15 +33,15 @@ jobs:
         PRODUCTION_PATH: ${{ secrets.PRODUCTION_PATH }}
         STAGING_PATH: ${{ secrets.STAGING_PATH }}
       run: |
-        echo "$VPS_KEY" > key.pem
-        chmod 600 key.pem
+        echo "$VPS_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
         if [ "${{ matrix.environment }}" == "production" ]; then
-          scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
-          ssh -i key.pem $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm install && pm2 restart production"
+          scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$PRODUCTION_PATH
+          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "cd $PRODUCTION_PATH && npm install && pm2 restart production"
         else
-          scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
-          ssh -i key.pem $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm install && pm2 restart staging"
+          scp -i ~/.ssh/id_rsa -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
+          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm install && pm2 restart staging"
         fi
 
     - name: Restart PM2 Processes
@@ -51,12 +51,12 @@ jobs:
         VPS_PORT: ${{ secrets.VPS_PORT }}
         VPS_KEY: ${{ secrets.VPS_KEY }}
       run: |
-        echo "$VPS_KEY" > key.pem
-        chmod 600 key.pem
+        echo "$VPS_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
         # Restart PM2 processes
         if [ "${{ matrix.environment }}" == "production" ]; then
-          ssh -i key.pem $VPS_USER@$VPS_HOST "pm2 restart production"
+          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "pm2 restart production"
         else
-          ssh -i key.pem $VPS_USER@$VPS_HOST "pm2 restart staging"
+          ssh -i ~/.ssh/id_rsa $VPS_USER@$VPS_HOST "pm2 restart staging"
         fi
