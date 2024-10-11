@@ -22,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Specify Node.js version
+          node-version: '20'  # Ensure the Node.js version is specified here
 
       - name: Install dependencies
         run: |
@@ -48,4 +48,3 @@ jobs:
             scp -i key.pem -r ./* $VPS_USER@$VPS_HOST:$STAGING_PATH
             ssh -i key.pem $VPS_USER@$VPS_HOST "cd $STAGING_PATH && npm install && pm2 restart staging"
           fi
-
