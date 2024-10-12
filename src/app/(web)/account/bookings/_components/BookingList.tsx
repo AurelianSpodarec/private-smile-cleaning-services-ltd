@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { IBooking } from "@/interfaces/IBooking";
-import { getCustomerBookingList } from "@/services/apis/launch27/requests/booking";
+import { cancelBooking, getCustomerBookingList } from "@/services/apis/launch27/requests/booking";
 
 function CardBookingExcerpt({ item }: { item: IBooking }) {
   const serviceDate = new Date(item.service_date);
@@ -12,6 +12,15 @@ function CardBookingExcerpt({ item }: { item: IBooking }) {
 
   const hours = Math.floor(item.duration / 60);
   const minutes = item.duration % 60;
+
+  async function handlerCancelBooking(id) {
+    const data = {
+      "confirmed_late": true,
+    }
+    const a = await cancelBooking({ id, data })
+
+    console.log("cancel", a)
+  }
 
   return (
     <div className="my-4 border">
@@ -45,7 +54,7 @@ function CardBookingExcerpt({ item }: { item: IBooking }) {
       </div>
       <div>
         <button>Edit</button>
-        <button>Cancel</button>
+        <button onClick={() => handlerCancelBooking(item.id)}>Cancel</button>
       </div>
     </div>
   );

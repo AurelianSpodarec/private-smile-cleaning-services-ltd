@@ -2,7 +2,6 @@ import config from './config_smileCleaning'
 import { getResponseContent, RequestError } from '../../../requests'
 
 import { getSession } from "next-auth/react"
-import { getToken } from "next-auth/jwt";
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -32,7 +31,6 @@ async function FetchSmileCleaning<T>(
   })
 
   const content = await getResponseContent(response) as T
-
   if (response.ok) return { ...content }
   throw new RequestError(response.statusText, response.status, content)
 }

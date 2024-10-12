@@ -35,6 +35,6 @@ export async function getBookingById({ id }): Promise<BookingListResponse> {
   return await FetchSmileCleaning(`customer/bookings/${id}`, 'POST');
 }
 
-export async function cancelBooking({ id }): Promise<BookingListResponse> {
-  return await FetchSmileCleaning(`customer/bookings/${id}/cancel`, 'POST');
+export async function cancelBooking({ id, data }): Promise<BookingListResponse> {
+  return await FetchSmileCleaning(`customer/bookings/${id}/cancel`, 'POST', data);
 }
