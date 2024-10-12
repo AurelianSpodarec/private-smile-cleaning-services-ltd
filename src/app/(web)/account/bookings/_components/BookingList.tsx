@@ -29,7 +29,7 @@ function CardBookingExcerpt({ item }: { item: IBooking }) {
         <strong>Date:</strong> {serviceDate.toLocaleDateString()}
       </div>
       <div>
-        <strong>Address/Location:</strong> {item.location.name} {/* or full address */}
+        <strong>Address/Location:</strong> {item?.location?.name} {/* or full address */}
       </div>
       <div>
         <strong>From:</strong> {startTime} <strong>To:</strong> {endTime}
