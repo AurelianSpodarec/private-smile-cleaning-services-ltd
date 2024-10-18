@@ -13,16 +13,11 @@ export default auth((req: NextRequest) => {
   const { nextUrl } = req
   const isLoggedIn = !!req.auth
 
-  console.log("AUHHHHHHHHHHHHHHHHH", nextUrl, isLoggedIn)
-
   // const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isPublicRoute = publicRoutes.some(route => nextUrl.pathname.startsWith(route))
   // const isAuthRoute = authRoutes.includes(nextUrl.pathname)
   const isRootRoute = nextUrl.pathname === "/";
 
-  // if (isApiAuthRoute) {
-  //   return null
-  // }
 
    // If the user is logged in and is on the root route, redirect to /account
    if (isLoggedIn && isRootRoute) {
