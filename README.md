@@ -312,5 +312,3 @@ const servicesData = [
 //   id: 17,
 //   name: "ECO-Friendly Cleaning Products",
 // }
-# smile-website
-readme to follow:
