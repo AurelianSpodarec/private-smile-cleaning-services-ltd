@@ -30,4 +30,3 @@ echo "Restarting the application..."
 pm2 reload ecosystem.config.js --env $NODE_ENV
 
 echo "Deployment completed successfully."
-
