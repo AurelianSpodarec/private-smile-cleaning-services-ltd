@@ -3,30 +3,33 @@
 # Exit on error
 set -e
 
-# Define variables
-REPO_DIR="/var/www/smile-cleaning/current"
-NODE_ENV=${1:-"production"} # Default to production if no argument is given
+# Variables
+RELEASES_DIR="/var/www/smile-cleaning/releases"
+CURRENT_DIR="/var/www/smile-cleaning/current"
+SHARED_DIR="/var/www/smile-cleaning/shared"
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
+NEW_RELEASE="$RELEASES_DIR/$TIMESTAMP"
 
-# Check if the script is run from the correct directory
-if [ ! -d "$REPO_DIR/.git" ]; then
-  echo "Error: Not in a git repository. Make sure you are in the correct directory."
-  exit 1
-fi
+# Create a new release directory
+mkdir -p $NEW_RELEASE
 
-# Pull the latest changes
-echo "Pulling latest changes..."
-git -C $REPO_DIR pull origin main  # Change to your branch if needed
+# Clone or copy the repo into the new release directory
+git clone https://github.com/tech-smile-cleaning/smile-web.git $NEW_RELEASE
+
+# Link the shared files
+ln -s $SHARED_DIR/.env $NEW_RELEASE/.env
+ln -s $SHARED_DIR/uploads $NEW_RELEASE/uploads
 
 # Install dependencies
-echo "Installing dependencies..."
-npm install --production --prefix $REPO_DIR
+npm install --production --prefix $NEW_RELEASE
 
 # Build the application
-echo "Building the application..."
-npm run build --prefix $REPO_DIR
+npm run build --prefix $NEW_RELEASE
+
+# Update the symlink to point to the new release
+ln -nfs $NEW_RELEASE $CURRENT_DIR
 
 # Restart the application with PM2
-echo "Restarting the application..."
-pm2 reload ecosystem.config.js --env $NODE_ENV
+pm2 reload ecosystem.config.js --env production
 
 echo "Deployment completed successfully."
