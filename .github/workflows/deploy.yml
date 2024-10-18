@@ -1,0 +1,43 @@
+name: Deploy Next.js App
+
+on:
+  push:
+    branches:
+      - main   # Change this to your production branch name
+      - dev    # Change this to your staging branch name if needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'  # Change this to your required Node.js version
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Application
+      run: |
+        if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          npm run build; # Build for production
+        else
+          npm run build:dev; # Build for staging
+        fi
+
+    - name: Deploy to VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Add your private key to GitHub secrets
+        VPS_USER: ${{ secrets.VPS_USER }}                # Add your VPS username to GitHub secrets
+        VPS_HOST: ${{ secrets.VPS_HOST }}                # Add your VPS host (IP address) to GitHub secrets
+        PORT: ${{ github.ref == 'refs/heads/main' && '3000' || '3001' }} # Set port based on branch
+      run: |
+        echo "$SSH_PRIVATE_KEY" > id_rsa
+        chmod 600 id_rsa
+        rsync -r --delete --exclude='.git*' -e "ssh -i id_rsa -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_HOST:/var/www/smile-cleaning/current/
+        ssh -i id_rsa -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "cd /var/www/smile-cleaning/current && npm install --production && pm2 reload ecosystem.config.js --env ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}"
