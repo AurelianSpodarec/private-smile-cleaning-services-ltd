@@ -11,7 +11,7 @@ async function MenuDesktop() {
   const isLogged = session?.user
 
   return (
-    <nav className=" left-0 right-0 px-16 py-6 w-full flex items-center justify-between">
+    <nav className="hidden left-0 right-0 px-16 py-6 w-full lg:flex items-center justify-between">
       <div className="flex items-center space-x-8">
 
         <Link href="/" className="px-2">
@@ -34,19 +34,7 @@ async function MenuDesktop() {
 
       <div className="flex items-center align-center space-x-3">
         {!isLogged &&
-          <>
-            <form
-              action={async () => {
-                'use server'
-                await signIn('credentials', {
-                  email: "smile.cleaning.101+cust1@gmail.com",
-                  password: "Digital09%",
-                })
-              }}
-            >
-              <button className="inline-block px-6 py-3 text-sm font-semibold border border-gray-200 rounded-full">Login</button>
-            </form>
-          </>
+          <Link href="/auth/login" className="inline-block px-6 py-3 text-sm font-semibold border border-gray-200 rounded-full">Login</Link>
         }
         <Link href="/schedule" className="hidden lg:flex items-center gap-1 nav-cta bg-[#96769f] rounded-3xl py-3 px-6 text-sm text-black font-semibold">Book a cleaner</Link>
 

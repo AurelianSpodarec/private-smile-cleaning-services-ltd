@@ -5,7 +5,8 @@
  */
 export const publicRoutes = [
   "/",
-  "/schedule"
+  "/schedule",
+  "/auth/login"
 ]
 
 /**
@@ -15,7 +16,7 @@ export const publicRoutes = [
  */
 export const authRoutes = [
   "signin",
-  "auth/register"
+  "auth/login"
 ]
 
 /**

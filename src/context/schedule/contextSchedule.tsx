@@ -10,6 +10,34 @@ import { excludeItemsFromArrayById } from "@/lib/utils";
 
 export const ScheduleContext = createContext<any>({});
 
+
+const serviceConfig = {
+  residential: {
+    createRooms: {
+      includeDeepCleaning: true,
+      includePets: true,
+    },
+    extra: {
+
+    },
+    selectTime: {
+      // what component to use
+    },
+    checkout: true
+  },
+  endOfTenancy: {
+    createRooms: {
+      includeDeepCleaning: false,
+      includePets: true,
+    },
+  },
+  ironing: {
+    createIroning: true,
+    createSelectTime: true,
+    createCheckout: true,
+  },
+};
+
 function ScheduleProvider({ children }: { children: React.ReactNode }) {
   const [fetchedStepsData, setFetchedStepsData] = useState<IService[]>([])
   const [fetchedBookingFrequenciesData, setFetchedBookingFrequenciesData] = useState([])

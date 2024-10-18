@@ -56,7 +56,7 @@ function UserAvatar({ user }: { user: IUser }) {
             <form
               action={async () => {
                 'use server'
-                await signOut()
+                await signOut({redirect: true})
               }}
               className="flex items-center justify-between w-full"
             >

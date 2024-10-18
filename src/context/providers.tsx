@@ -55,7 +55,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ScheduleProvider>
 
           <QueryClientProvider client={client}>
-            {/* <ThemeWatcher /> */}
             {children}
             <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
           </QueryClientProvider>
