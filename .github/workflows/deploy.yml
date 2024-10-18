@@ -41,3 +41,5 @@ jobs:
         chmod 600 id_rsa
         rsync -r --delete --exclude='.git*' -e "ssh -i id_rsa -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_HOST:/var/www/smile-cleaning/current/
         ssh -i id_rsa -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "cd /var/www/smile-cleaning/current && npm install --production && pm2 reload ecosystem.config.js --env ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}"
+
+        #let's pray
