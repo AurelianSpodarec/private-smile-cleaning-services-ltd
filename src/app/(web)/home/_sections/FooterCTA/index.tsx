@@ -4,15 +4,19 @@ import PageHeader from "@/components/molecules/PageHeader";
 function SectionFooterCTA() {
   return (
     <Section size="clean">
+
+      {/* <div>
+        Find your cleaner now
+      </div> */}
       <img className="object-cover object-center w-full h-[600px]" src="https://jasslondon.co.uk/cdn/shop/products/Jass_London_homes_monochrome_Mural_home_office_living_wallpaper_minimalist14601.jpg?v=1635363382" />
 
-      <PageHeader 
+      {/* <PageHeader 
         title="Ready to get started?"
-      />
+      /> */}
 
-      <button>
+      {/* <button>
         Find your cleaner now
-      </button>
+      </button> */}
       
     </Section>
   )

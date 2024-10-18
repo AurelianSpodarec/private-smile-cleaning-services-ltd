@@ -30,38 +30,81 @@ function Logo() {
   )
 }
 
+function SocialIcons() {
+  return (
+    <div className="flex space-x-3">
+      <Link href="" target="blank" className="rounded-md border-gradient border-gradient-purple text-white inline-block fill-white h-9 w-9 p-2 bg-[#252628]">
+        <span className="sr-only">Smile Cleaning LinkedIn Profile</span>
+        <svg className="text-white fill-white" viewBox="0 0 448 512">
+          <path d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 01107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"></path>
+        </svg>
+      </Link>
+      <Link href="" target="blank" className="rounded-md border-gradient border-gradient-purple text-white inline-block fill-white h-9 w-9 p-2 bg-[#252628]">
+        <span className="sr-only">Smile Cleaning Twitter Profile</span>
+        <svg className="text-white fill-white" viewBox="0 0 512 512">
+          <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9L389.2 48zm-24.8 373.8h39.1L151.1 88h-42l255.3 333.8z"></path>
+        </svg>
+      </Link>
+      <Link href="" target="blank" className="rounded-md border-gradient border-gradient-purple text-white inline-block fill-white h-9 w-9 p-2 bg-[#252628]">
+        <span className="sr-only">Smile Cleaning Instagram Profile</span>
+        <svg className="text-white fill-white" viewBox="0 0 448 512">
+          <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+        </svg>
+      </Link>
+    </div>
+  )
+}
+
 function Footer() {
   return (
     <footer className="text-white bg-[#2a2b2e] py-8 relative border-b-2 border-b-[#eca869]">
-
       <div className="px-16">
-        <div className="flex flex-col md:flex-row items-center justify-between">
+        {/* <div className="flex flex-col md:flex-row items-center justify-between"> */}
 
+        <section className="flex">
           <div>
             <Logo />
-            <span className="sr-only">Cleaning Smile</span>
+            <span className="sr-only">Smile Cleaning</span>
           </div>
-
-          <div className="flex flex-col-reverse lg:flex-row md:space-x-8">
-            <div className="flex space-x-4">
-              <Link href="mailto:aurelianxspodarec@gmail.com" className="border-gradient border-gradient-purple text-white inline-block fill-white h-9 w-9 p-2 bg-[#252628]">
-                <span className="sr-only">Email Aurelian</span>
-                <svg className="text-white fill-white" viewBox="0 0 512 512"><path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z" /></svg>
-              </Link>
-              <Link href="https://www.linkedin.com/in/aurelianspodarec/" target="blank" className="border-gradient border-gradient-purple text-white inline-block fill-white h-9 w-9 p-2 bg-[#252628]">
-                <span className="sr-only">Aurelian LinkedIn Profile</span>
-                <svg className="text-white fill-white" viewBox="0 0 448 512">
-                  <path d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 01107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"></path>
-                </svg>
-              </Link>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800">
+            <h3>Company</h3>
+            <div className="flex flex-col text-white">
+              <Link href="/about">About</Link>
+              <Link href="/blog">Blog</Link>
+              <Link href="/careers">Careers</Link>
+              <Link href="/contact">Contact</Link>
             </div>
           </div>
-
-          <div className="md:hidden text-sm text-center mt-6">
-            &copy; Copyright 2024 Smile Cleaning. All rights reserved.
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800">
+            <h3>Services</h3>
+            <div className="flex flex-col text-white">
+              <Link href="/about">Home Cleaning</Link>
+              <Link href="/blog">Commercial Cleaning</Link>
+              <Link href="/careers">End of Tenancy Cleaning</Link>
+              <Link href="/contact">Ironing Services</Link>
+            </div>
           </div>
+          <div className="space-x-4">
+            <Link href="privacy-policy">Privacy Policy</Link>
+            <Link href="terms-and-conditions">Terms and Conditions</Link>
+          </div>
+        </section>
 
-        </div>
+        <section className="flex justify-between items-center align-middle">
+          {/* <div className="space-x-4">
+            <Link href="privacy-policy">Privacy Policy</Link>
+            <Link href="terms-and-conditions">Terms and Conditions</Link>
+          </div> */}
+          <div className="text-sm text-center">
+            &copy; Smile Cleaning {new Date().getFullYear()}. All rights reserved.
+          </div>
+          <div className="flex flex-col-reverse lg:flex-row md:space-x-8">
+            <SocialIcons />
+          </div>
+        </section>
+
+
+        {/* </div> */}
       </div>
     </footer>
   )
