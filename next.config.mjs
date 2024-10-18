@@ -1,10 +1,10 @@
-// Load the correct .env file based on the environment (NODE_ENV)
-if (process.env.NODE_ENV === 'production') {
-  require('dotenv').config({ path: '/var/www/smile-cleaning/production/shared/.env' });
-} else {
-  require('dotenv').config({ path: '/var/www/smile-cleaning/staging/shared/.env' });
-}
+// Import dotenv
+import dotenv from 'dotenv';
 
+// Load environment variables from the .env file
+dotenv.config({ path: '/var/www/smile-cleaning/staging/shared/.env' });
+
+// Your existing Next.js config
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async redirects() {
@@ -16,7 +16,6 @@ const nextConfig = {
       },
     ];
   },
-  // Other Next.js configurations can be added here
 };
 
 export default nextConfig;
