@@ -1,26 +1,33 @@
 #!/bin/bash
 
-TARGET=$1
-DEPLOY_DIR=""
+# Exit on error
+set -e
 
-if [ "$TARGET" == "prod" ]; then
-  DEPLOY_DIR="/home/rashad_user/web/smile.cleaning/public_html"
-elif [ "$TARGET" == "staging" ]; then
-  DEPLOY_DIR="/home/rashad_user/web/staging.smile.cleaning/public_html"
+# Define variables
+REPO_DIR="/var/www/smile-cleaning/current"
+NODE_ENV=${1:-"production"} # Default to production if no argument is given
 
-  # Create a robots.txt file that disallows all crawling
-  echo "User-agent: *
-Disallow: /" > public/robots.txt
-
-else
-  echo "Unknown target: $TARGET"
+# Check if the script is run from the correct directory
+if [ ! -d "$REPO_DIR/.git" ]; then
+  echo "Error: Not in a git repository. Make sure you are in the correct directory."
   exit 1
 fi
 
-# Clear the contents of the target directory except for the 'wp' folder and 'robots.txt'
-ssh root@77.37.86.138 << EOF
-  find $DEPLOY_DIR -mindepth 1 -maxdepth 1 ! -name 'wp' ! -name 'robots.txt' -exec rm -rf {} +
-EOF
+# Pull the latest changes
+echo "Pulling latest changes..."
+git -C $REPO_DIR pull origin main  # Change to your branch if needed
 
-# Deploy the new build
-scp -r public/* root@77.37.86.138:$DEPLOY_DIR
+# Install dependencies
+echo "Installing dependencies..."
+npm install --production --prefix $REPO_DIR
+
+# Build the application
+echo "Building the application..."
+npm run build --prefix $REPO_DIR
+
+# Restart the application with PM2
+echo "Restarting the application..."
+pm2 reload ecosystem.config.js --env $NODE_ENV
+
+echo "Deployment completed successfully."
+
