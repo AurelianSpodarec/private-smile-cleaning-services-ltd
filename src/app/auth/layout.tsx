@@ -34,14 +34,17 @@ function LayoutAuth({ children }: { children: React.ReactNode }) {
             <Logo />
           </div>
           <img
-            src="https://images.pexels.com/photos/8588567/pexels-photo-8588567.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src="https://images.pexels.com/photos/8588416/pexels-photo-8588416.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+            // src="https://images.pexels.com/photos/8588567/pexels-photo-8588567.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             className="object-cover h-full size"
           />
 
         </div>
-        <div className="h-full w-full xl:w-1/2 2xl:w-2/3 px-5">
-          <div className="max-w-2xl mx-auto pt-16 pb-36">
-            {children}
+        <div className="h-full w-full xl:w-1/2 2xl:w-2/3">
+          <div className="max-w-3xl mx-auto pt-16 h-full pb-36">
+            <div className="flex items-center h-full justify-center align-middle max-w-md">
+              {children}
+            </div>
           </div>
         </div>
       </div>

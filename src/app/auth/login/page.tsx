@@ -31,16 +31,8 @@ const formSchema = z.object({
 
 function Login() {
   const router = useRouter()
-  // const { login, auth } = useAuth()
-
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const { setError, formState: { errors } } = useForm();
-
-  // useEffect(() => {
-  //   if(auth.isAuthenticated) {
-  //     router.replace("/dashboard")
-  //   }
-  // }, [auth])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,29 +43,14 @@ function Login() {
   })
 
   async function onSubmit(formData: z.infer<typeof formSchema>) {
-    // 'use server'; // Mark this function as a server action
-    // // console.log(formData)
-    // const result = await signIn('credentials', {
-    //   redirect: false,
-    //   ...formData,
-    // });
-  const result = await actionSignIn(formData)
-    // try {
-      // const result = await onSubmit(formData);
-      // Handle successful login (e.g., redirect, display message, etc.)
-    // } catch (error) {
-    //   // Handle error (e.g., display error message)
-    //   setError("server", { message: error.message });
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    const result = await actionSignIn(formData)
   }
 
   return (
-    <>
+    <div className="w-full">
+      <h1 className="text-3xl font-bold mb-8">Sign in to Smile Cleaning</h1>
       <Form {...form}>
-
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
 
           <FormField
             control={form.control}
@@ -98,7 +75,10 @@ function Login() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <div className="flex justify-between">
+                  <FormLabel>Password</FormLabel>
+                  <span>Forgott Password?</span>
+                </div>
                 <FormControl>
                   <Input
                     placeholder="••••••••"
@@ -125,43 +105,16 @@ function Login() {
                   disabled={isLoading}
                   isLoading={isLoading}
                 /> */}
-          <button type="submit">Submit</button>
+          <button type="submit" className="py-3 px-5 bg-[#eca869] rounded-2xl">Submit</button>
         </form>
       </Form>
+{/* 
+      <div className="mt-16">
+        <span className="text-lg font-bold block mb-4">New Customer?</span>
+        <button className="py-3 px-10 border border-[#eca869] rounded-2xl">Get Started</button>
+      </div> */}
 
-      {/* <div className="sm:text-center mt-8">
-              <p className="px-8 text-center text-xs text-muted-foreground">
-                By clicking continue, you agree to our{" "}
-                <Link
-                  href="/terms"
-                  className="underline underline-offset-4 hover:text-primary"
-                >
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link
-                  href="/privacy"
-                  className="underline underline-offset-4 hover:text-primary"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </p>
-            </div> */}
-      {/* </div> */}
-      {/* </section> */}
-
-
-      {/* <aside className="relative overflow-hidden flex-col items-center justify-center flex-1 flex-shrink hidden basis-1/4 xl:flex">
-          <div className="absolute inset-0 bg-zinc-900" />
-
-          <div className="absolute h-full w-full top-0 right-0 bottom-0 left-0">
-            <ImageAutositeBanner />
-          </div>
-
-        </aside> */}
-
-    </>
+    </div>
   )
 }
 
