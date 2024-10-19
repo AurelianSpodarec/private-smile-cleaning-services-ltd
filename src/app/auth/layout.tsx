@@ -38,6 +38,10 @@ function LayoutAuth({ children }: { children: React.ReactNode }) {
             // src="https://images.pexels.com/photos/8588567/pexels-photo-8588567.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             className="object-cover h-full size"
           />
+          <div className="absolute bottom-6 left-8 text-white/70 font-semibold">
+            {/* Spotless London flat cared for by a  */}
+            {/* Spotless Flat */}
+          </div>
 
         </div>
         <div className="h-full w-full xl:w-1/2 2xl:w-2/3">

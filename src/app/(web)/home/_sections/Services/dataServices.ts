@@ -1,7 +1,8 @@
 const dataServices = [
   {
     title: "Home Cleaning", //Residential Cleaning
-    thumbnail: "https://cdn.mos.cms.futurecdn.net/WCqnyAwNFAzYFXyUq4EMLZ-415-80.jpg",
+    // thumbnail: "https://cdn.mos.cms.futurecdn.net/WCqnyAwNFAzYFXyUq4EMLZ-415-80.jpg",
+    thumbnail: "https://images.pexels.com/photos/6301180/pexels-photo-6301180.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     excerpt: "Our flexible cleaning solutions are here to lighten your load. Perfect for busy homeowners or renters needing a clean space.",
     fullDescription: "Feeling overwhelmed by the chaos of everyday life? Our flexible cleaning solutions are here to lighten your load. Whether you're a busy homeowner or a renter preparing for a special occasion, we offer one-time and deep cleaning services tailored to your needs.",
     keyFeatures: [
@@ -13,7 +14,7 @@ const dataServices = [
   },
   {
     title: "Commercial Cleaning",
-    thumbnail: "https://cdn.mos.cms.futurecdn.net/WCqnyAwNFAzYFXyUq4EMLZ-415-80.jpg",
+    thumbnail: "https://images.pexels.com/photos/5511098/pexels-photo-5511098.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     excerpt: "Our flexible cleaning solutions are here to lighten your load. Perfect for busy homeowners or renters needing a clean space.",
     fullDescription: "Feeling overwhelmed by the chaos of everyday life? Our flexible cleaning solutions are here to lighten your load. Whether you're a busy homeowner or a renter preparing for a special occasion, we offer one-time and deep cleaning services tailored to your needs.",
     keyFeatures: [
@@ -25,7 +26,8 @@ const dataServices = [
   },
   {
     title: "End of Tenancy Cleaning",
-    thumbnail: "https://i.imgur.com/96Ab0Bn.png",
+    // thumbnail: "https://i.imgur.com/96Ab0Bn.png",
+    thumbnail: "https://images.pexels.com/photos/4554249/pexels-photo-4554249.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     excerpt: "Moving out? Secure your deposit back with our landlord-approved deep cleaning service tailored for tenancy agreements.",
     fullDescription: "Ensure you get your deposit back with our end of tenancy cleaning service. Our comprehensive clean meets landlord requirements and is designed to leave the property spotless for the next tenant. Whether you're a tenant moving out or a landlord preparing for new occupants, we’ve got you covered.",
     keyFeatures: [
@@ -37,7 +39,7 @@ const dataServices = [
   },
   {
     title: "Ironing Services",
-    thumbnail: "https://londondrycleaningcompany.com/wp-content/uploads/2020/08/clothes-dry-cleaning-ironing_229149-119.jpg",
+    thumbnail: "https://images.pexels.com/photos/28576623/pexels-photo-28576623/free-photo-of-neatly-pressed-white-shirts-and-modern-iron.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     excerpt: "Laundry and ironing taking up your time? Our service makes these household chores effortless with hassle-free pickup and delivery.",
     fullDescription: "Do laundry and ironing consume your precious time? Our convenient laundry and ironing services are designed for busy lifestyles, allowing you to reclaim your time and focus on what truly matters.",
     keyFeatures: [

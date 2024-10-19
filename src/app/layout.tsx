@@ -3,6 +3,7 @@ import { montserrat, barlow, teko } from '@/config/fonts'
 import './../styles/styles.scss'
 
 import { Providers } from '@/context/providers'
+import CookieCard from '@/components/CookieCard'
 
 export const metadata = {
   title: 'Smile Cleaning',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning={true} className={`h-full w-full ${teko.variable} ${montserrat.variable} ${barlow.variable} font-openSans`}>
         <Providers>
           {children}
+          <CookieCard />
         </Providers>
       </body>
     </html>
