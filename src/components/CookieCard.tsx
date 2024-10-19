@@ -1,6 +1,32 @@
+'use client'
+
 import Link from "next/link"
+import { useEffect, useState } from "react";
 
 function CookieCard() {
+
+  const [showCookieCard, setShowCookieCard] = useState(false);
+
+  useEffect(() => {
+    const acceptCookie = document.cookie.split('; ').find(row => row.startsWith('accept='));
+    if (!acceptCookie) {
+      setShowCookieCard(true);
+    }
+  }, []);
+
+  const handleAccept = async () => {
+    await fetch('/api/setCookie', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ accept: true }),
+    });
+    setShowCookieCard(false); // Hide the cookie card after accepting
+  };
+
+
+  if (!showCookieCard) return null;
   return (
     <div className="fixed bottom-0 right-0 z-50 p-8">
       <div className="max-w-lg bg-white shadow-lg p-6 rounded-xl">
@@ -28,7 +54,7 @@ function CookieCard() {
 
         <div className="w-full text-sm text-right space-x-4">
           <Link className="py-2.5 px-4" href="/cookies">Read More</Link>
-          <button className="py-2.5 px-4 bg-[#eca869] rounded-lg">Accept all</button>
+          <button onClick={handleAccept} className="py-2.5 px-4 bg-[#eca869] rounded-lg">Accept all</button>
         </div>
 
       </div>

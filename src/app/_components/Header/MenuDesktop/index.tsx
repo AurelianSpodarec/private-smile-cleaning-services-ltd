@@ -1,13 +1,13 @@
 'use client'
 
 import Link from "next/link";
-import { auth, signIn } from "@/auth";
+import { usePathname } from "next/navigation";
+
+import Logo from "@/components/Logo";
 
 import NavItem from "./NavItem";
 import UserAvatar from "../../UserAvatar";
-import Logo from "../Logo";
 import { dataMenu, dataMenuGlobal } from "../dataMenu";
-import { usePathname } from "next/navigation";
 
 function MenuDesktop({ session }) {
   const isLogged = session?.user
@@ -21,7 +21,7 @@ function MenuDesktop({ session }) {
       <div className="flex items-center space-x-8">
 
         <Link href="/" className="px-2">
-          <Logo />
+          <Logo className="w-[100px]" />
           <span className="sr-only">Smile Cleaning</span>
         </Link>
 
