@@ -149,8 +149,8 @@ function Footer() {
                 <div className="w-auto p-8">
                   <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Legal</h3>
                   <ul className="flex flex-col space-y-6 text-gray-300">
-                    <Link href="privacy-policy">Privacy Policy</Link>
-                    <Link href="terms-and-conditions">Terms and Conditions</Link>
+                    <Link href="/privacy-policy">Privacy Policy</Link>
+                    <Link href="/terms-and-conditions">Terms and Conditions</Link>
                     <Link href="mailto:hello@smile.cleaning" className="bg-gray-200/20 rounded-md p-4">
                       <span>Questions? Email us at</span>
                       <span className="inline-block text-[#b08bbb] font-bold">hello@smile.cleaning</span>
