@@ -1,7 +1,7 @@
 import { type Metadata } from 'next'
 
-import Career from './_components/Career'
 import { getAllCareers } from '@/lib/careers'
+import CardCareer from './_components/CardCareer'
 
 export const metadata: Metadata = {
   title: 'Careers',
@@ -13,27 +13,23 @@ export default async function PageCareers() {
   console.log(careers)
 
   return (
-    <div className="pt-24">
+    <section className="pt-24 pb-36 bg-white overflow-hidden">
+      <div className="container px-4 mx-auto">
 
-      <header className="flex justify-center mb-4">
-        <div>
+        <header>
+          <p className="mb-6 text-sm text-indigo-600 text-center font-bold uppercase tracking-px">We are hiring</p>
+          <h2 className="mb-20 text-6xl md:text-8xl xl:text-10xl text-center font-bold font-heading tracking-px-n leading-none">Open positions</h2>
+        </header>
 
-          <div className="text-center">
-            <h2 className="text-gray-200 font-semibold text-6xl">Careers</h2>
-          </div>
+        {
+          careers.map((career) => (
+            <CardCareer key={career.slug} item={career} />
+          ))
+        }
 
-          {/* <input /> */}
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-7xl ">
-        <div className="grid grid-cols-3 gap-6">
-          {careers.map((career) => (
-            <Career key={career.slug} item={career} />
-          ))}
-        </div>
       </div>
-   
-    </div>
+    </section>
+
+
   )
 }

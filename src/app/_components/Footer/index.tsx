@@ -1,12 +1,11 @@
+import Container from "@/components/_layout/Container"
 import Image from "next/image"
 import Link from "next/link"
 
 function Logo() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="101"
-      height="40"
+      className="w-[130px]"
       fill="none"
       viewBox="0 0 101 40"
     >
@@ -55,57 +54,130 @@ function SocialIcons() {
   )
 }
 
+// <footer className="text-white bg-[#2a2b2e] py-8 relative border-b-2 border-b-[#eca869]">
+//   <div className="px-16">
+//     {/* <div className="flex flex-col md:flex-row items-center justify-between"> */}
+
+//     <section className="flex">
+//       <div>
+//         <Logo />
+//         <span className="sr-only">Smile Cleaning</span>
+//       </div>
+//       <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800">
+//         <h3>Company</h3>
+//         <div className="flex flex-col text-white">
+//           <Link href="/about">About</Link>
+//           <Link href="/blog">Blog</Link>
+//           <Link href="/careers">Careers</Link>
+//           <Link href="/contact">Contact</Link>
+//         </div>
+//       </div>
+//       <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800">
+//         <h3>Services</h3>
+//         <div className="flex flex-col text-white">
+//           <Link href="/about">Home Cleaning</Link>
+//           <Link href="/blog">Commercial Cleaning</Link>
+//           <Link href="/careers">End of Tenancy Cleaning</Link>
+//           <Link href="/contact">Ironing Services</Link>
+//         </div>
+//       </div>
+//       <div className="space-x-4">
+//         <Link href="privacy-policy">Privacy Policy</Link>
+//         <Link href="terms-and-conditions">Terms and Conditions</Link>
+//       </div>
+//     </section>
+
+//     <section className="flex justify-between items-center align-middle">
+//       {/* <div className="space-x-4">
+//         <Link href="privacy-policy">Privacy Policy</Link>
+//         <Link href="terms-and-conditions">Terms and Conditions</Link>
+//       </div> */}
+//       <div className="text-sm text-center">
+//         &copy; Smile Cleaning {new Date().getFullYear()}. All rights reserved.
+//       </div>
+//       <div className="flex flex-col-reverse lg:flex-row md:space-x-8">
+//         <SocialIcons />
+//       </div>
+//     </section>
+
+
+//     {/* </div> */}
+//   </div>
+// </footer>
 function Footer() {
   return (
-    <footer className="text-white bg-[#2a2b2e] py-8 relative border-b-2 border-b-[#eca869]">
-      <div className="px-16">
-        {/* <div className="flex flex-col md:flex-row items-center justify-between"> */}
+    <footer className="overflow-hidden text-white bg-[#2a2b2e] border-b-2 border-b-[#eca869]">
+      <Container>
 
-        <section className="flex">
-          <div>
-            <Logo />
-            <span className="sr-only">Smile Cleaning</span>
+        <div className="pb-28 pt-20">
+          <div className="flex flex-wrap -m-8">
+            <div className="w-full md:w-2/5 p-8">
+              <div className="max-w-xs">
+                <a className="inline-block mb-6" href="#">
+                  <div>
+                    <Logo />
+                    <span className="sr-only">Smile Cleaning</span>
+                  </div>
+                </a>
+                <p className="tracking-tight">In the new era of cleaning, we look to the future with certainty and pride in the quality service we provide to brighten your home.</p>
+              </div>
+            </div>
+
+            <div className="w-full md:w-3/5 p-8">
+              <div className="flex justify-between -m-8">
+
+                <div className="w-auto p-8 md:min-w-[200px]">
+                  <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Company</h3>
+                  <ul className="flex flex-col space-y-6 text-gray-300">
+                    <Link href="/about">About</Link>
+                    <Link href="/blog">Blog</Link>
+                    <Link href="/careers">Careers</Link>
+                    <Link href="/contact">Contact</Link>
+                  </ul>
+                </div>
+
+                <div className="w-auto p-8">
+                  <h3 className="mb-10 text-lg text-gray-500 font-semibold tracking-tight">Services</h3>
+                  <ul className="flex flex-col space-y-6 text-gray-300">
+                    <Link href="/about">Home Cleaning</Link>
+                    <Link href="/blog">Commercial Cleaning</Link>
+                    <Link href="/careers">End of Tenancy Cleaning</Link>
+                    <Link href="/contact">Ironing Services</Link>
+                  </ul>
+                </div>
+
+                <div className="w-auto p-8">
+                  <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Legal</h3>
+                  <ul className="flex flex-col space-y-6 text-gray-300">
+                    <Link href="privacy-policy">Privacy Policy</Link>
+                    <Link href="terms-and-conditions">Terms and Conditions</Link>
+                    <Link href="mailto:hello@smile.cleaning" className="bg-gray-200/20 rounded-md p-4">
+                      <span>Questions? Email us at</span>
+                      <span className="inline-block text-[#b08bbb] font-bold">hello@smile.cleaning</span>
+                    </Link>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
           </div>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800">
-            <h3>Company</h3>
-            <div className="flex flex-col text-white">
-              <Link href="/about">About</Link>
-              <Link href="/blog">Blog</Link>
-              <Link href="/careers">Careers</Link>
-              <Link href="/contact">Contact</Link>
+        </div>
+
+        <div className="py-10 border-t-2 border-t-gray-100/10">
+          <div className="flex flex-wrap items-center justify-between -m-4">
+            <div className="w-auto p-4">
+              <p className="tracking-tight">&copy; Smile Cleaning {new Date().getFullYear()}. All rights reserved.</p>
+            </div>
+            <div className="w-auto p-4">
+              <div className="flex flex-wrap -m-2">
+                <SocialIcons />
+              </div>
             </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800">
-            <h3>Services</h3>
-            <div className="flex flex-col text-white">
-              <Link href="/about">Home Cleaning</Link>
-              <Link href="/blog">Commercial Cleaning</Link>
-              <Link href="/careers">End of Tenancy Cleaning</Link>
-              <Link href="/contact">Ironing Services</Link>
-            </div>
-          </div>
-          <div className="space-x-4">
-            <Link href="privacy-policy">Privacy Policy</Link>
-            <Link href="terms-and-conditions">Terms and Conditions</Link>
-          </div>
-        </section>
+        </div>
 
-        <section className="flex justify-between items-center align-middle">
-          {/* <div className="space-x-4">
-            <Link href="privacy-policy">Privacy Policy</Link>
-            <Link href="terms-and-conditions">Terms and Conditions</Link>
-          </div> */}
-          <div className="text-sm text-center">
-            &copy; Smile Cleaning {new Date().getFullYear()}. All rights reserved.
-          </div>
-          <div className="flex flex-col-reverse lg:flex-row md:space-x-8">
-            <SocialIcons />
-          </div>
-        </section>
-
-
-        {/* </div> */}
-      </div>
+      </Container>
     </footer>
   )
 }
