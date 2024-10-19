@@ -1,14 +1,20 @@
+'use client'
+
 import Link from "next/link";
 import { auth, signIn } from "@/auth";
 
 import NavItem from "./NavItem";
-import dataMenu from "../dataMenu";
 import UserAvatar from "../../UserAvatar";
 import Logo from "../Logo";
+import { dataMenu, dataMenuGlobal } from "../dataMenu";
+import { usePathname } from "next/navigation";
 
-async function MenuDesktop() {
-  const session = await auth()
+function MenuDesktop({ session }) {
   const isLogged = session?.user
+
+  const pathname = usePathname()
+  const isHome = isLogged ? pathname === '/account' : pathname === '/';
+  const isAccount = pathname.startsWith("/account");
 
   return (
     <nav className="hidden left-0 right-0 px-16 py-6 w-full lg:flex items-center justify-between">
@@ -19,16 +25,23 @@ async function MenuDesktop() {
           <span className="sr-only">Smile Cleaning</span>
         </Link>
 
-        {!isLogged &&
-          <div className="flex flex-wrap align-center items-center text-sm justify-center space-x-6 font-barlow font-semibold">
-            {dataMenu.map((item) => {
-              return <NavItem key={item.url} name={item.name} url={item.url} isActive={false} />
-            })}
-          </div>
-        }
+        <div className="flex flex-wrap align-center items-center text-sm justify-center space-x-6 font-barlow font-semibold">
+          {isHome && !isAccount && (
+            dataMenu.map((item) => (
+              <NavItem key={item.url} name={item.name} url={item.url} isActive={false} />
+            ))
+          )}
 
-        {isLogged &&
-          <NavItem className="pl-6" name="Manage Bookings" url="/account/bookings" />
+          {!isHome && !isAccount && (
+            dataMenuGlobal.map((item) => (
+              <NavItem key={item.url} name={item.name} url={item.url} isActive={false} />
+            ))
+          )}
+
+        </div>
+
+        {isLogged && isAccount &&
+          <NavItem name="Manage Bookings" url="/account/bookings" />
         }
       </div>
 

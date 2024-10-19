@@ -5,7 +5,7 @@ export interface IMenuItem {
   className?: string
 }
 
-const dataMenu: IMenuItem[] = [
+export const dataMenu: IMenuItem[] = [
   {
     name: "How it works",
     url: "#how-it-works"
@@ -20,4 +20,21 @@ const dataMenu: IMenuItem[] = [
   }
 ]
 
-export default dataMenu;
+export const dataMenuGlobal: IMenuItem[] = [
+  {
+    name: "Blog",
+    url: "/blog"
+  },
+  {
+    name: "About",
+    url: "/about",
+  },
+  {
+    name: "Careers",
+    url: "/careers"
+  },
+  {
+    name: "Contact",
+    url: "/contact",
+  },
+]

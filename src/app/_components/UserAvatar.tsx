@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import Link from "next/link";
 import {
@@ -8,8 +10,8 @@ import {
   DropdownMenuDefaultSeparator,
   DropdownMenuDefaultTrigger,
 } from "@/components/molecules/DropdownMenu";
-import { signOut } from "@/auth";
 import { IUser } from "@/interfaces/IUser";
+import { serverSignOut } from "./Header/MenuDesktop/actionAuth";
 
 function UserAvatar({ user }: { user: IUser }) {
   return (
@@ -47,17 +49,14 @@ function UserAvatar({ user }: { user: IUser }) {
           <DropdownMenuDefaultSeparator />
 
           <DropdownMenuDefaultItem>
-            <Link href="account/bookings">
+            <Link href="/account/bookings">
               Manage Bookings
             </Link>
           </DropdownMenuDefaultItem>
 
           <DropdownMenuDefaultItem>
             <form
-              action={async () => {
-                'use server'
-                await signOut({redirect: true})
-              }}
+              action={serverSignOut}
               className="flex items-center justify-between w-full"
             >
               <button>Logout</button>

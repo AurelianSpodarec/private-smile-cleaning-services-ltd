@@ -1,10 +1,13 @@
 import MenuDesktop from "./MenuDesktop";
+import { serverAuth } from "./MenuDesktop/actionAuth";
 import MenuMobile from "./MenuMobile";
 
-function Header() {
+async function Header() {
+  const session = await serverAuth();
+  
   return (
     <header className="bg-white z-40 relative">
-      <MenuDesktop />
+      <MenuDesktop session={session} />
       <MenuMobile />
     </header>
   )
