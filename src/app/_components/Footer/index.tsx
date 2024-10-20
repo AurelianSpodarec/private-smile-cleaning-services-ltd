@@ -50,9 +50,9 @@ function Footer() {
             </div>
 
             <div className="w-full md:w-3/5 p-8">
-              <div className="flex justify-between -m-8">
+              <div className="flex flex-wrap xl:flex-nowrap justify-between -m-8">
 
-                <div className="w-auto p-8 md:min-w-[200px]">
+                <div className="w-auto p-8 md:min-w-[150px]">
                   <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Company</h3>
                   <ul className="flex flex-col space-y-6 text-gray-300">
                     <Link href={routes.web.about}>About</Link>
@@ -62,7 +62,7 @@ function Footer() {
                   </ul>
                 </div>
 
-                <div className="w-auto p-8">
+                <div className="w-[200px] p-8">
                   <h3 className="mb-10 text-lg text-gray-500 font-semibold tracking-tight">Services</h3>
                   <ul className="flex flex-col space-y-6 text-gray-300">
                     <Link href={routes.services.homeCleaning}>Home Cleaning</Link>
@@ -79,7 +79,7 @@ function Footer() {
                     <Link href={routes.legal.terms}>Terms and Conditions</Link>
                     <Link href={routes.legal.cookiePolicy}>Cookie Policy</Link>
                     <Link href="mailto:hello@smile.cleaning" className="bg-gray-200/20 rounded-md p-4">
-                      <span>Questions? Email us at</span>
+                      <span>Questions? Email us at </span>
                       <span className="inline-block text-[#b08bbb] font-bold">hello@smile.cleaning</span>
                     </Link>
                   </ul>
@@ -92,11 +92,11 @@ function Footer() {
         </div>
 
         <div className="py-10 border-t-2 border-t-gray-100/10">
-          <div className="flex flex-wrap items-center justify-between -m-4">
-            <div className="w-auto p-4">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between -m-4">
+            <div className="p-4">
               <p className="tracking-tight">&copy; Smile Cleaning {new Date().getFullYear()}. All rights reserved.</p>
             </div>
-            <div className="w-auto p-4">
+            <div className="p-4">
               <div className="flex flex-wrap -m-2">
                 <SocialIcons />
               </div>
