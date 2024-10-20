@@ -1,37 +1,45 @@
 'use client'
 
-import Link from "next/link"
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import routes from "@/config/routes";
+
+function setCookie(name: string, value: string, days: number): void {
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  const expires = `expires=${date.toUTCString()}`;
+  document.cookie = `${name}=${value};${expires};path=/`;
+}
+
+function getCookie(name: string): string | undefined {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+  return undefined;
+}
 
 function CookieCard() {
-
   const [showCookieCard, setShowCookieCard] = useState(false);
 
   useEffect(() => {
-    const acceptCookie = document.cookie.split('; ').find(row => row.startsWith('accept='));
-    if (!acceptCookie) {
+    const cookieConsent = getCookie("cookieConsent");
+    if (!cookieConsent) {
       setShowCookieCard(true);
     }
   }, []);
 
-  const handleAccept = async () => {
-    await fetch('/api/setCookie', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ accept: true }),
-    });
-    setShowCookieCard(false); // Hide the cookie card after accepting
+  const handleAccept = () => {
+    setCookie("cookieConsent", "accepted", 365);
+    setShowCookieCard(false);
   };
-
 
   if (!showCookieCard) return null;
   return (
-    <div className="fixed bottom-0 right-0 z-50 p-8">
+    <div className="fixed bottom-0 right-0 z-50 p-4 md:p-8">
       <div className="max-w-lg bg-white shadow-lg p-6 rounded-xl">
-
-        <div className="w-full mb-2">
+        <div className="w-full mb-4 md:mb-2">
           <div className="items-center">
             <svg
               className="fill-[#eca869]"
@@ -47,19 +55,22 @@ function CookieCard() {
                 d="M12.24 9.375a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75zM8.49 16.875a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75zM17.865 24.375a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75zM16.927 16.875a.937.937 0 100-1.875.937.937 0 000 1.875zM24.427 20.625a.937.937 0 100-1.875.937.937 0 000 1.875zM11.302 22.5a.937.937 0 100-1.875.937.937 0 000 1.875z"
               ></path>
             </svg>
+
             <h3 className="block font-heading font-medium text-xl leading-loose">Cookies!</h3>
           </div>
-          <p className="text-sm leading-6">We use cookies to improve your experience and ensure seamless booking. Read our <Link href="/cookies">Cookie policy</Link></p>
+          <p className="text-sm leading-6">
+            We use cookies to improve your experience and ensure seamless booking. Read our{" "}
+            <Link href={routes.legal.cookiePolicy} className="underline">Cookie policy</Link>
+          </p>
         </div>
 
         <div className="w-full text-sm text-right space-x-4">
-          <Link className="py-2.5 px-4" href="/cookies">Read More</Link>
+          <Link className="py-2.5 px-4" href={routes.legal.cookiePolicy}>Read More</Link>
           <button onClick={handleAccept} className="py-2.5 px-4 bg-[#eca869] rounded-lg">Accept all</button>
         </div>
-
       </div>
     </div>
-  )
+  );
 }
 
-export default CookieCard
+export default CookieCard;
