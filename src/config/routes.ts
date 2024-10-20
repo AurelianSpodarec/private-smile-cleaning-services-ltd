@@ -11,6 +11,7 @@ const routes = {
     blog: '/blog',
     contact: '/contact',
   },
+  schedule: "/schedule",
   services: {
     base: SERVICES_BASE,
     homeCleaning: `${SERVICES_BASE}/home-cleaning`,

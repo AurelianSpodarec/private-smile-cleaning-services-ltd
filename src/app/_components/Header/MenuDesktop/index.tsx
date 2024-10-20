@@ -7,7 +7,9 @@ import Logo from "@/components/Logo";
 
 import NavItem from "./NavItem";
 import UserAvatar from "../../UserAvatar";
+
 import { dataMenu, dataMenuGlobal } from "../dataMenu";
+import routes from "@/config/routes";
 
 function MenuDesktop({ session }) {
   const isLogged = session?.user
@@ -47,7 +49,7 @@ function MenuDesktop({ session }) {
 
       <div className="flex items-center align-center space-x-3">
         {!isLogged &&
-          <Link href="/auth/login" className="inline-block px-6 py-3 text-sm font-semibold border border-gray-200 rounded-full">Login</Link>
+          <Link href={routes.auth.login} className="inline-block px-6 py-3 text-sm font-semibold border border-gray-200 rounded-full">Login</Link>
         }
         <Link href="/schedule" className="hidden lg:flex items-center gap-1 nav-cta bg-[#96769f] rounded-3xl py-3 px-6 text-sm text-black font-semibold">Book a cleaner</Link>
 
