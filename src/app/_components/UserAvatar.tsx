@@ -14,6 +14,7 @@ import { IUser } from "@/interfaces/IUser";
 import { serverSignOut } from "./Header/MenuDesktop/actionAuth";
 
 function UserAvatar({ user }: { user: IUser }) {
+  const nameInitials = `${user.first_name.charAt(0)} ${user.last_name.charAt(0)}`;
   return (
     <div>
       <DropdownMenuDefault>
@@ -31,11 +32,14 @@ function UserAvatar({ user }: { user: IUser }) {
             >
               <path d="M2 16h28M2 24h28M2 8h28"></path>
             </svg>
-            <img
+            {/* <img
               className="rounded-full h-8 w-8"
               src="https://a0.muscache.com/im/pictures/user/5c28f35d-02a0-48e8-bbf8-f44400d1db56.jpg?im_w=720"
               alt={`${user.first_name} ${user.last_name}`}
-            />
+            /> */}
+            <div className="border border-gray-300 text-sm bg-gray-200 flex items-center justify-center font-semibold align-center rounded-full h-8 w-8">
+              {nameInitials}
+            </div>
           </div>
         </DropdownMenuDefaultTrigger>
 

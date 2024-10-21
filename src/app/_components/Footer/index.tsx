@@ -67,7 +67,7 @@ function Footer() {
                   <ul className="flex flex-col space-y-6 text-gray-300">
                     <Link href={routes.services.homeCleaning}>Home Cleaning</Link>
                     <Link href={routes.services.commercial}>Commercial Cleaning</Link>
-                    <Link href={routes.services.endOfTenancy}>End of Tenancy Cleaning</Link>
+                    <Link href={routes.services.endOfTenancy}>End-of-Tenancy Cleaning</Link>
                     <Link href={routes.services.ironing}>Ironing Services</Link>
                   </ul>
                 </div>
@@ -78,9 +78,9 @@ function Footer() {
                     <Link href={routes.legal.privacy}>Privacy Policy</Link>
                     <Link href={routes.legal.terms}>Terms and Conditions</Link>
                     <Link href={routes.legal.cookiePolicy}>Cookie Policy</Link>
-                    <Link href="mailto:hello@smile.cleaning" className="bg-gray-200/20 rounded-md p-4">
-                      <span>Questions? Email us at </span>
-                      <span className="inline-block text-[#b08bbb] font-bold">hello@smile.cleaning</span>
+                    <Link href="mailto:hello@smile.cleaning" className="bg-gray-200/20 rounded-md p-4 min-w-[250px]">
+                      <span>Questions? Email us at: </span>
+                      <span className="inline-block md:block text-[#b08bbb] font-bold">hello@smile.cleaning</span>
                     </Link>
                   </ul>
                 </div>
