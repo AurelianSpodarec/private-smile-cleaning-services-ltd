@@ -5,10 +5,10 @@ import { RoughNotation } from "react-rough-notation"
 
 import Section from "@/components/_layout/Section"
 import Container from "@/components/_layout/Container"
+import PageHeader from "@/components/molecules/PageHeader"
 
 import { dataPainPoints } from "./data"
 import { IItem } from "./IItem"
-import PageHeader from "@/components/molecules/PageHeader"
 
 function CardPoint({ item }: { item: IItem }) {
   return (
@@ -41,23 +41,17 @@ function CardPoint({ item }: { item: IItem }) {
 function SectionPasSolution() {
   return (
     <Section id="process">
-      {/* <Roug type="underline" show={true} color="#913c6d" strokeWidth={3} padding={[-20, 20]}>
-        Personalized
-      </RoughNotation> */}
+
       <PageHeader
         title={
           <>We Hire <RoughNotation type="underline" show={true} color="#b08bbb" strokeWidth={3} padding={[-20, 20]}>Trusted, Vetted</RoughNotation> <span className="text-[#b08bbb]"> Cleaning Professionals</span></>
-          // <>We Hire <span className="text-[#b08bbb]">Trusted, Vetted</span> Cleaning <RoughNotation type="underline" show={true} color="#b08bbb" strokeWidth={3} padding={[-20, 20]}>Professionals</RoughNotation></>
         }
-        subheader={`
-          
-          Relax knowing our cleaners are thoroughly vetted and trained - no contractors. Enjoy quality time with your family while we handle the cleaning.
-        `}
+        subheader={`Relax knowing our cleaners are thoroughly vetted and trained - no contractors. Enjoy quality time with your family while we handle the cleaning.`}
         className="max-w-3xl"
       />
 
       <Container size="7xl">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {dataPainPoints.map((item, index) => {
             return <CardPoint item={item} key={index} />
           })}

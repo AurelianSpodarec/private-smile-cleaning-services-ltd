@@ -17,7 +17,7 @@ function Home() {
       <SectionServices />
       <SectionProductSpotlight />
       <SectionFAQ />
-      <SectionFooterCTA />
+      {/* <SectionFooterCTA /> */}
     </main>
   )
 }

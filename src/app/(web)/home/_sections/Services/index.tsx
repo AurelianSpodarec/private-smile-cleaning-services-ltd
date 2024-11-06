@@ -24,7 +24,8 @@ function SectionServices() {
           kicker="Let Us Take Care of Your Home"
           title="Our Cleaning Services"
         />
-        <div className="flex flex-1 grow gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
           {dataServices.map((item) => {
             return <CardExcerptService item={item} key={item.title} />
           })}
@@ -32,12 +33,6 @@ function SectionServices() {
 
         <div className="text-center">
           <button className="hidden lg:inline-flex nav-cta bg-[#eca869] rounded-lg py-3 shadow-xl px-8 font-bold text-gray-900">Book a cleaner</button>
-        </div>
-
-        <div className="m-10 bg-gray-200">
-          Dusting
-          Vacuum
-          Mop Floors
         </div>
 
       </Container>

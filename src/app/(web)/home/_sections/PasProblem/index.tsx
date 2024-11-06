@@ -34,7 +34,6 @@ function SectionPasProblem() {
   return (
     <Section>
       <PageHeader
-        // title="When Cleanliness Competes with Family Time"
         title={
           <>When <RoughNotation type="underline" show={true} color="#b08bbb" strokeWidth={3} padding={[-20, 20]}>Cleanliness Competes</RoughNotation> <span className="text-[#b08bbb]">with Family</span> Time</>
         }
@@ -42,7 +41,7 @@ function SectionPasProblem() {
         className="max-w-3xl"
       />
       <Container size="8xl">
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {dataPasProblem.map((item, index) => {
             return <CardPoint item={item} key={index} />
           })}

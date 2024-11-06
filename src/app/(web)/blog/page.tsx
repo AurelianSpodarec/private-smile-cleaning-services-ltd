@@ -16,13 +16,10 @@ export default async function ArticlesIndex() {
 
       <header className="flex justify-center mb-4">
         <div>
-
           <div className="text-center">
             <h2 className="text-gray-200 font-semibold text-6xl">My insights</h2>
             <p className="text-gray-300 text-lg">Things I've experienced and figured out with others</p>
           </div>
-
-          {/* <input /> */}
         </div>
       </header>
 

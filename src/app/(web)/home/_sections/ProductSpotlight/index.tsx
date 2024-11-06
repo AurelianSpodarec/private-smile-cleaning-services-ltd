@@ -22,16 +22,17 @@ function SectionProductSpotlight() {
     <Section>
       <Container>
 
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row justify-between">
 
           <div className="max-w-2xl">
             <PageHeader
-              className="align-left max-w-1xl mx-0"
+              className="text-center md:text-left align-left max-w-1xl mx-0"
               title={`Manage Everything withing our app effortesly`}
               subheader="Book Cleaning Services Effortlessly, Right from Our App"
+              classNameSubHeader="md:mr-auto"
               textAlign="text-left"
             />
-            <div className="flex flex-col mb-12 space-y-6">
+            <div className="hidden sm:flex flex-col mb-12 space-y-6">
               {dataProduct.map((item => {
                 return (
                   <div>
@@ -44,10 +45,13 @@ function SectionProductSpotlight() {
             <button className="hidden lg:inline-flex nav-cta bg-[#834e91] rounded-lg border py-3 shadow-xl px-8 font-bold text-white">Book a cleaner</button>
           </div>
 
-          <div className="max-w-[370px]">
+          <div className="lg:max-w-[370px] text-center">
             <img src="https://d17x34b9fcvxk7.cloudfront.net/static/marketing/images/iphone-extra-tasks.webp" />
+            <button className="bg-[#834e91] rounded-lg border py-3 shadow-xl px-8 font-bold text-white">Book a cleaner</button>
           </div>
+
         </div>
+
       </Container>
     </Section>
   );
