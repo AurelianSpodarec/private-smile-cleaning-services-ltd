@@ -1,14 +1,15 @@
-import { ArticleLayout } from '@/components/ArticleLayout'
+import thumbnail from './thumbnail2.jpg'
+import image1 from './image1.webp'
+
 import Image from 'next/image'
-// import designSystem from './planetaria-design-system.png'
+import { ArticleLayout } from '@/components/ArticleLayout'
+import articleCategories from "./../articleCategories"
 
 export const article = {
-  author: 'Aurelian Spodarec',
   date: '2022-09-05',
-  title: 'Crafting a design system for a multiplanetary future',
-  excerpt: 'Most companies try to stay ahead of the curve when it comes to visual design, but for Planetaria we needed to create a brand that would still inspire us 100 years from now when humanity has spread across our entire solar system.',
-  thumbnail: "https://www.figma.com/community/thumbnail?resource_id=1027629657711671993&resource_type=plugin",
-  category: "Career Tips"
+  title: '10 Time-Saving Tips for Busy Professionals',
+  thumbnail: thumbnail.src,
+  category: articleCategories.all
 }
 
 export const metadata = {
@@ -20,7 +21,7 @@ export default (props) => <ArticleLayout article={article} {...props} />
 
 Most companies try to stay ahead of the curve when it comes to visual design, but for Planetaria we needed to create a brand that would still inspire us 100 years from now when humanity has spread across our entire solar system.
 
-{/* <Image src={designSystem} alt="" /> */}
+<Image src={image1} alt="" />
 
 I knew that to get it right I was going to have to replicate the viewing conditions of someone from the future, so I grabbed my space helmet from the closet, created a new Figma document, and got to work.
 

@@ -5,6 +5,8 @@ interface Article {
   description: string
   author: string
   date: string
+  thumbnail: string
+  category: string
 }
 
 export interface ArticleWithSlug extends Article {
@@ -33,4 +35,15 @@ export async function getAllArticles() {
   let articles = await Promise.all(articleFilenames.map(importArticle))
 
   return articles.sort((a, z) => +new Date(z.date) - +new Date(a.date))
+}
+
+export async function getRandomArticles(count: number = 3) {
+  let allArticles = await getAllArticles()
+
+  let shuffledArticles = allArticles
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+
+  return shuffledArticles.slice(0, count)
 }

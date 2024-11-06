@@ -38,11 +38,11 @@ function SectionHero() {
       className="relative isolate overflow-hidden bg-no-repeat object-cover bg-right-top"
       style={{ backgroundImage: "url('https://i.imgur.com/syh0yT3.jpeg')", backgroundSize: "1200px" }}
     >
-      <Container className="py-20">
+      <Container className="py-12 lg:py-20">
 
         <div className="w-auto inline-flex flex-col space-y-6">
           <div>
-            <h1 className="text-4xl lg:text-8xl font-bold font-teko lg:max-w-2xl">London Cleaning Made Easy</h1>
+            <h1 className="text-5xl lg:text-8xl font-bold font-teko lg:max-w-2xl">London Cleaning Made Easy</h1>
             <p className="text-xl max-w-2xl">We handle the cleaning so you can focus on what’s trully important.</p>
           </div>
 
