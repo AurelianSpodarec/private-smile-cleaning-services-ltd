@@ -43,15 +43,15 @@ function ArticleFeatured() {
   )
 }
 
-export default async function ArticlesIndex() {
-  let articles = await getAllArticles()
+
+// This is a Server Component in Next.js 13
+export default async function ArticlesIndex({ searchParams }) {
+  const selectedCategory = searchParams.category || null; // Get category from URL query
+  const articles = await getAllArticles(selectedCategory === 'All' ? undefined : selectedCategory);
 
   return (
     <div className="py-24">
       <Container>
-
-        <ArticleFeatured />
-
         <section>
           <h2 className="text-4xl font-bold font-heading mb-10">Latest articles</h2>
           <ArticlesTabs />
@@ -61,8 +61,7 @@ export default async function ArticlesIndex() {
             ))}
           </div>
         </section>
-
       </Container>
     </div>
-  )
+  );
 }
