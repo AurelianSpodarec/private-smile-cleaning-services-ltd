@@ -1,11 +1,15 @@
 const articleCategories = {
-  all: "all",
-  "tips-and-tricks": "tips-and-tricks",
-  "eco-friendly": "eco-friendly",
-  "home-maintenance": "home-maintenance",
-  "health-and-safety": "health-and-safety",
-  "company-promotion": "company-promotion",
-  faqs: "faqs"
+  all: "All",
+  "tips-and-tricks": "Tips & Tricks",
+  "eco-friendly": "Eco-Friendly",
+  "home-maintenance": "Home Maintenance",
+  "health-and-safety": "Health & Safety",
+  "company-promotion": "Company Promotion",
+  "customer-engagement": "Customer Engagement",
+  faqs: "FAQs"
 } as const;
 
 export default articleCategories
+
+export type IArticleCategoryKeys = keyof typeof articleCategories;
+export type IArticleCategoryValues = typeof articleCategories[IArticleCategoryKeys];

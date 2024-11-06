@@ -1,9 +1,9 @@
 import { type ArticleWithSlug, getAllArticles } from '@/lib/articles'
 import Link from 'next/link';
 
-function Article({ article }: { article: ArticleWithSlug }) {
+function Article({ article, className }: { article: ArticleWithSlug, className?: string }) {
   return (
-    <article className="w-full md:w-1/4">
+    <article className={`w-full ${className}`}>
       <Link className="group" href={"/blog/" + article.slug}>
         <div className="group flex flex-col mb-5 overflow-hidden rounded-xl">
           <img className="w-full h-full rounded-lg object-fit test-card" src={article.thumbnail} />

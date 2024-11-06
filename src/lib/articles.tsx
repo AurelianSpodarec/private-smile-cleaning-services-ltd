@@ -1,3 +1,4 @@
+import { IArticleCategoryKeys } from '@/app/(web)/blog/articleCategories'
 import glob from 'fast-glob'
 
 interface Article {
@@ -27,14 +28,32 @@ async function importArticle(
   }
 }
 
-export async function getAllArticles() {
+// export async function getAllArticles() {
+//   let articleFilenames = await glob('*/page.mdx', {
+//     cwd: './src/app/(web)/blog',
+//   })
+
+//   let articles = await Promise.all(articleFilenames.map(importArticle))
+
+//   return articles.sort((a, z) => +new Date(z.date) - +new Date(a.date))
+// }
+
+export async function getAllArticles(category?: IArticleCategoryKeys): Promise<ArticleWithSlug[]> {
   let articleFilenames = await glob('*/page.mdx', {
     cwd: './src/app/(web)/blog',
   })
 
   let articles = await Promise.all(articleFilenames.map(importArticle))
 
-  return articles.sort((a, z) => +new Date(z.date) - +new Date(a.date))
+  // Sort articles by date (newest first)
+  articles.sort((a, z) => +new Date(z.date) - +new Date(a.date))
+
+  // If category is provided, filter by category key
+  if (category) {
+    articles = articles.filter(article => article.category.toLowerCase() === category.toLowerCase())
+  }
+
+  return articles
 }
 
 export async function getRandomArticles(count: number = 3) {

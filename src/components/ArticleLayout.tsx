@@ -2,10 +2,12 @@ import Image from 'next/image'
 import { Prose } from './Prose'
 
 import Container from './_layout/Container'
+import Section from './_layout/Section'
+
 import { type ArticleWithSlug } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
+
 import ArticleRecommendations from './ArticleRecommendations'
-import Section from './_layout/Section'
 
 export function ArticleLayout({ article, children }: { article: ArticleWithSlug, children: React.ReactNode }) {
   return (

@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link';
 import React, { useState } from 'react';
 import articleCategories from '../articleCategories';
 
@@ -18,17 +17,16 @@ function ArticlesTabs() {
         const categoryLabel = articleCategories[categoryKey];
 
         return (
-          <Link
-            key={categoryKey}
+          <button
+            // key={categoryKey}
             onClick={(e) => {
               e.preventDefault();
               setActiveTab(categoryLabel); // Set active tab to the label
             }}
             className={`h-10 inline-flex items-center justify-center w-full sm:w-auto text-center py-3 px-5 rounded-full text-sm font-semibold transition duration-200 border focus:ring ${activeTab === categoryLabel ? activeClasses : inactiveClasses}`}
-            href="#"
           >
             {categoryLabel} {/* Display the category label */}
-          </Link>
+          </button>
         );
       })}
     </div>
