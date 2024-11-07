@@ -1,0 +1,52 @@
+import thumbnail from './thumbnail.webp'
+import image1 from './images/image1.webp'
+
+import Image from 'next/image'
+import { ArticleLayout } from '@/components/ArticleLayout'
+import articleCategories from "./../articleCategories"
+
+export const article = {
+  date: '2024-09-17',
+  title: 'The Importance of Client Feedback',
+  thumbnail: thumbnail.src,
+  category: articleCategories['customer-engagement']
+}
+
+export const metadata = {
+  title: article.title,
+  excerpt: article.excerpt,
+}
+
+export default (props) => <ArticleLayout article={article} {...props} />
+
+<Image src={image1} alt="" />
+
+# How Your Input Helps Us Improve
+
+At **Smile Cleaning**, we’re truly grateful for each piece of feedback you share. Every comment, suggestion, and compliment helps us understand what we’re doing well and where we could do even better. Your voice is a vital part of our journey, enabling us to shape our service to match what matters most to you. In short, your input helps us improve, and we’re sincerely thankful for it.
+
+## Why We Value Your Feedback
+
+We believe that client feedback is a gift. It’s your honest insights that let us know when we’ve succeeded and show us opportunities to grow. Your feedback, whether a positive review or a constructive suggestion, helps us focus on what matters to you and keeps us on track to deliver the kind of service you can depend on and trust.
+
+Client feedback does more than tell us how we’re doing; it gives us the chance to reflect on every part of our service, from booking to finishing touches. It’s also a motivator for our cleaners, who feel valued knowing that their hard work and dedication make a difference. Positive feedback highlights what’s working, while suggestions guide us on where we can go that extra mile.
+
+## How to Share Your Thoughts
+
+At **Smile Cleaning**, we want to make it as easy as possible for you to share your thoughts. After each cleaning service, you’re invited to leave feedback through the *Manage Bookings* section on our website. This section allows you to comment directly on the service, ensuring that your feedback reaches us promptly and accurately. We also welcome feedback directly through our team members; whether it’s a cleaner, a supervisor, or a member of our customer service team, each of us is here to listen.
+
+Your input will never be overlooked – every suggestion is carefully reviewed so we can keep refining our standards. It’s all part of our commitment to creating the best experience for you and making sure your voice has an impact on our services.
+
+## Constructive Feedback: Helping Us Grow
+
+Constructive feedback is especially valuable because it allows us to see precisely where we can improve. By sharing specifics about what went well or where we could make adjustments, you help us understand the details that matter. For example, if you found that a cleaner’s approach to a specific task was particularly effective, we want to know! If there’s an area where we could provide extra attention, your suggestion will help us fine-tune our approach.
+
+When giving feedback, consider including the aspects you appreciate most as well as any area you feel could be improved. This kind of balanced feedback allows us to continue the practices you enjoy while making adjustments that enhance your experience. We’re always open to learning from your perspective, and we know it’s essential for providing a service that truly meets your needs.
+
+## Our Commitment to Improvement
+
+At **Smile Cleaning**, our mission is to offer a service that’s dependable, thorough, and personalised to your preferences. We’re dedicated to growth, improvement, and setting a high standard in everything we do. Your feedback helps us shape our journey, and we’re sincerely thankful for every bit of it.
+
+---
+
+Are you ready to see our commitment to quality firsthand? [Book a cleaning with **Smile Cleaning** today](/schedule), knowing that your experience will be heard, valued, and taken to heart. Whether it’s a compliment or a suggestion, your feedback keeps us striving to do our best for you, each and every time. Thank you for being an essential part of Smile Cleaning’s journey toward excellence. We look forward to continuing to improve with your valued input guiding our way.
