@@ -1,9 +1,8 @@
 import thumbnail from './thumbnail.webp'
-import image1 from './images/image1.webp'
 
 import Image from 'next/image'
 
-import { ArticleLayout } from '@/components/ArticleLayout'
+import { ArticleLayout } from './../_components/ArticleLayout'
 import articleCategories from "./../articleCategories"
 
 export const article = {
@@ -19,8 +18,6 @@ export const metadata = {
 }
 
 export default (props) => <ArticleLayout article={article} {...props} />
-
-<Image src={image1} alt="" />
 
 # Simple Tricks to Reduce Your Environmental Footprint
 

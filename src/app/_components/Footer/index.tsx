@@ -1,5 +1,5 @@
 import Container from "@/components/_layout/Container"
-import Logo from "@/components/Logo"
+import Logo from "@/components/atoms/Logo"
 import routes from "@/config/routes"
 import Image from "next/image"
 import Link from "next/link"

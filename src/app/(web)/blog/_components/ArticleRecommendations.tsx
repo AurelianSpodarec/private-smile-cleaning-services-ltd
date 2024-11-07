@@ -7,9 +7,9 @@ async function ArticleRecommendations() {
   return (
     <div>
       <h2 className="text-4xl font-bold font-heading mb-10">Other articles</h2>
-      <div className="flex flex-wrap">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {articles.map((article) => (
-          <Article key={article.slug} article={article} className=" md:w-1/3" />
+          <Article key={article.slug} article={article} />
         ))}
       </div>
     </div>

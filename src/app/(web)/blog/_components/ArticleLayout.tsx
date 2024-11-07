@@ -1,8 +1,8 @@
 import Image from 'next/image'
-import { Prose } from './Prose'
+import { Prose } from '../../../../components/Prose'
 
-import Container from './_layout/Container'
-import Section from './_layout/Section'
+import Container from '../../../../components/_layout/Container'
+import Section from '../../../../components/_layout/Section'
 
 import { type ArticleWithSlug } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
@@ -32,7 +32,7 @@ export function ArticleLayout({ article, children }: { article: ArticleWithSlug,
             </div>
           </header>
 
-          <Image src={article.thumbnail} alt="Thumbnail" width={1500} height={500} className="-mx-[30%] max-w-[160%] rounded-lg my-14" />
+          <Image src={article.thumbnail} alt="Thumbnail" width={1500} height={500} className="lg:-mx-[30%] lg:max-w-[160%] max-h-[750px] object-cover rounded-lg my-14" />
 
           <Prose className="mt-8" data-mdx-content>
             {children}

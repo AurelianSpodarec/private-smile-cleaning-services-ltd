@@ -1,8 +1,7 @@
 import thumbnail from './thumbnail.jpg'
-import image1 from './images/image1.webp'
 
 import Image from 'next/image'
-import { ArticleLayout } from '@/components/ArticleLayout'
+import { ArticleLayout } from './../_components/ArticleLayout'
 import articleCategories from "./../articleCategories"
 
 export const article = {
@@ -20,8 +19,6 @@ export const metadata = {
 export default (props) => <ArticleLayout article={article} {...props} />
 
 Most companies try to stay ahead of the curve when it comes to visual design, but for Planetaria we needed to create a brand that would still inspire us 100 years from now when humanity has spread across our entire solar system.
-
-<Image src={image1} alt="Wop" />
 
 I knew that to get it right I was going to have to replicate the viewing conditions of someone from the future, so I grabbed my space helmet from the closet, created a new Figma document, and got to work.
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import Logo from "@/components/Logo";
+import Logo from "@/components/atoms/Logo";
 
 import NavItem from "./NavItem";
 import UserAvatar from "../../UserAvatar";
