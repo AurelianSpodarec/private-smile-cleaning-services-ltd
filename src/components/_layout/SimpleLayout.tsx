@@ -1,4 +1,4 @@
-import Container from "./_layout/Container"
+import Container from "./Container"
 
 export function SimpleLayout({
   title,

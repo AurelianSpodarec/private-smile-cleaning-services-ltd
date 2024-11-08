@@ -1,54 +1,68 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; // For updating URL
-
+import { useRouter } from 'next/navigation';
 import articleCategories from '../articleCategories';
+
+function TabButton(props) {
+  const { categoryKey, categoryLabel, isActive, onClick } = props;
+  const baseClasses = 'h-10 inline-flex items-center justify-center w-full sm:w-auto text-center py-3 px-5 rounded-full text-sm font-semibold transition duration-200 border focus:ring';
+  const activeClasses = 'border border-purple-700 bg-purple-900 hover:bg-purple-800 focus:ring-purple-800 text-white';
+  const inactiveClasses = 'border border-gray-200 bg-white hover:bg-gray-50 focus:ring-orange-200';
+
+  return (
+    <button
+      key={categoryKey}
+      onClick={function (e) {
+        e.preventDefault();
+        onClick(categoryKey);
+      }}
+      className={baseClasses + ' ' + (isActive ? activeClasses : inactiveClasses)}
+    >
+      {categoryLabel}
+    </button>
+  );
+}
 
 function ArticlesTabs() {
   const router = useRouter();
-  const [activeCategory, setActiveCategory] = useState(new URLSearchParams(window.location.search).get('category') || 'all'); // Initialize state for active category
+  const [activeCategory, setActiveCategory] = useState(function () {
+    var initialCategory = new URLSearchParams(window.location.search).get('category');
+    return initialCategory || 'all';
+  });
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const category = new URLSearchParams(window.location.search).get('category') || 'all';
-      setActiveCategory(category); // Update active category based on URL
+  useEffect(function () {
+    function handlePopState() {
+      var category = new URLSearchParams(window.location.search).get('category') || 'all';
+      setActiveCategory(category);
+    }
+
+    window.addEventListener('popstate', handlePopState);
+    return function () {
+      window.removeEventListener('popstate', handlePopState);
     };
-
-    window.addEventListener('popstate', handlePopState); // Listen for URL changes
-    return () => window.removeEventListener('popstate', handlePopState); // Cleanup listener
   }, []);
 
-  const activeClasses = 'border border-purple-700 bg-purple-900 hover:bg-purple-800 focus:ring focus:ring-purple-800 text-white';
-  const inactiveClasses = 'border border-gray-200 bg-white hover:bg-gray-50 focus:ring focus:ring-orange-200';
-
-  const handleCategoryChange = (categoryLabel) => {
-    if (categoryLabel === 'all') {
-      // If the "All" category is clicked, remove the query parameter entirely from the URL
-      router.push(window.location.pathname); // Update the URL to remove '?category=all'
+  function handleCategoryChange(categoryKey) {
+    if (categoryKey === 'all') {
+      router.push(window.location.pathname);
     } else {
-      // For other categories, update the URL with the selected category
-      router.push(`?category=${categoryLabel}`);
+      router.push('?category=' + categoryKey);
     }
-    setActiveCategory(categoryLabel); // Update active category immediately
-  };
+    setActiveCategory(categoryKey);
+  }
 
   return (
     <div className="flex flex-wrap gap-2 mb-10">
-      {Object.keys(articleCategories).map((key) => {
-        const categoryLabel = articleCategories[key];
-
+      {Object.entries(articleCategories).map(([categoryKey, category]) => {
         return (
-          <button
-            key={key}
-            onClick={(e) => {
-              e.preventDefault();
-              handleCategoryChange(key);
-            }}
-            className={`h-10 inline-flex items-center justify-center w-full sm:w-auto text-center py-3 px-5 rounded-full text-sm font-semibold transition duration-200 border focus:ring ${activeCategory === key ? activeClasses : inactiveClasses}`}
-          >
-            {categoryLabel}
-          </button>
+          <TabButton
+            key={categoryKey}
+            categoryKey={categoryKey}
+            categoryLabel={category.name}
+            isActive={activeCategory === categoryKey}
+            onClick={handleCategoryChange}
+          />
         );
       })}
     </div>

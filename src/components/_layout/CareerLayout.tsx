@@ -4,13 +4,11 @@ import { useContext } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { AppContext } from '@/context/providers'
-import Container from './_layout/Container'
-
-// import { Prose } from '@/components/Prose'
+import Container from './Container'
 
 import { type ArticleWithSlug } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
-import { Prose } from './Prose'
+import { Prose } from '../Prose'
 
 export function CareerLayout({
   article,

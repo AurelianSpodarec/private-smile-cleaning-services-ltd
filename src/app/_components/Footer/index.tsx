@@ -48,7 +48,7 @@ function PaymentCards() {
           d="M134.407 54a35.999 35.999 0 0 1-58.245 28.303 36.005 36.005 0 0 0 0-56.606A35.999 35.999 0 0 1 134.407 54M130.972 76.308v-1.16h.468v-.235h-1.19v.236h.467v1.159Zm2.31 0V74.91h-.364l-.42.962-.42-.962h-.364v1.398h.257v-1.054l.394.908h.267l.394-.91v1.056Z"
         ></path>
       </svg>
-    
+
     </div>
   )
 }
@@ -75,9 +75,9 @@ function Footer() {
             </div>
 
             <div className="w-full md:w-3/5 p-8">
-              <div className="flex flex-wrap xl:flex-nowrap justify-between -m-8">
-
-                <div className="w-auto p-8 md:min-w-[150px]">
+              <div className="flex flex-wrap xl:flex-nowrap justify-end -m-8">
+              {/* justify-between instead of justify-end */}
+                {/* <div className="w-auto p-8 md:min-w-[150px]">
                   <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Company</h3>
                   <ul className="flex flex-col space-y-6 text-gray-300">
                     <Link href={routes.web.about}>About</Link>
@@ -85,15 +85,25 @@ function Footer() {
                     <Link href={routes.web.careers}>Careers</Link>
                     <Link href={routes.web.contact}>Contact</Link>
                   </ul>
-                </div>
+                </div> */}
 
-                <div className="w-[200px] p-8">
+                {/* <div className="w-[200px] p-8">
                   <h3 className="mb-10 text-lg text-gray-500 font-semibold tracking-tight">Services</h3>
                   <ul className="flex flex-col space-y-6 text-gray-300">
                     <Link href={routes.services.homeCleaning}>Home Cleaning</Link>
                     <Link href={routes.services.commercial}>Commercial Cleaning</Link>
                     <Link href={routes.services.endOfTenancy}>End-of-Tenancy Cleaning</Link>
                     <Link href={routes.services.ironing}>Ironing Services</Link>
+                  </ul>
+                </div> */}
+
+                <div className="w-[200px] p-8">
+                  <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Company</h3>
+                  <ul className="flex flex-col space-y-6 text-gray-300">
+                    <Link href={routes.web.about}>About</Link>
+                    <Link href={routes.web.blog}>Blog</Link>
+                    <Link href={routes.web.careers}>Careers</Link>
+                    <Link href={routes.web.contact}>Contact</Link>
                   </ul>
                 </div>
 
