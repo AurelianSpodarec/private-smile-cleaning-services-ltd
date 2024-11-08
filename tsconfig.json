@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(web)/legal/privacy/page.mdx", "src/app/(web)/legal/cookie-policy/page.mdx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(web)/legal/privacy/page.mdx", "src/app/(web)/legal/cookie-policy/page.mdx", "src/app/(web)/legal/terms/page.mdx"],
   "exclude": ["node_modules"]
 }
