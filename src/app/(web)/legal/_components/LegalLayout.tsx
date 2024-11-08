@@ -3,8 +3,8 @@
 import { formatDate } from '@/lib/formatDate'
 import { type ArticleWithSlug } from '@/lib/articles'
 
-import Container from '../../../../components/_layout/Container'
-import { Prose } from '../../../../components/Prose'
+import Container from '@/components/_layout/Container'
+import { Prose } from '@/components/Prose'
 
 export function LegalLayout({ article, children }: { article: ArticleWithSlug, children: React.ReactNode }) {
   return (

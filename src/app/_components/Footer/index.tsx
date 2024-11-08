@@ -31,24 +31,15 @@ function SocialIcons() {
 
 function PaymentCards() {
   return (
-    <div>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-12 bg-white rounded-lg"
-        viewBox="0 0 152.407 108"
-      >
-        <path fill="none" d="M0 0h152.407v108H0z"></path>
-        <path fill="#ff5f00" d="M60.412 25.697h31.5v56.606h-31.5z"></path>
-        <path
-          fill="#eb001b"
-          d="M62.412 54a35.94 35.94 0 0 1 13.75-28.303 36 36 0 1 0 0 56.606A35.94 35.94 0 0 1 62.412 54"
-        ></path>
-        <path
-          fill="#f79e1b"
-          d="M134.407 54a35.999 35.999 0 0 1-58.245 28.303 36.005 36.005 0 0 0 0-56.606A35.999 35.999 0 0 1 134.407 54M130.972 76.308v-1.16h.468v-.235h-1.19v.236h.467v1.159Zm2.31 0V74.91h-.364l-.42.962-.42-.962h-.364v1.398h.257v-1.054l.394.908h.267l.394-.91v1.056Z"
-        ></path>
-      </svg>
-
+    <div className="flex flex-col">
+      <span className="mb-2 text-gray-300 font-semibold tracking-tight">
+        Cards we accept
+      </span>
+      <div className="flex space-x-4">
+        <img className="bg-white rounded h-[25px]" src="/static/images/visa.png" />
+        <img className="bg-white rounded h-[25px]" src="/static/images/amex.png" />
+        <img className="rounded h-[25px]" src="/static/images/mastercard.png" />
+      </div>
     </div>
   )
 }
@@ -76,7 +67,7 @@ function Footer() {
 
             <div className="w-full md:w-3/5 p-8">
               <div className="flex flex-wrap xl:flex-nowrap justify-end -m-8">
-              {/* justify-between instead of justify-end */}
+                {/* justify-between instead of justify-end */}
                 {/* <div className="w-auto p-8 md:min-w-[150px]">
                   <h3 className="mb-12 text-gray-500 font-semibold tracking-tight">Company</h3>
                   <ul className="flex flex-col space-y-6 text-gray-300">
