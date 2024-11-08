@@ -3,13 +3,13 @@
 import { formatDate } from '@/lib/formatDate'
 import { type ArticleWithSlug } from '@/lib/articles'
 
-import Container from './Container'
-import { Prose } from './../Prose'
+import Container from '../../../../components/_layout/Container'
+import { Prose } from '../../../../components/Prose'
 
 export function LegalLayout({ article, children }: { article: ArticleWithSlug, children: React.ReactNode }) {
   return (
     <article>
-      <Container className="mx-auto mt-16 lg:mt-32">
+      <Container className="mx-auto my-16 lg:my-32">
 
         <header className="text-center mb-20 space-y-2">
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">{article.title}</h1>
