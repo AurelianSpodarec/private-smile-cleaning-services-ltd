@@ -5,7 +5,7 @@ function CardCareer({ item }: { item: CareerWithSlug }) {
   return (
     <Link href={`/careers/${item.slug}`} className="p-8 rounded-3xl border border-gray-100 flex items-center justify-between flex-wrap gap-4 mb-10 hover:border-orange-500 transition duration-200">
       <div>
-        <p className="text-lg font-bold font-heading mb-2">Full-Stack Engineerrr</p>
+        <p className="text-lg font-bold font-heading mb-2">{item.title}</p>
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M17.1833 7.04158C16.3083 3.19159 12.95 1.45825 9.99996 1.45825C9.99996 1.45825 9.99996 1.45825 9.99162 1.45825C7.04996 1.45825 3.68329 3.18325 2.80829 7.03325C1.83329 11.3333 4.46662 14.9749 6.84996 17.2666C7.73329 18.1166 8.86662 18.5416 9.99996 18.5416C11.1333 18.5416 12.2666 18.1166 13.1416 17.2666C15.525 14.9749 18.1583 11.3416 17.1833 7.04158ZM9.99996 11.2166C8.54996 11.2166 7.37496 10.0416 7.37496 8.59159C7.37496 7.14158 8.54996 5.96658 9.99996 5.96658C11.45 5.96658 12.625 7.14158 12.625 8.59159C12.625 10.0416 11.45 11.2166 9.99996 11.2166Z" fill="#8C8C8C"></path>
