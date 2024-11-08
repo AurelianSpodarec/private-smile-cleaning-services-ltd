@@ -1,13 +1,14 @@
 import Image from 'next/image'
-import { Prose } from '../../../../components/Prose'
+import { Prose } from '@/components/Prose'
 
-import Container from '../../../../components/_layout/Container'
-import Section from '../../../../components/_layout/Section'
+import Container from '@/components/_layout/Container'
+import Section from '@/components/_layout/Section'
 
 import { type ArticleWithSlug } from '@/lib/articles'
 import { formatDate } from '@/lib/formatDate'
 
 import ArticleRecommendations from './ArticleRecommendations'
+import articleCategories from '../articleCategories'
 
 export function ArticleLayout({ article, children }: { article: ArticleWithSlug, children: React.ReactNode }) {
   return (
@@ -27,14 +28,14 @@ export function ArticleLayout({ article, children }: { article: ArticleWithSlug,
                 <span className="ml-3">{formatDate(article.date)}</span>
               </time>
               <span>
-                {article.category}
+                {articleCategories[article.category]?.name}
               </span>
             </div>
           </header>
 
           <Image src={article.thumbnail} alt="Thumbnail" width={1500} height={500} className="lg:-mx-[30%] lg:max-w-[160%] max-h-[750px] object-cover rounded-lg my-14" />
 
-          <Prose className="mt-8" data-mdx-content>
+          <Prose contentType="article" className="mt-8 max-w-none prose-img:rounded-lg prose-img:lg:max-w-[160%] prose-img:lg:-mx-[30%] prose-img:max-h-[750px] prose-img:object-cover" data-mdx-content>
             {children}
           </Prose>
 

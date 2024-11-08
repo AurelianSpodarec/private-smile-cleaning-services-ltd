@@ -1,9 +1,10 @@
 import { type Metadata } from 'next'
 
+import Container from '@/components/_layout/Container'
 import { type ArticleWithSlug, getAllArticles } from '@/lib/articles'
+
 import Article from './_components/Article'
 import ArticlesTabs from './_components/ArticleCategories'
-import Container from '@/components/_layout/Container'
 
 export const metadata: Metadata = {
   title: 'Articles',
@@ -14,6 +15,7 @@ export default async function ArticlesIndex({ searchParams }) {
   const selectedCategory = searchParams.category || null;
   const articles = await getAllArticles(selectedCategory === 'All' ? undefined : selectedCategory);
 
+  console.log(articles)
   return (
     <div className="py-24">
       <Container>

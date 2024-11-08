@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
-export function Prose({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export function Prose({ className, contentType, ...props }: { contentType: 'article' | 'job-application'; className?: string }) {
   return (
-    <div className={clsx(className, 'prose')} {...props} />
-  )
+    <div className={clsx(className, `prose prose-${contentType}`)} {...props} />
+  );
 }

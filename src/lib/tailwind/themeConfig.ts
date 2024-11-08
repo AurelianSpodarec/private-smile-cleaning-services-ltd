@@ -1,3 +1,5 @@
+import typography from "./typography";
+
 const themeConfig = {
   theme: {
     container: {
@@ -8,6 +10,15 @@ const themeConfig = {
       }
     },
     extend: {
+      // typography,
+      typography: {
+        article: {
+          css: {
+            '--tw-prose-body': '#333',
+            '--tw-prose-headings': '#111',
+          },
+        },
+      },
       colors: {
 
         // Primitives
