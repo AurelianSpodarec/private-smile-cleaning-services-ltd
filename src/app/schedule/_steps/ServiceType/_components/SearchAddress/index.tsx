@@ -40,13 +40,14 @@ function SearchAddress() {
   return (
     <div>
       <div className="relative">
+      <h2 className="text-2xl font-semibold mb-4">Home Address</h2>
         <input
           type="text"
           value={postcode}
           onChange={handleInputChange}
           placeholder="Your Address"
         />
-        <div className="absolute bg-black text-white max-h-[300px]">
+        {/* <div className="absolute bg-black text-white max-h-[300px]">
           {hasResults ? (
             result.result.hits.map((item: any) => (
               <div
@@ -60,7 +61,7 @@ function SearchAddress() {
           ) : (
             <div>Start typing to find address</div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

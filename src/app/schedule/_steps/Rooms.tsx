@@ -15,7 +15,7 @@ function StepRooms() {
       <div className="flex flex-col space-y-2">
         {data.data.rooms.map((item) => {
           return (
-            <button type="button" className="bg-gray-200">
+            <button type="button" className="border border-gray-300 hover:bg-gray-200 py-2 text-lg rounded-lg cursor-pointer">
               {item.name}
             </button>
           )

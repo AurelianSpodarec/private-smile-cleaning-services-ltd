@@ -6,10 +6,14 @@ function CheckoutExcerpt() {
 
   return (
     <aside className="shadow p-6 w-full">
-      <h3>Booking Summary</h3>
+      <h3 className="text-lg font-medium text-gray-900">Booking Summary</h3>
 
-      <span>Service Type: Residentual</span>
-      <span>Price: 30</span>
+      
+
+      <div className="flex items-center justify-between border-t border-gray-200 pt-6">
+        <dt className="text-base">Total</dt>
+        <dd className="text-base">-</dd>
+      </div>
     </aside>
   );
 }

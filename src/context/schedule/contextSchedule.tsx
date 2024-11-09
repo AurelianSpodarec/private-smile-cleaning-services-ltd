@@ -45,7 +45,7 @@ function ScheduleProvider({ children }: { children: React.ReactNode }) {
   const [bookingData, setBookingData] = useState(scheduleState);
 
   const [steps, setSteps] = useState(stateSteps);
-  const [activeStepIndex, setActiveStepIndex] = useState(2);
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
 
   const [selectedServiceId, setSelectedServiceId] = useState(11);
   const currentService = fetchedStepsData[selectedServiceId]

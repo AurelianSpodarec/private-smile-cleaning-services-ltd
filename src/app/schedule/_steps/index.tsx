@@ -11,9 +11,9 @@ function ScheduleStepIndex() {
 
       {steps[activeStepIndex].component}
 
-      <footer>
-        <button type="button" onClick={() => menuPrev()}>Previous</button>
-        <button type="button" onClick={() => menuNext()}>Next</button>
+      <footer className="mt-10">
+        {/* <button type="button" className="py-2.5 px-4 bg-[#eca869] rounded-lg" onClick={() => menuPrev()}>Previous</button> */}
+        <button type="button" className="py-2.5 px-4 text-xl font-semibold w-full bg-[#eca869] rounded-lg" onClick={() => menuNext()}>Continue</button>
       </footer>
     </div>
   );

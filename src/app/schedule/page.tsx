@@ -40,11 +40,11 @@ function Page() {
 
   return (
     <Container>
-      <div className="grid p-8 grid-cols-3">
-        <div className="col-span-2">
+      <div className="grid p-8 grid-cols-8 gap-28">
+        <div className="col-span-5">
           <ScheduleStepIndex />
         </div>
-        <div className="col-span-1">
+        <div className="col-span-3">
           <CheckoutExcerpt />
         </div>
       </div>
