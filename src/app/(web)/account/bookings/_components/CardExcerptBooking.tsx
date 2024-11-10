@@ -1,4 +1,5 @@
 import { IBooking } from "@/interfaces/IBooking";
+import { formatBritishDate } from "@/lib/utils";
 import { cancelBooking } from "@/services/apis/launch27/requests/booking";
 
 function CardExceptBooking({ item }: { item: IBooking }) {
@@ -10,6 +11,13 @@ function CardExceptBooking({ item }: { item: IBooking }) {
   const hours = Math.floor(item.duration / 60);
   const minutes = item.duration % 60;
 
+  const serviceName = item.services[0].name
+  const address = item?.address?.full_address
+  const readableServiceDate = formatBritishDate(serviceDate)
+
+  // Functions
+  // ===============================================
+
   async function handlerCancelBooking(id) {
     const data = {
       "confirmed_late": true,
@@ -20,32 +28,9 @@ function CardExceptBooking({ item }: { item: IBooking }) {
   }
   console.log(item)
 
-  const serviceName = item.services[0].name
-  const address = item?.address?.full_address
-  const readableServiceDate = formatBritishDate(serviceDate)
-
-  function formatBritishDate(date: Date): string {
-    function getOrdinalSuffix(day: number): string {
-      if (day > 3 && day < 21) return 'th'; // Special case for 11th-13th
-      switch (day % 10) {
-        case 1: return 'st';
-        case 2: return 'nd';
-        case 3: return 'rd';
-        default: return 'th';
-      }
-    }
-
-    const day = date.getDate();
-    const month = date.toLocaleDateString('en-GB', { month: 'long' });
-    const year = date.getFullYear();
-
-    return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
-  }
-
-
   return (
     <article className="my-4 border border-gray-200 rounded-md p-4">
-      <div className="flex items-center justify-between space-x-6">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-6 items-center">
 
         <div className="flex items-center space-x-2">
           <svg className="w-12 h-12 bg-[#96769f] p-3 rounded" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -53,43 +38,42 @@ function CardExceptBooking({ item }: { item: IBooking }) {
           </svg>
           <div>
             <span className="font-bold">{serviceName}</span>
-            <h2 className="">{address}</h2>
+            <h2>{address}</h2>
           </div>
         </div>
 
         <div className="flex flex-col">
           <span>{readableServiceDate}</span>
           <div>
-            <span className="">{startTime}</span>
-            <strong className=""> ----- {hours}h {minutes}m ----- </strong>
+            <span>{startTime}</span>
+            <strong> ----- {hours}h {minutes}m ----- </strong>
             <span>{endTime}</span>
           </div>
         </div>
 
-        <div className="flex flex-grow justify-between mt-4">
-
-          <div className="w-1/3 flex justify-center items-center">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"> */}
+          <div className="flex">
             <span>£{item.summary.total.toFixed(2)}</span>
           </div>
 
-          <div className="w-1/3 flex justify-center items-center">
+          <div className="flex">
             <span>{item.frequency.name}</span>
           </div>
 
-          <div className="w-1/3 flex justify-center items-center">
-            <span>{item.completed ? 'Completed' : 'Pending'}</span>
+          <div className="flex">
+            <span className={`rounded-lg px-3 py-1.5 ${item.completed ? "bg-green-300 text-green-700" : "bg-red-300 text-red-700"} `}>
+              {item.completed ? 'Completed' : 'Pending'}
+            </span>
           </div>
-        </div>
+        {/* </div> */}
 
-        <div>
-
+        <div className="flex justify-center items-center">
           <button onClick={() => handlerCancelBooking(item.id)}>
             <svg className="h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
               <path d="M64 360a56 56 0 100 112 56 56 0 100-112zm0-160a56 56 0 100 112 56 56 0 100-112zm56-104A56 56 0 108 96a56 56 0 10112 0z"></path>
             </svg>
           </button>
         </div>
-
       </div>
     </article>
   );

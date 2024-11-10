@@ -56,3 +56,21 @@ export const excludeItemsFromArrayById = (array: [], extrasIdsToExclude: []): nu
     return !extrasIdsToExclude.some(excludedId => item.id === excludedId);
   });
 };
+
+export function formatBritishDate(date: Date): string {
+  function getOrdinalSuffix(day: number): string {
+    if (day > 3 && day < 21) return 'th'; // Special case for 11th-13th
+    switch (day % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  }
+
+  const day = date.getDate();
+  const month = date.toLocaleDateString('en-GB', { month: 'long' });
+  const year = date.getFullYear();
+
+  return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
+}
