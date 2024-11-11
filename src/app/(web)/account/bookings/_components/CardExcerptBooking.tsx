@@ -2,6 +2,17 @@ import { IBooking } from "@/interfaces/IBooking";
 import { formatBritishDate } from "@/lib/utils";
 import { cancelBooking } from "@/services/apis/launch27/requests/booking";
 
+interface ConfirmedRecurring {
+  cancel_future: boolean;
+}
+
+interface CancelBookingRequest {
+  confirmed_late?: boolean;
+  confirmed_fee?: number | null;
+  confirmed_recurring?: ConfirmedRecurring | null;
+  reason?: string | null;
+}
+
 function CardExceptBooking({ item }: { item: IBooking }) {
   const serviceDate = new Date(item.service_date);
 
@@ -18,13 +29,19 @@ function CardExceptBooking({ item }: { item: IBooking }) {
   // Functions
   // ===============================================
 
+  // Need to figure out if its reoccuring booking or not...
   async function handlerCancelBooking(id) {
     const data = {
-      "confirmed_late": true,
+      "confirmed_late": false,
+      "confirmed_recurring": {
+        "cancel_future": false
+      },
+      "reason": "Test cancel booking"
     }
     const a = await cancelBooking({ id, data })
 
-    console.log("cancel", a)
+    // message required, late cancell
+    console.log("cancel booking", a)
   }
   console.log(item)
 
@@ -52,20 +69,32 @@ function CardExceptBooking({ item }: { item: IBooking }) {
         </div>
 
         {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"> */}
-          <div className="flex">
-            <span>£{item.summary.total.toFixed(2)}</span>
-          </div>
+        <div className="flex">
+          <span>£{item.summary.total.toFixed(2)}</span>
+        </div>
 
-          <div className="flex">
-            <span>{item.frequency.name}</span>
-          </div>
+        <div className="flex">
+          <span>{item.frequency.name}</span>
+        </div>
 
-          <div className="flex">
-            <span className={`rounded-lg px-3 py-1.5 ${item.completed ? "bg-green-300 text-green-700" : "bg-red-300 text-red-700"} `}>
-              {item.completed ? 'Completed' : 'Pending'}
-            </span>
-          </div>
+        <div className="flex">
+          <span className={`rounded-lg px-3 py-1.5 ${item.completed ? "bg-green-300 text-green-700" : "bg-red-300 text-red-700"} `}>
+            {item.completed ? 'Completed' : 'Pending'}
+          </span>
+        </div>
         {/* </div> */}
+
+        <button onClick={() => handlerCancelBooking(item.id)}>
+          Cancell Booking
+        </button>
+
+        <button>
+          Edit booking
+        </button>
+
+        <button>
+          Reschedule Booking
+        </button>
 
         <div className="flex justify-center items-center">
           <button onClick={() => handlerCancelBooking(item.id)}>
